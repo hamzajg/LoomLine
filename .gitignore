@@ -1,0 +1,22 @@
+# Build and run artifacts
+build/
+out/
+target/
+.gradle/
+node_modules/
+dist/
+coverage/
+
+# Local configuration and secrets
+.env
+.env.local
+*.local
+
+# Tooling
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Local evidence scratch
+.openharness/evidence/
