@@ -2,11 +2,11 @@
 
 Status: running
 Iterations: 0
-Updated: 2026-11-18T19:27:28Z
+Updated: 2026-11-18T19:28:44Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
-| 1 | pending | — | — | — | — |
+| 1 | in-progress | feat/auth-and-app-shell-w1 | — | — | 2026-11-18T19:28:44Z |
 | 2 | pending | — | — | — | — |
 | 3 | pending | — | — | — | — |
 
@@ -23,3 +23,4 @@ Updated: 2026-11-18T19:27:28Z
 ## Events
 
 - 2026-11-18T19:27:28Z gate G1 met: specs/auth-and-app-shell/DECISION-REVIEW.md (verdict ACCEPT)
+- 2026-11-18T19:28:44Z start wave 1 on feat/auth-and-app-shell-w1

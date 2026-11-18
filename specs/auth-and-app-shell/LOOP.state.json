@@ -2,8 +2,16 @@
   "feature": "auth-and-app-shell",
   "status": "running",
   "iterations": 0,
-  "updated": "2026-11-18T19:27:28Z",
-  "waves": {},
+  "updated": "2026-11-18T19:28:44Z",
+  "waves": {
+    "1": {
+      "status": "in-progress",
+      "branch": "feat/auth-and-app-shell-w1",
+      "pr": "\u2014",
+      "evidence": "\u2014",
+      "updated": "2026-11-18T19:28:44Z"
+    }
+  },
   "gates": {
     "G1": {
       "status": "met",
@@ -12,6 +20,7 @@
     }
   },
   "events": [
-    "2026-11-18T19:27:28Z gate G1 met: specs/auth-and-app-shell/DECISION-REVIEW.md (verdict ACCEPT)"
+    "2026-11-18T19:27:28Z gate G1 met: specs/auth-and-app-shell/DECISION-REVIEW.md (verdict ACCEPT)",
+    "2026-11-18T19:28:44Z start wave 1 on feat/auth-and-app-shell-w1"
   ]
 }
