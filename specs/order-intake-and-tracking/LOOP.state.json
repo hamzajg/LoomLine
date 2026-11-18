@@ -1,8 +1,8 @@
 {
   "feature": "order-intake-and-tracking",
   "status": "running",
-  "iterations": 1,
-  "updated": "2026-11-18T10:01:26Z",
+  "iterations": 3,
+  "updated": "2026-11-18T18:55:54Z",
   "waves": {
     "1": {
       "status": "done",
@@ -10,6 +10,13 @@
       "pr": "\u2014",
       "evidence": "17 backend tests + 6 frontend tests pass, walking skeleton verified, UI screenshots captured",
       "updated": "2026-11-18T10:01:26Z"
+    },
+    "2": {
+      "status": "done",
+      "branch": "feat/order-intake-and-tracking-w2",
+      "pr": "\u2014",
+      "evidence": "wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte",
+      "updated": "2026-11-18T18:55:54Z"
     }
   },
   "gates": {
@@ -32,6 +39,11 @@
       "status": "met",
       "evidence": "STATUS-RULES.md agreed by product owner 2026-11-18: DRAFT->RELEASED/CANCELLED, RELEASED->IN_PROGRESS/CANCELLED, IN_PROGR",
       "updated": "2026-11-18T01:21:46Z"
+    },
+    "G5": {
+      "status": "pending",
+      "evidence": "\u2014",
+      "updated": "2026-11-18T13:05:15Z"
     }
   },
   "events": [
@@ -42,6 +54,9 @@
     "2026-11-18T01:29:23Z start wave 1 on feat/order-intake-and-tracking-w1",
     "2026-11-18T01:42:50Z gate G1 met: DECISION-REVIEW.md \u2014 first pass REVISE, folded into SPEC.md D1/D7; after the Quarkus/Kotlin/Gradle/JDK 25 amendment the ",
     "2026-11-18T07:39:09Z gate G3 met: ADR-0001-stack.md accepted by product owner 2026-11-18 (Quarkus+Kotlin+Gradle, JDK 25)",
-    "2026-11-18T10:01:26Z complete wave 1: 17 backend tests + 6 frontend tests pass, walking skeleton verified, UI screenshots captured"
+    "2026-11-18T10:01:26Z complete wave 1: 17 backend tests + 6 frontend tests pass, walking skeleton verified, UI screenshots captured",
+    "2026-11-18T10:28:27Z start wave 2 on feat/order-intake-and-tracking-w2",
+    "2026-11-18T13:05:15Z gate G5 reset to pending",
+    "2026-11-18T18:55:54Z complete wave 2: wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte"
   ]
 }
