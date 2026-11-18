@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: loomline
+      POSTGRES_USER: loomline
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-loomline}
+    ports:
+      - "5433:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U loomline -d loomline"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+      args:
+        # Demo environment only: the idempotent reference seed is baked into
+        # this image. Production builds leave the default (db/migration).
+        FLYWAY_LOCATIONS: db/migration,db/seed
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/loomline
+      DB_USER: loomline
+      DB_PASSWORD: ${DB_PASSWORD:-loomline}
+    ports:
+      - "8085:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "8086:80"
+    depends_on:
+      api:
+        condition: service_started
+
+volumes:
+  db-data:

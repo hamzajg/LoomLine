@@ -6,6 +6,7 @@ target/
 node_modules/
 dist/
 coverage/
+*.tsbuildinfo
 
 # Local configuration and secrets
 .env

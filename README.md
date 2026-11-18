@@ -45,6 +45,28 @@ demonstrated and recorded in `VALIDATION.md`. The delivery record lives in
 
 ## Development
 
-Not yet scaffolded. Wave 1 adds the Gradle wrapper, the Quarkus service, the
-Vite app, the Compose file, and the seed migration. Until then, this README is
-the entry point.
+Prerequisites: a full **JDK 25** (the workspace uses Temurin at
+`~/factory/.jdk/jdk-25`; JRE-only installs cannot compile), Node 24,
+and Docker with Compose.
+
+```bash
+# API: tests and dev server
+JAVA_HOME=~/factory/.jdk/jdk-25 ./gradlew :api:test
+JAVA_HOME=~/factory/.jdk/jdk-25 ./gradlew :api:quarkusDev   # :8080
+
+# Web: tests and dev server (proxies /api to :8080)
+cd web && npm install && npm test && npm run dev                     # :5173
+
+# Full stack (db + api + web)
+docker compose up --build        # UI on :8086, API on :8085
+```
+
+The API needs PostgreSQL. For local development, `docker compose up db`
+provides it on `localhost:5433` with the credentials in
+`application.properties` (`loomline` / `loomline`). Tests provision their own
+throwaway database through Quarkus Dev Services and load the reference seed;
+no manual setup is required.
+
+`compose.yaml` also enables the reference seed for the demo environment. A
+production deployment sets `QUARKUS_FLYWAY_LOCATIONS=db/migration` and manages
+reference data through the application.
