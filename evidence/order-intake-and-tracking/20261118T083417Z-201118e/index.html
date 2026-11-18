@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evidence — order-intake-and-tracking · 20261118T083417Z-201118e</title>
+<style>
+:root{--bg:#0f1115;--panel:#171a21;--line:#262b36;--text:#e6e9ef;--muted:#9aa4b2;
+--pass:#3fb950;--fail:#f85149;--warn:#d29922;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+@media (prefers-color-scheme:light){:root{--bg:#f6f7f9;--panel:#fff;--line:#e2e5ea;
+--text:#1b1f24;--muted:#5b6570;--pass:#1a7f37;--fail:#cf222e;--warn:#9a6700}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);
+font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1040px;margin:0 auto;padding:32px 20px 72px}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:13px;text-transform:uppercase;
+letter-spacing:.08em;color:var(--muted);margin:36px 0 12px}
+.sub{color:var(--muted);font-size:13px}.mono{font-family:var(--mono);font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;
+padding:3px 10px;font-size:12px;font-family:var(--mono);color:var(--muted)}
+.chip b{color:var(--text);font-weight:600}
+.v-pass{color:var(--pass);border-color:var(--pass)}.v-fail{color:var(--fail);
+border-color:var(--fail)}.v-partial{color:var(--warn);border-color:var(--warn)}
+.card{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:16px}
+.card+.card{margin-top:10px}
+.notverified{border-color:var(--warn)}.notverified ul{margin:8px 0 0;padding-left:18px;
+color:var(--muted)}.empty{border-color:var(--warn);margin-top:12px}
+.empty p{margin:8px 0 0;color:var(--muted)}
+.step{display:grid;grid-template-columns:20px 1fr auto;gap:12px;align-items:start;
+padding:12px 14px;border:1px solid var(--line);background:var(--panel);border-radius:9px}
+.step+.step{margin-top:8px}
+.dot{width:9px;height:9px;border-radius:50%;margin-top:6px;background:var(--muted)}
+.pass .dot{background:var(--pass)}.fail .dot{background:var(--fail)}.skip .dot{opacity:.4}
+.pill{font-size:11px;padding:1px 7px;border-radius:999px;border:1px solid currentColor}
+.pass .pill{color:var(--pass)}.fail .pill{color:var(--fail)}.skip .pill{color:var(--muted)}
+.cmd{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.note{color:var(--muted);font-size:13px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+figure{margin:0;border:1px solid var(--line);border-radius:9px;overflow:hidden;
+background:var(--panel)}figure img{width:100%;display:block}
+figcaption{padding:8px 10px;font-size:12px;color:var(--muted)}
+figcaption b{color:var(--text);font-weight:600}
+video{width:100%;border-radius:9px;border:1px solid var(--line);background:#000}
+pre{margin:0 0 12px;padding:12px;background:#0b0d11;color:#d7dde6;border-radius:9px;
+border:1px solid var(--line);overflow:auto;font:12px/1.5 var(--mono);max-height:320px}
+@media (prefers-color-scheme:light){pre{background:#f0f2f5;color:#1b1f24}}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:500;font-size:12px}
+details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:13px}
+.footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);
+padding-top:14px}.footer code{font-family:var(--mono)}
+a{color:inherit}
+</style></head><body><main>
+<p class="sub">Evidence bundle · generated from evidence.json · openharness.evidence/2</p>
+<h1>order-intake-and-tracking — wave 1</h1>
+<div class="chips"><span class="chip verdict v-pass"><b>PASS</b></span><span class="chip">run <b>20261118T083417Z-201118e</b></span><span class="chip">head <b>201118edb0fa891f6f186173c61c4ea75d2d1e49</b></span></div>
+<h2>What this proves</h2>
+<div class="card"><em>No summary was recorded for this run.</em></div>
+<p class="sub">steps 1 · artifacts 4 · screenshots 4 · recordings 0</p>
+<h2>Walkthrough</h2>
+<div class="step pass"><span class="dot"></span><div><div><b>cd sources/LoomLine &amp;&amp; JAVA_HOME=/home/kali/factory/.jdk/jdk-25 ./gradlew :api:test --no-daemon</b> <span class="pill">pass</span></div><div class="cmd">cd sources/LoomLine &amp;&amp; JAVA_HOME=/home/kali/factory/.jdk/jdk-25 ./gradlew :api:test --no-daemon</div><div class="note">17 tests (8 domain, 7 IT, 2 mapper) - all passed</div></div><span class="note">6.5s</span></div>
+<h2>Screenshots</h2><div class="gallery">
+<figure><a href="raw/gradle test/01-empty-form.png"><img src="raw/gradle test/01-empty-form.png" alt="Empty order form" loading="lazy"></a><figcaption><b>Empty order form</b><br><span class="mono">sha256 a5344f89cbcf…</span></figcaption></figure>
+<figure><a href="raw/gradle test/02-validation-errors.png"><img src="raw/gradle test/02-validation-errors.png" alt="Validation errors" loading="lazy"></a><figcaption><b>Validation errors</b><br><span class="mono">sha256 f5562ab29e6e…</span></figcaption></figure>
+<figure><a href="raw/gradle test/03-order-created.png"><img src="raw/gradle test/03-order-created.png" alt="Order created" loading="lazy"></a><figcaption><b>Order created</b><br><span class="mono">sha256 6f595f40879b…</span></figcaption></figure>
+<figure><a href="raw/gradle test/04-duplicate-reference.png"><img src="raw/gradle test/04-duplicate-reference.png" alt="Duplicate rejection" loading="lazy"></a><figcaption><b>Duplicate rejection</b><br><span class="mono">sha256 b1498e714d87…</span></figcaption></figure>
+</div>
+<h2>Logs</h2>
+<details><summary>gradle test · cd sources/LoomLine &amp;&amp; JAVA_HOME=/home/kali/factory/.jdk/jdk-25 ./gradlew :api:test --no-daemon (exit 0)</summary><pre>$ cd sources/LoomLine &amp;&amp; JAVA_HOME=/home/kali/factory/.jdk/jdk-25 ./gradlew :api:test --no-daemon
+cwd: /home/kali/factory/openharness
+started: 2026-11-18T08:35:14Z
+--- stdout ---
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.9.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+&gt; Task :api:checkKotlinGradlePluginConfigurationErrors SKIPPED
+&gt; Task :api:processResources UP-TO-DATE
+&gt; Task :api:quarkusGenerateAppModel UP-TO-DATE
+&gt; Task :api:quarkusGenerateCode UP-TO-DATE
+&gt; Task :api:compileKotlin UP-TO-DATE
+&gt; Task :api:compileJava NO-SOURCE
+&gt; Task :api:classes UP-TO-DATE
+&gt; Task :api:jar UP-TO-DATE
+&gt; Task :api:compileQuarkus-test-generated-sourcesKotlin NO-SOURCE
+&gt; Task :api:compileQuarkusTestGeneratedSourcesJava NO-SOURCE
+&gt; Task :api:quarkusGenerateTestAppModel UP-TO-DATE
+&gt; Task :api:quarkusGenerateCodeTests UP-TO-DATE
+&gt; Task :api:compileTestKotlin UP-TO-DATE
+&gt; Task :api:compileTestJava NO-SOURCE
+&gt; Task :api:processTestResources NO-SOURCE
+&gt; Task :api:testClasses UP-TO-DATE
+&gt; Task :api:test UP-TO-DATE
+
+BUILD SUCCESSFUL in 6s
+9 actionable tasks: 9 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.9.1/userguide/configuration_cache_enabling.html
+--- stderr ---
+
+--- exit 0 in 6518ms ---
+</pre></details>
+<h2>Provenance</h2><table><tr><th>Artifact</th><th>Size</th><th>sha256</th></tr>
+<tr><td class="mono">raw/gradle test/01-empty-form.png</td><td>28.9 kB</td><td class="mono">a5344f89cbcfb535…</td></tr>
+<tr><td class="mono">raw/gradle test/02-validation-errors.png</td><td>38.0 kB</td><td class="mono">f5562ab29e6e0e02…</td></tr>
+<tr><td class="mono">raw/gradle test/03-order-created.png</td><td>24.6 kB</td><td class="mono">6f595f40879b96be…</td></tr>
+<tr><td class="mono">raw/gradle test/04-duplicate-reference.png</td><td>35.8 kB</td><td class="mono">b1498e714d873725…</td></tr>
+</table>
+<p class="footer">Regenerate with <code>python -m openharness run harness_evidence --action=render --bundle=evidence/order-intake-and-tracking/20261118T083417Z-201118e</code> · verify with <code>--action=verify</code> · this page is generated, never edited by hand.</p>
+</main></body></html>
