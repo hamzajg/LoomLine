@@ -1,0 +1,17 @@
+{
+  "feature": "auth-and-app-shell",
+  "status": "running",
+  "iterations": 0,
+  "updated": "2026-11-18T19:27:28Z",
+  "waves": {},
+  "gates": {
+    "G1": {
+      "status": "met",
+      "evidence": "specs/auth-and-app-shell/DECISION-REVIEW.md (verdict ACCEPT)",
+      "updated": "2026-11-18T19:27:28Z"
+    }
+  },
+  "events": [
+    "2026-11-18T19:27:28Z gate G1 met: specs/auth-and-app-shell/DECISION-REVIEW.md (verdict ACCEPT)"
+  ]
+}
