@@ -121,4 +121,68 @@ class OrderResourceIT {
             .statusCode(200)
             .body("$", hasSize<Any>(2))
     }
+
+    @Test
+    fun `Filter orders by status`() {
+        val ref1 = uniqueReference()
+        val ref2 = uniqueReference()
+        createOrder(reference = ref1).then().statusCode(201)
+        createOrder(reference = ref2).then().statusCode(201)
+
+        given()
+            .`when`()
+            .get("/api/orders?status=DRAFT")
+            .then()
+            .statusCode(200)
+            .body("status.every { it == 'DRAFT' }", equalTo(true))
+    }
+
+    @Test
+    fun `Find an order by reference`() {
+        val ref1 = uniqueReference()
+        val ref2 = uniqueReference()
+        createOrder(reference = ref1).then().statusCode(201)
+        createOrder(reference = ref2).then().statusCode(201)
+
+        given()
+            .`when`()
+            .get("/api/orders?reference={ref}", ref2)
+            .then()
+            .statusCode(200)
+            .body("$", hasSize<Any>(1))
+            .body("[0].reference", equalTo(ref2))
+    }
+
+    @Test
+    fun `View an order's details`() {
+        val ref = uniqueReference()
+        val orderId: String = createOrder(reference = ref)
+            .then()
+            .statusCode(201)
+            .extract()
+            .path("id")
+
+        given()
+            .`when`()
+            .get("/api/orders/{id}", orderId)
+            .then()
+            .statusCode(200)
+            .body("id", equalTo(orderId))
+            .body("reference", equalTo(ref))
+            .body("clientId", equalTo(clientId))
+            .body("articleId", equalTo(articleId))
+            .body("quantity", equalTo(250))
+            .body("dueDate", equalTo("2026-12-15"))
+            .body("status", equalTo("DRAFT"))
+    }
+
+    @Test
+    fun `returns not found when order id does not exist`() {
+        given()
+            .`when`()
+            .get("/api/orders/{id}", UUID.randomUUID())
+            .then()
+            .statusCode(404)
+            .body("code", equalTo("ORDER_NOT_FOUND"))
+    }
 }

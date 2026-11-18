@@ -27,6 +27,8 @@ function fakeApi(overrides: Partial<OrdersApi> = {}): OrdersApi {
       createdAt: "2026-11-18T08:00:00Z",
       updatedAt: "2026-11-18T08:00:00Z",
     }),
+    list: vi.fn().mockResolvedValue([]),
+    get: vi.fn().mockRejectedValue(new Error("not found")),
     ...overrides,
   };
 }

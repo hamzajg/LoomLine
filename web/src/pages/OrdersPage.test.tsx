@@ -1,0 +1,154 @@
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
+import type { Article, Client, CreatedOrder, OrdersApi } from "../api";
+import { OrdersPage } from "./OrdersPage";
+
+const clients: Client[] = [
+  { id: "c1", name: "Maison Textile", country: "TN" },
+  { id: "c2", name: "Atelier Nord", country: "FR" },
+];
+
+const articles: Article[] = [
+  { id: "a1", reference: "ART-100", label: "Chemise Popeline", clientId: "c1" },
+  { id: "a2", reference: "ART-200", label: "Pantalon Toile", clientId: "c2" },
+];
+
+const mockOrders: CreatedOrder[] = [
+  {
+    id: "o1",
+    reference: "OF-2026-001",
+    clientId: "c1",
+    articleId: "a1",
+    quantity: 100,
+    dueDate: "2026-12-01",
+    status: "DRAFT",
+    createdAt: "2026-11-18T08:00:00Z",
+    updatedAt: "2026-11-18T08:00:00Z",
+  },
+  {
+    id: "o2",
+    reference: "OF-2026-002",
+    clientId: "c2",
+    articleId: "a2",
+    quantity: 250,
+    dueDate: "2026-12-15",
+    status: "RELEASED",
+    createdAt: "2026-11-18T08:30:00Z",
+    updatedAt: "2026-11-18T08:30:00Z",
+  },
+  {
+    id: "o3",
+    reference: "OF-2026-003",
+    clientId: "c1",
+    articleId: "a1",
+    quantity: 500,
+    dueDate: "2026-12-20",
+    status: "COMPLETED",
+    createdAt: "2026-11-18T09:00:00Z",
+    updatedAt: "2026-11-18T09:00:00Z",
+  },
+];
+
+function fakeApi(overrides: Partial<OrdersApi> = {}): OrdersApi {
+  return {
+    clients: vi.fn().mockResolvedValue(clients),
+    articles: vi.fn().mockResolvedValue(articles),
+    create: vi.fn(),
+    list: vi.fn().mockImplementation(async (filter?: { status?: string; reference?: string }) => {
+      let filtered = [...mockOrders];
+      if (filter?.status) {
+        filtered = filtered.filter((o) => o.status === filter.status);
+      }
+      if (filter?.reference) {
+        filtered = filtered.filter((o) =>
+          o.reference.toLowerCase().includes(filter.reference!.toLowerCase()),
+        );
+      }
+      return filtered;
+    }),
+    get: vi.fn().mockImplementation(async (id: string) => {
+      const found = mockOrders.find((o) => o.id === id);
+      if (!found) throw new Error("Order not found");
+      return found;
+    }),
+    ...overrides,
+  };
+}
+
+describe("OrdersPage — Wave 2", () => {
+  it("Filter orders by status", async () => {
+    const api = fakeApi();
+    const user = userEvent.setup();
+
+    render(<OrdersPage api={api} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-001")).toBeInTheDocument();
+      expect(screen.getByText("OF-2026-002")).toBeInTheDocument();
+      expect(screen.getByText("OF-2026-003")).toBeInTheDocument();
+    });
+
+    const statusSelect = screen.getByLabelText("Status filter");
+    await user.selectOptions(statusSelect, "RELEASED");
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-002")).toBeInTheDocument();
+    });
+    expect(screen.queryByText("OF-2026-001")).not.toBeInTheDocument();
+    expect(screen.queryByText("OF-2026-003")).not.toBeInTheDocument();
+  });
+
+  it("Find an order by reference", async () => {
+    const api = fakeApi();
+    const user = userEvent.setup();
+
+    render(<OrdersPage api={api} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-001")).toBeInTheDocument();
+    });
+
+    const searchInput = screen.getByLabelText("Search reference");
+    await user.type(searchInput, "OF-2026-002");
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-002")).toBeInTheDocument();
+    });
+    expect(screen.queryByText("OF-2026-001")).not.toBeInTheDocument();
+    expect(screen.queryByText("OF-2026-003")).not.toBeInTheDocument();
+  });
+
+  it("View an order's details", async () => {
+    const api = fakeApi();
+    const user = userEvent.setup();
+
+    render(<OrdersPage api={api} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-001")).toBeInTheDocument();
+    });
+
+    const viewButton = screen.getByLabelText("View order OF-2026-001");
+    await user.click(viewButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("order-detail-modal")).toBeInTheDocument();
+    });
+
+    expect(screen.getByText("Order details — OF-2026-001")).toBeInTheDocument();
+    expect(screen.getByLabelText("Detail Reference")).toHaveTextContent("OF-2026-001");
+    expect(screen.getByLabelText("Detail Status")).toHaveTextContent("DRAFT");
+    expect(screen.getByLabelText("Detail Client")).toHaveTextContent("Maison Textile");
+    expect(screen.getByLabelText("Detail Article")).toHaveTextContent("ART-100 — Chemise Popeline");
+    expect(screen.getByLabelText("Detail Quantity")).toHaveTextContent("100");
+    expect(screen.getByLabelText("Detail Due Date")).toHaveTextContent("2026-12-01");
+
+    const closeButton = screen.getByLabelText("Close details");
+    await user.click(closeButton);
+
+    await waitFor(() => {
+      expect(screen.queryByTestId("order-detail-modal")).not.toBeInTheDocument();
+    });
+  });
+});
