@@ -27,7 +27,7 @@ Scenarios proven by this wave:
 
 | Item | Title | Size | Deps | Notes |
 |------|-------|------|------|-------|
-| US3 | As a user, I want to sign in with my username and password and sign out again, so that only I can act as myself | M | — | users with hashed password and active flag; session established at sign-in, terminated at sign-out; generic failure message |
+| US3 | As a user, I want to sign in with my username and password and sign out again, so that only I can act as myself | M | — | Keycloak (OIDC) accounts; session established via the authorization-code flow at sign-in, terminated at sign-out; generic failure message (ADR-0002) |
 | US4 | As a system owner, I want every API request to require a session, so that no one can read or change data without signing in | S | — | builds on US3 (same wave); 401 for missing/invalid session; sign-in, health and the API description are the only open endpoints |
 
 ## Wave 3 — iteration 3
@@ -42,4 +42,4 @@ Scenarios proven by this wave:
 |------|-------|------|------|-------|
 | US5 | As a user, I want the navigation to show only the areas my role grants, so that I am not offered work I cannot do | M | — | requires a session (wave 2); single role-to-access map drives both the navigation payload and route guarding; ungranted route shows an access-denied state |
 | US6 | As a system owner, I want the server to reject actions outside a user's role, so that access cannot be bypassed from the client | M | — | builds on US5 (same wave, same access map); 403 when authenticated but not permitted; the action must not execute; policy consulted once, not per endpoint |
-| US7 | As an administrator, I want to create users and assign roles, so that I can give people exactly the access they need | M | — | requires a session (wave 2); admin-only endpoints; bootstrap administrator seeded so setup needs no manual database edit |
+| US7 | As an administrator, I want to create users and assign roles, so that I can give people exactly the access they need | M | — | requires a session (wave 2); admin-only endpoints delegate to the Keycloak Admin API; bootstrap realm/admin seeded so setup needs no manual console edit (ADR-0002) |

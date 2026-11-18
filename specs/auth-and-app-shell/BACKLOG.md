@@ -31,7 +31,7 @@ Order stories by user value; dependencies express technical order only.
 
 - Scenarios: @w2
 - Size: M
-- Notes: users with hashed password and active flag; session established at sign-in, terminated at sign-out; generic failure message
+- Notes: accounts owned by Keycloak (OIDC, Argon2id); session established at sign-in through the authorization-code flow, terminated at sign-out; generic failure message (ADR-0002)
 
 ## US4 — As a system owner, I want every API request to require a session, so that no one can read or change data without signing in
 
@@ -55,4 +55,4 @@ Order stories by user value; dependencies express technical order only.
 
 - Scenarios: @w3
 - Size: M
-- Notes: requires a session (wave 2); admin-only endpoints; bootstrap administrator seeded so setup needs no manual database edit
+- Notes: requires a session (wave 2); admin-only endpoints delegate account creation and role assignment to the Keycloak Admin API and return the projected result (ADR-0002); bootstrap realm/admin seeded so setup needs no manual console edit
