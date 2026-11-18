@@ -1,0 +1,35 @@
+{
+  "feature": "order-intake-and-tracking",
+  "status": "running",
+  "iterations": 1,
+  "updated": "2026-11-18T01:21:46Z",
+  "waves": {},
+  "gates": {
+    "G1": {
+      "status": "met",
+      "evidence": "specs/order-intake-and-tracking/DECISION-REVIEW.md \u2014 REVISE verdict recorded; alternatives, owner/date, aggregate bounda",
+      "updated": "2026-11-18T01:18:55Z"
+    },
+    "G2": {
+      "status": "met",
+      "evidence": "specs/order-intake-and-tracking/SEED-DATA.md \u2014 2 clients and 2 articles defined with stable keys; delivery is a Flyway r",
+      "updated": "2026-11-18T01:18:59Z"
+    },
+    "G3": {
+      "status": "met",
+      "evidence": "ADR-0001-stack.md accepted by product owner 2026-11-18: backend Quarkus 3.40 + Kotlin + Gradle 9 + JDK 25 (amended from ",
+      "updated": "2026-11-18T01:21:43Z"
+    },
+    "G4": {
+      "status": "met",
+      "evidence": "STATUS-RULES.md agreed by product owner 2026-11-18: DRAFT->RELEASED/CANCELLED, RELEASED->IN_PROGRESS/CANCELLED, IN_PROGR",
+      "updated": "2026-11-18T01:21:46Z"
+    }
+  },
+  "events": [
+    "2026-11-18T01:18:55Z gate G1 met: specs/order-intake-and-tracking/DECISION-REVIEW.md \u2014 REVISE verdict recorded; alternatives, owner/date, aggregate bounda",
+    "2026-11-18T01:18:59Z gate G2 met: specs/order-intake-and-tracking/SEED-DATA.md \u2014 2 clients and 2 articles defined with stable keys; delivery is a Flyway r",
+    "2026-11-18T01:21:43Z gate G3 met: ADR-0001-stack.md accepted by product owner 2026-11-18: backend Quarkus 3.40 + Kotlin + Gradle 9 + JDK 25 (amended from ",
+    "2026-11-18T01:21:46Z gate G4 met: STATUS-RULES.md agreed by product owner 2026-11-18: DRAFT->RELEASED/CANCELLED, RELEASED->IN_PROGRESS/CANCELLED, IN_PROGR"
+  ]
+}
