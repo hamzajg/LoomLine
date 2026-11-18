@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Evidence — order-intake-and-tracking · 20261118T083417Z-201118e</title>
+<title>Evidence — order-intake-and-tracking · 20261118T095925Z-5c0c348</title>
 <style>
 :root{--bg:#0f1115;--panel:#171a21;--line:#262b36;--text:#e6e9ef;--muted:#9aa4b2;
 --pass:#3fb950;--fail:#f85149;--warn:#d29922;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
@@ -37,6 +37,12 @@ padding:12px 14px;border:1px solid var(--line);background:var(--panel);border-ra
 figure{margin:0;border:1px solid var(--line);border-radius:9px;overflow:hidden;
 background:var(--panel)}figure img{width:100%;display:block}
 figcaption{padding:8px 10px;font-size:12px;color:var(--muted)}
+.snippet-card{padding:0;overflow:hidden}
+.snippet-card .note{margin:0;padding:8px 12px 0}
+pre.snippet{margin:0;padding:12px;background:#0b0d11;color:#d7dde6;
+font-family:var(--mono);font-size:12px;line-height:1.55;overflow-x:auto;
+white-space:pre-wrap;word-break:break-all}
+@media (prefers-color-scheme:light){pre.snippet{background:#f0f2f5;color:#1b1f24}}
 figcaption b{color:var(--text);font-weight:600}
 video{width:100%;border-radius:9px;border:1px solid var(--line);background:#000}
 pre{margin:0 0 12px;padding:12px;background:#0b0d11;color:#d7dde6;border-radius:9px;
@@ -52,22 +58,22 @@ a{color:inherit}
 </style></head><body><main>
 <p class="sub">Evidence bundle · generated from evidence.json · openharness.evidence/2</p>
 <h1>order-intake-and-tracking — wave 1</h1>
-<div class="chips"><span class="chip verdict v-pass"><b>PASS</b></span><span class="chip">run <b>20261118T083417Z-201118e</b></span><span class="chip">head <b>201118edb0fa891f6f186173c61c4ea75d2d1e49</b></span></div>
+<div class="chips"><span class="chip verdict v-pass"><b>PASS</b></span><span class="chip">run <b>20261118T095925Z-5c0c348</b></span><span class="chip">head <b>5c0c348d5a88e2fd1cd2474015f6be41a41bed0f</b></span></div>
 <h2>What this proves</h2>
 <div class="card"><em>No summary was recorded for this run.</em></div>
 <p class="sub">steps 1 · artifacts 4 · screenshots 4 · recordings 0</p>
 <h2>Walkthrough</h2>
-<div class="step pass"><span class="dot"></span><div><div><b>cd sources/LoomLine &amp;&amp; JAVA_HOME=/home/kali/factory/.jdk/jdk-25 ./gradlew :api:test --no-daemon</b> <span class="pill">pass</span></div><div class="cmd">cd sources/LoomLine &amp;&amp; JAVA_HOME=/home/kali/factory/.jdk/jdk-25 ./gradlew :api:test --no-daemon</div><div class="note">17 tests (8 domain, 7 IT, 2 mapper) - all passed</div></div><span class="note">6.5s</span></div>
+<div class="step pass"><span class="dot"></span><div><div><b>gradle test</b> <span class="pill">pass</span></div><div class="cmd">env GRADLE_USER_HOME=/tmp/gradle_user_home JAVA_HOME=/home/kali/factory/.jdk/jdk-25 ./gradlew :api:test --no-daemon --offline</div><div class="note">17 tests (8 domain, 7 IT, 2 mapper) - all passed</div></div><span class="note">7.2s</span></div>
 <h2>Screenshots</h2><div class="gallery">
-<figure><a href="raw/gradle test/01-empty-form.png"><img src="raw/gradle test/01-empty-form.png" alt="Empty order form" loading="lazy"></a><figcaption><b>Empty order form</b><br><span class="mono">sha256 a5344f89cbcf…</span></figcaption></figure>
-<figure><a href="raw/gradle test/02-validation-errors.png"><img src="raw/gradle test/02-validation-errors.png" alt="Validation errors" loading="lazy"></a><figcaption><b>Validation errors</b><br><span class="mono">sha256 f5562ab29e6e…</span></figcaption></figure>
-<figure><a href="raw/gradle test/03-order-created.png"><img src="raw/gradle test/03-order-created.png" alt="Order created" loading="lazy"></a><figcaption><b>Order created</b><br><span class="mono">sha256 6f595f40879b…</span></figcaption></figure>
-<figure><a href="raw/gradle test/04-duplicate-reference.png"><img src="raw/gradle test/04-duplicate-reference.png" alt="Duplicate rejection" loading="lazy"></a><figcaption><b>Duplicate rejection</b><br><span class="mono">sha256 b1498e714d87…</span></figcaption></figure>
+<figure><a href="raw/s1/01-empty-form.png"><img src="raw/s1/01-empty-form.png" alt="Empty order form" loading="lazy"></a><figcaption><b>Empty order form</b><br><span class="mono">sha256 a5344f89cbcf…</span></figcaption></figure>
+<figure><a href="raw/s1/02-validation-errors.png"><img src="raw/s1/02-validation-errors.png" alt="Validation errors" loading="lazy"></a><figcaption><b>Validation errors</b><br><span class="mono">sha256 f5562ab29e6e…</span></figcaption></figure>
+<figure><a href="raw/s1/03-order-created.png"><img src="raw/s1/03-order-created.png" alt="Order created" loading="lazy"></a><figcaption><b>Order created</b><br><span class="mono">sha256 6f595f40879b…</span></figcaption></figure>
+<figure><a href="raw/s1/04-duplicate-reference.png"><img src="raw/s1/04-duplicate-reference.png" alt="Duplicate rejection" loading="lazy"></a><figcaption><b>Duplicate rejection</b><br><span class="mono">sha256 b1498e714d87…</span></figcaption></figure>
 </div>
 <h2>Logs</h2>
-<details><summary>gradle test · cd sources/LoomLine &amp;&amp; JAVA_HOME=/home/kali/factory/.jdk/jdk-25 ./gradlew :api:test --no-daemon (exit 0)</summary><pre>$ cd sources/LoomLine &amp;&amp; JAVA_HOME=/home/kali/factory/.jdk/jdk-25 ./gradlew :api:test --no-daemon
-cwd: /home/kali/factory/openharness
-started: 2026-11-18T08:35:14Z
+<details><summary>s1 · gradle test (exit 0)</summary><pre>$ env GRADLE_USER_HOME=/tmp/gradle_user_home JAVA_HOME=/home/kali/factory/.jdk/jdk-25 ./gradlew :api:test --no-daemon --offline
+cwd: /home/kali/factory/openharness/sources/LoomLine
+started: 2026-11-18T09:59:29Z
 --- stdout ---
 To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.9.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
 Daemon will be stopped at the end of the build 
@@ -94,13 +100,13 @@ BUILD SUCCESSFUL in 6s
 Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.9.1/userguide/configuration_cache_enabling.html
 --- stderr ---
 
---- exit 0 in 6518ms ---
+--- exit 0 in 7220ms ---
 </pre></details>
 <h2>Provenance</h2><table><tr><th>Artifact</th><th>Size</th><th>sha256</th></tr>
-<tr><td class="mono">raw/gradle test/01-empty-form.png</td><td>28.9 kB</td><td class="mono">a5344f89cbcfb535…</td></tr>
-<tr><td class="mono">raw/gradle test/02-validation-errors.png</td><td>38.0 kB</td><td class="mono">f5562ab29e6e0e02…</td></tr>
-<tr><td class="mono">raw/gradle test/03-order-created.png</td><td>24.6 kB</td><td class="mono">6f595f40879b96be…</td></tr>
-<tr><td class="mono">raw/gradle test/04-duplicate-reference.png</td><td>35.8 kB</td><td class="mono">b1498e714d873725…</td></tr>
+<tr><td class="mono">raw/s1/01-empty-form.png</td><td>28.9 kB</td><td class="mono">a5344f89cbcfb535…</td></tr>
+<tr><td class="mono">raw/s1/02-validation-errors.png</td><td>38.0 kB</td><td class="mono">f5562ab29e6e0e02…</td></tr>
+<tr><td class="mono">raw/s1/03-order-created.png</td><td>24.6 kB</td><td class="mono">6f595f40879b96be…</td></tr>
+<tr><td class="mono">raw/s1/04-duplicate-reference.png</td><td>35.8 kB</td><td class="mono">b1498e714d873725…</td></tr>
 </table>
-<p class="footer">Regenerate with <code>python -m openharness run harness_evidence --action=render --bundle=evidence/order-intake-and-tracking/20261118T083417Z-201118e</code> · verify with <code>--action=verify</code> · this page is generated, never edited by hand.</p>
+<p class="footer">Regenerate with <code>python -m openharness run harness_evidence --action=render --bundle=sources/LoomLine/evidence/order-intake-and-tracking/20261118T095925Z-5c0c348</code> · verify with <code>--action=verify</code> · this page is generated, never edited by hand.</p>
 </main></body></html>

@@ -1,6 +1,6 @@
-$ cd sources/LoomLine && JAVA_HOME=/home/kali/factory/.jdk/jdk-25 ./gradlew :api:test --no-daemon
-cwd: /home/kali/factory/openharness
-started: 2026-11-18T09:18:56Z
+$ env GRADLE_USER_HOME=/tmp/gradle_user_home JAVA_HOME=/home/kali/factory/.jdk/jdk-25 ./gradlew :api:test --no-daemon --offline
+cwd: /home/kali/factory/openharness/sources/LoomLine
+started: 2026-11-18T09:59:29Z
 --- stdout ---
 To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.9.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
 Daemon will be stopped at the end of the build 
@@ -22,9 +22,9 @@ Daemon will be stopped at the end of the build
 > Task :api:testClasses UP-TO-DATE
 > Task :api:test UP-TO-DATE
 
-BUILD SUCCESSFUL in 7s
+BUILD SUCCESSFUL in 6s
 9 actionable tasks: 9 up-to-date
 Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.9.1/userguide/configuration_cache_enabling.html
 --- stderr ---
 
---- exit 0 in 8032ms ---
+--- exit 0 in 7220ms ---
