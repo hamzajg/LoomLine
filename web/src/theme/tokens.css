@@ -1,0 +1,119 @@
+/*
+ * LoomLine design tokens.
+ *
+ * The palette is derived from the legacy RimWebERP "Minovate" theme so the
+ * migration keeps a recognizable identity while modernizing contrast, spacing,
+ * and type: chrome #51445f / sidebar #493d55 → LoomLine's navy #10324a kept as
+ * the chrome base for continuity; the active colour #16a085 (greensea) and the
+ * brand/states (#428bca, #5cb85c, #f0ad4e, #d9534f, #5bc0de) come from the
+ * legacy palette. Values here are the single source for colour, type, spacing,
+ * radii, elevation and layout; components consume the variables, never the raw
+ * palette.
+ */
+:root {
+  /* Colour — surfaces */
+  --ll-color-canvas: #f4f6f8;
+  --ll-color-surface: #ffffff;
+  --ll-color-surface-muted: #f8fafc;
+  --ll-color-surface-sunken: #eef1f4;
+
+  /* Colour — chrome (header + sidebar) */
+  --ll-color-chrome: #10324a;
+  --ll-color-chrome-strong: #0a2233;
+  --ll-color-chrome-soft: #1b4a6b;
+  --ll-color-chrome-fg: #eaf1f7;
+  --ll-color-chrome-fg-muted: #a7c0d3;
+  --ll-color-chrome-border: rgba(255, 255, 255, 0.12);
+  --ll-color-chrome-hover: rgba(255, 255, 255, 0.08);
+  --ll-color-chrome-active: rgba(255, 255, 255, 0.16);
+
+  /* Colour — accent (legacy greensea) */
+  --ll-color-accent: #16a085;
+  --ll-color-accent-strong: #0e7a66;
+  --ll-color-accent-soft: #d6efe9;
+  --ll-color-accent-fg: #ffffff;
+
+  /* Colour — text */
+  --ll-color-text: #1f2933;
+  --ll-color-text-muted: #52616b;
+  --ll-color-text-subtle: #7b8794;
+  --ll-color-text-inverse: #ffffff;
+
+  /* Colour — borders */
+  --ll-color-border: #d7dee5;
+  --ll-color-border-strong: #b7c2cc;
+  --ll-color-border-subtle: #e5e7eb;
+
+  /* Colour — feedback */
+  --ll-color-info: #5bc0de;
+  --ll-color-info-bg: #eaf6fa;
+  --ll-color-info-fg: #1f6b7d;
+  --ll-color-success: #5cb85c;
+  --ll-color-success-bg: #eef8ee;
+  --ll-color-success-fg: #256029;
+  --ll-color-warning: #f0ad4e;
+  --ll-color-warning-bg: #fdf3e3;
+  --ll-color-warning-fg: #8a5a10;
+  --ll-color-danger: #d9534f;
+  --ll-color-danger-bg: #fdf1f0;
+  --ll-color-danger-fg: #8a2b27;
+
+  /* Colour — focus */
+  --ll-color-focus: #2f6f9f;
+  --ll-color-focus-ring: rgba(47, 111, 159, 0.45);
+
+  /* Typography */
+  --ll-font-sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --ll-font-display: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --ll-font-mono: "Ubuntu Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --ll-font-size-root: 16px;
+  --ll-font-size-xs: 0.75rem;
+  --ll-font-size-sm: 0.85rem;
+  --ll-font-size-md: 0.95rem;
+  --ll-font-size-lg: 1.15rem;
+  --ll-font-size-xl: 1.4rem;
+  --ll-font-size-2xl: 1.75rem;
+  --ll-line-height-tight: 1.25;
+  --ll-line-height-base: 1.55;
+  --ll-font-weight-regular: 400;
+  --ll-font-weight-medium: 500;
+  --ll-font-weight-semibold: 600;
+  --ll-font-weight-bold: 700;
+  --ll-letter-spacing-wide: 0.04em;
+
+  /* Spacing scale (4px base) */
+  --ll-space-1: 0.25rem;
+  --ll-space-2: 0.5rem;
+  --ll-space-3: 0.75rem;
+  --ll-space-4: 1rem;
+  --ll-space-5: 1.5rem;
+  --ll-space-6: 2rem;
+  --ll-space-7: 3rem;
+
+  /* Radii */
+  --ll-radius-sm: 0.25rem;
+  --ll-radius-md: 0.4rem;
+  --ll-radius-lg: 0.6rem;
+  --ll-radius-pill: 999rem;
+
+  /* Elevation */
+  --ll-shadow-sm: 0 1px 2px rgba(16, 50, 74, 0.08);
+  --ll-shadow-md: 0 4px 12px rgba(16, 50, 74, 0.12);
+  --ll-shadow-lg: 0 16px 40px rgba(16, 50, 74, 0.22);
+
+  /* Layout */
+  --ll-header-height: 3.5rem;
+  --ll-sidebar-width: 17rem;
+  --ll-content-max-width: 72rem;
+  --ll-breakpoint-narrow: 60rem;
+
+  /* Z-index */
+  --ll-z-header: 30;
+  --ll-z-overlay: 35;
+  --ll-z-sidebar: 40;
+  --ll-z-modal: 60;
+
+  /* Motion */
+  --ll-transition-fast: 120ms ease;
+  --ll-transition-base: 200ms ease;
+}
