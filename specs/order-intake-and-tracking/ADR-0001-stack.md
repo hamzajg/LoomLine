@@ -17,19 +17,23 @@ rules rather than a large surface.
 
 Workspace facts verified on 2026-11-18:
 
-- JDK 25 present at `/usr/lib/jvm/java-25-openjdk-amd64` (also JDK 21 and 17).
+- JDK 25 is installed at `~/factory/.jdk/jdk-25` (Temurin, full JDK).
+  The distro packages at `/usr/lib/jvm/java-25-openjdk-amd64` are JRE-only and
+  have no `javac`, so Gradle toolchain resolution needs the Temurin JDK.
 - Gradle is not preinstalled; Gradle 9.9.1 is the current distribution and the
-  project will commit a wrapper.
+  project commits a wrapper.
 - Node 24 / npm 12 present for the frontend.
 - Maven Central and the Gradle plugin portal are reachable; Quarkus 3.40.1 is
-  the current stable platform and Kotlin 2.2.x plugin resolves.
+  the current stable platform and Kotlin 2.4.21 resolves.
+- Kotlin 2.2 tops out at JVM target 24, so the build uses Kotlin 2.4.x to
+  target 25 with Java 25 in the same module.
 
 ## Decision
 
 | Layer | Choice | Version |
 |-------|--------|---------|
 | Backend | Quarkus (REST, Validation, Hibernate ORM with Panache, Flyway) | 3.40.x |
-| Language | Kotlin (JVM target 25) | 2.2.x |
+| Language | Kotlin (JVM target 25) | 2.4.x |
 | Build | Gradle with committed wrapper; Kotlin DSL | 9.9 |
 | Runtime | JDK | 25 (JVM mode; no native image in v1) |
 | Frontend | React + TypeScript, built with Vite | current majors |

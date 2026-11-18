@@ -2,11 +2,11 @@
 
 Status: running
 Iterations: 1
-Updated: 2026-11-18T01:21:46Z
+Updated: 2026-11-18T10:01:26Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
-| 1 | pending | — | — | — | — |
+| 1 | done | feat/order-intake-and-tracking-w1 | — | 17 backend tests + 6 frontend tests pass, walking skeleton verified, UI screenshots captured | 2026-11-18T10:01:26Z |
 | 2 | pending | — | — | — | — |
 | 3 | pending | — | — | — | — |
 
@@ -14,9 +14,9 @@ Updated: 2026-11-18T01:21:46Z
 
 | Gate | Status | Evidence | Updated |
 |------|--------|----------|---------|
-| G1 | met | specs/order-intake-and-tracking/DECISION-REVIEW.md — REVISE verdict recorded; alternatives, owner/date, aggregate bounda | 2026-11-18T01:18:55Z |
+| G1 | met | DECISION-REVIEW.md — first pass REVISE, folded into SPEC.md D1/D7; after the Quarkus/Kotlin/Gradle/JDK 25 amendment the  | 2026-11-18T01:42:50Z |
 | G2 | met | specs/order-intake-and-tracking/SEED-DATA.md — 2 clients and 2 articles defined with stable keys; delivery is a Flyway r | 2026-11-18T01:18:59Z |
-| G3 | met | ADR-0001-stack.md accepted by product owner 2026-11-18: backend Quarkus 3.40 + Kotlin + Gradle 9 + JDK 25 (amended from  | 2026-11-18T01:21:43Z |
+| G3 | met | ADR-0001-stack.md accepted by product owner 2026-11-18 (Quarkus+Kotlin+Gradle, JDK 25) | 2026-11-18T07:39:09Z |
 | G4 | met | STATUS-RULES.md agreed by product owner 2026-11-18: DRAFT->RELEASED/CANCELLED, RELEASED->IN_PROGRESS/CANCELLED, IN_PROGR | 2026-11-18T01:21:46Z |
 | G5 | pending | — | — |
 
@@ -26,3 +26,7 @@ Updated: 2026-11-18T01:21:46Z
 - 2026-11-18T01:18:59Z gate G2 met: specs/order-intake-and-tracking/SEED-DATA.md — 2 clients and 2 articles defined with stable keys; delivery is a Flyway r
 - 2026-11-18T01:21:43Z gate G3 met: ADR-0001-stack.md accepted by product owner 2026-11-18: backend Quarkus 3.40 + Kotlin + Gradle 9 + JDK 25 (amended from 
 - 2026-11-18T01:21:46Z gate G4 met: STATUS-RULES.md agreed by product owner 2026-11-18: DRAFT->RELEASED/CANCELLED, RELEASED->IN_PROGRESS/CANCELLED, IN_PROGR
+- 2026-11-18T01:29:23Z start wave 1 on feat/order-intake-and-tracking-w1
+- 2026-11-18T01:42:50Z gate G1 met: DECISION-REVIEW.md — first pass REVISE, folded into SPEC.md D1/D7; after the Quarkus/Kotlin/Gradle/JDK 25 amendment the 
+- 2026-11-18T07:39:09Z gate G3 met: ADR-0001-stack.md accepted by product owner 2026-11-18 (Quarkus+Kotlin+Gradle, JDK 25)
+- 2026-11-18T10:01:26Z complete wave 1: 17 backend tests + 6 frontend tests pass, walking skeleton verified, UI screenshots captured
