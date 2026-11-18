@@ -2,12 +2,12 @@
 
 Status: running
 Iterations: 3
-Updated: 2026-11-18T18:55:54Z
+Updated: 2026-11-18T18:59:32Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
-| 1 | done | feat/order-intake-and-tracking-w1 | — | 17 backend tests + 6 frontend tests pass, walking skeleton verified, UI screenshots captured | 2026-11-18T10:01:26Z |
-| 2 | done | feat/order-intake-and-tracking-w2 | — | wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte | 2026-11-18T18:55:54Z |
+| 1 | done | feat/order-intake-and-tracking-w1 | #2 | 17 backend tests + 6 frontend tests pass, walking skeleton verified, UI screenshots captured | 2026-11-18T18:59:32Z |
+| 2 | done | feat/order-intake-and-tracking-w2 | #3 | wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte | 2026-11-18T18:59:32Z |
 | 3 | pending | — | — | — | — |
 
 ## Gates
@@ -33,3 +33,5 @@ Updated: 2026-11-18T18:55:54Z
 - 2026-11-18T10:28:27Z start wave 2 on feat/order-intake-and-tracking-w2
 - 2026-11-18T13:05:15Z gate G5 reset to pending
 - 2026-11-18T18:55:54Z complete wave 2: wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte
+- 2026-11-18T18:59:32Z complete wave 1 (#2): 17 backend tests + 6 frontend tests pass, walking skeleton verified, UI screenshots captured
+- 2026-11-18T18:59:32Z complete wave 2 (#3): wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte
