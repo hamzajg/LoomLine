@@ -2,14 +2,14 @@
   "feature": "auth-and-app-shell",
   "status": "running",
   "iterations": 0,
-  "updated": "2026-11-18T19:28:44Z",
+  "updated": "2026-11-18T19:53:34Z",
   "waves": {
     "1": {
-      "status": "in-progress",
+      "status": "done",
       "branch": "feat/auth-and-app-shell-w1",
-      "pr": "\u2014",
-      "evidence": "\u2014",
-      "updated": "2026-11-18T19:28:44Z"
+      "pr": "#6",
+      "evidence": "12/12 Vitest (AppShell 3, OrdersPage 3, NewOrderPage 6) + npm run build green; no CI configured in repo; evidence auth-a",
+      "updated": "2026-11-18T19:53:34Z"
     }
   },
   "gates": {
@@ -21,6 +21,7 @@
   },
   "events": [
     "2026-11-18T19:27:28Z gate G1 met: specs/auth-and-app-shell/DECISION-REVIEW.md (verdict ACCEPT)",
-    "2026-11-18T19:28:44Z start wave 1 on feat/auth-and-app-shell-w1"
+    "2026-11-18T19:28:44Z start wave 1 on feat/auth-and-app-shell-w1",
+    "2026-11-18T19:53:34Z complete wave 1 (#6): 12/12 Vitest (AppShell 3, OrdersPage 3, NewOrderPage 6) + npm run build green; no CI configured in repo; evidence auth-a"
   ]
 }
