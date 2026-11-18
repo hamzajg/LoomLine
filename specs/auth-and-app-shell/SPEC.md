@@ -54,21 +54,23 @@ can do only what their job requires.
   exposes state to assistive technology (WCAG 2.1 AA targets for contrast,
   focus, and names); copy is externalised for at least French and English, with
   the layout prepared for right-to-left scripts.
-- **Accounts.** Users with a unique username, a hashed password, a display
-  name, and an active flag; roles held as data.
-- **Authentication.** A sign-in screen, a session, and sign-out; every
-  `/api/**` request requires a valid session (sign-in, health, and the API
-  description are the only exceptions).
+- **Accounts.** Users with a unique username, a display name, and an active
+  flag, owned by an external OIDC provider (Keycloak) and projected locally as
+  data; roles held as realm roles and mapped to the product's access model
+  (see `ADR-0002-identity.md`).
+- **Authentication.** A sign-in screen, a session, and sign-out, over the OIDC
+  authorization-code flow; every `/api/**` request requires a valid session
+  (sign-in, health, and the API description are the only exceptions).
 - **Authorization.** A role-to-access map checked on the server (401
   unauthenticated, 403 unauthorized) and reflected in the shell so navigation
   and routes match the caller's role.
-- **Bootstrap.** A first administrator, provisioned through the data gate, so
-  the product can be set up without a manual database edit.
+- **Bootstrap.** A first administrator and a demo realm, provisioned through
+  the data gate, so the product can be set up without a manual database or
+  console edit.
 
 ## Scope (out)
 
-- External identity providers (OIDC/SSO), multi-factor authentication, and
-  social login.
+- Multi-factor authentication and social login.
 - Multi-tenancy and per-record (row-level) permissions; roles grant areas and
   actions, not individual rows.
 - Self-service password reset by email, email verification, and account
@@ -118,30 +120,33 @@ can do only what their job requires.
   explicitly. *Reversibility:* two-way door (components are local and swappable);
   revisit if the component surface grows beyond what the team can maintain.
 - **D2 — Identity store and credential hashing.** *Context & forces:* there is
-  no user concept at all; credentials must never be stored recoverably.
-  *Options considered:* (a) an external identity provider (e.g. Keycloak/OIDC) —
-  strong, but a second service to run and operate; (b) local tables for
-  user/role/assignment with passwords hashed by a vetted algorithm — the
-  simplest credible option for an internal deployment. *Decision & why:* (b).
-  Users, roles, and the assignment between them are owned here as relational
-  data behind the identity module; passwords are stored only as a salted hash
-  produced by a standard algorithm (bcrypt/Argon2id), never reversible.
-  *Consequences:* positive — self-contained, no external dependency, full
-  control of the access model; negative — the team owns credential security and
-  any SSO requirement becomes a later migration. *Reversibility:* one-way door
-  for stored credentials (schema and user data); revisit if enterprise SSO or
-  central account lifecycle becomes a requirement — plan an OIDC adapter behind
-  the same module boundary.
+  no user concept at all, and credentials must never be stored recoverably.
+  *Options considered:* (a) an external identity provider (Keycloak/OIDC) — a
+  second service to run, but central account lifecycle and hashing done
+  properly; (b) local tables for user/role/assignment with in-process hashing —
+  the simplest credible option for a self-contained deployment.
+  *Decision & why:* **(a), external OIDC — Keycloak**, decided at gate G2 and
+  recorded in `ADR-0002-identity.md`; this **supersedes** the earlier (b) choice
+  in this spec. LoomLine keeps only a projection of the user (keyed by the OIDC
+  subject) and never stores a password; credential hashing is **Argon2id**,
+  owned by the realm. *Consequences:* positive — no in-house secret handling,
+  central lifecycle, Argon2id by default; negative — an extra runtime
+  dependency, an offline/degraded-mode gap, and a projection that can go stale
+  between sign-ins. *Reversibility:* one-way door for the account source of
+  truth; the local projection is the seam that keeps a later provider swap or a
+  local-table fallback behind the same module boundary. See `ADR-0002-identity.md`
+  for the full rationale and alternatives.
 - **D3 — Session mechanism.** *Context & forces:* a browser SPA calling a
   same-origin API needs an authenticated session that survives navigation and
   cannot be trivially read by scripts. *Options considered:* (a) a bearer token
   kept by the client (localStorage/in-memory) — common for APIs, but exposes the
   token to script and needs client-side lifecycle care; (b) a server session
   carried by a secure, HttpOnly, SameSite cookie — simplest for a same-origin
-  app, the token is not reachable from JavaScript. *Decision & why:* (b). The
-  session is established at sign-in and cleared at sign-out; state-changing
-  requests are protected against cross-site request forgery (SameSite plus a
-  token check). *Consequences:* positive — no token handling in the client, no
+  app, the token is not reachable from JavaScript. *Decision & why:* (b). With
+  the OIDC identity store (D2), the OIDC tokens are held **server-side only**;
+  after the authorization-code callback LoomLine establishes its own session,
+  carried by the cookie, and clears it at sign-out; state-changing requests are
+  protected against cross-site request forgery (SameSite plus a token check). *Consequences:* positive — no token handling in the client, no
   XSS token theft; negative — cookie/session handling and CSRF protection become
   explicit concerns, and horizontal scaling later needs shared session storage.
   *Reversibility:* two-way door with effort (the API surface is `/api/auth/*`

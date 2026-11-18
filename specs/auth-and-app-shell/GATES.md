@@ -58,8 +58,10 @@
 - Resolver: agent
 - Blocking: yes
 - Check: file:specs/auth-and-app-shell/SEED-DATA.md
-- Why: the shell and sign-in demo must not stall on an empty user table; the
-  first administrator has to exist without a manual database edit.
+- Why: the shell and sign-in demo must not stall on an empty realm; the first
+  administrator and demo users have to exist without a manual console or
+  database edit. With the OIDC decision (ADR-0002) this is a Keycloak realm
+  import plus the seed accounts and realm roles it carries.
 
 ## G5 — Demo environment available
 
@@ -69,5 +71,5 @@
 - Resolver: agent
 - Blocking: no
 - Check: command:docker compose config
-- Why: the acceptance demo needs the application and database to start from the
-  repository.
+- Why: the acceptance demo needs the application, database, and identity
+  provider (Keycloak, per ADR-0002) to start from the repository.
