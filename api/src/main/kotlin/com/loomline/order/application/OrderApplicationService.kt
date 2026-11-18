@@ -26,4 +26,12 @@ class OrderApplicationService(
     @Transactional
     fun findByReference(reference: String): Order? =
         orders.findByReference(reference.trim())
+
+    @Transactional
+    fun findById(id: java.util.UUID): Order? =
+        orders.findById(id)
+
+    @Transactional
+    fun list(status: com.loomline.order.domain.OrderStatus? = null, reference: String? = null): List<Order> =
+        orders.list(status, reference)
 }

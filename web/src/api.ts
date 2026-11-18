@@ -45,10 +45,17 @@ export class ApiFailure extends Error {
   }
 }
 
+export type OrderFilter = {
+  status?: string;
+  reference?: string;
+};
+
 export interface OrdersApi {
   clients(): Promise<Client[]>;
   articles(): Promise<Article[]>;
   create(input: NewOrderInput): Promise<CreatedOrder>;
+  list(filter?: OrderFilter): Promise<CreatedOrder[]>;
+  get(id: string): Promise<CreatedOrder>;
 }
 
 type ErrorBody = {
@@ -88,5 +95,17 @@ export const httpOrdersApi: OrdersApi = {
         body: JSON.stringify(input),
       }),
     );
+  },
+
+  async list(filter = {}) {
+    const params = new URLSearchParams();
+    if (filter.status) params.set("status", filter.status);
+    if (filter.reference) params.set("reference", filter.reference);
+    const qs = params.toString() ? `?${params.toString()}` : "";
+    return readJson<CreatedOrder[]>(await fetch(`/api/orders${qs}`));
+  },
+
+  async get(id: string) {
+    return readJson<CreatedOrder>(await fetch(`/api/orders/${encodeURIComponent(id)}`));
   },
 };

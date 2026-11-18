@@ -10,6 +10,10 @@ interface OrderRepository {
     fun save(order: Order): Order
 
     fun findByReference(reference: String): Order?
+
+    fun findById(id: UUID): Order?
+
+    fun list(status: OrderStatus? = null, reference: String? = null): List<Order>
 }
 
 /** Read-only access to the reference records an order may point at. */

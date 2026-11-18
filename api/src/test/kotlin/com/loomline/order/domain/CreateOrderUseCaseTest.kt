@@ -113,17 +113,28 @@ class CreateOrderUseCaseTest {
 
 private class InMemoryOrderRepository : OrderRepository {
     private val byReference = mutableMapOf<String, Order>()
+    private val byId = mutableMapOf<UUID, Order>()
 
     override fun existsByReference(reference: String): Boolean =
         byReference.containsKey(reference.lowercase())
 
     override fun save(order: Order): Order {
         byReference[order.reference.lowercase()] = order
+        byId[order.id] = order
         return order
     }
 
     override fun findByReference(reference: String): Order? =
         byReference[reference.lowercase()]
+
+    override fun findById(id: UUID): Order? =
+        byId[id]
+
+    override fun list(status: OrderStatus?, reference: String?): List<Order> {
+        return byId.values
+            .filter { status == null || it.status == status }
+            .filter { reference.isNullOrBlank() || it.reference.contains(reference.trim(), ignoreCase = true) }
+    }
 }
 
 private class FakeReferenceCatalog(

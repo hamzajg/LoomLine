@@ -47,11 +47,28 @@ class OrderEntity : PanacheEntityBase {
     lateinit var updatedAt: Instant
 
     companion object : PanacheCompanion<OrderEntity> {
+        fun findById(id: UUID): OrderEntity? = find("id", id).firstResult()
+
         fun findByReferenceIgnoreCase(reference: String): OrderEntity? =
             find("lower(reference) = ?1", reference.lowercase()).firstResult()
 
         fun existsByReferenceIgnoreCase(reference: String): Boolean =
             count("lower(reference) = ?1", reference.lowercase()) > 0
+
+        fun listFiltered(status: String?, reference: String?): List<OrderEntity> {
+            val cleanRef = reference?.trim()?.takeIf { it.isNotEmpty() }?.lowercase()
+            val cleanStatus = status?.trim()?.takeIf { it.isNotEmpty() }
+            return when {
+                cleanStatus != null && cleanRef != null ->
+                    find("status = ?1 and lower(reference) like ?2 order by createdAt desc", cleanStatus, "%$cleanRef%").list()
+                cleanStatus != null ->
+                    find("status = ?1 order by createdAt desc", cleanStatus).list()
+                cleanRef != null ->
+                    find("lower(reference) like ?1 order by createdAt desc", "%$cleanRef%").list()
+                else ->
+                    list("order by createdAt desc")
+            }
+        }
     }
 }
 

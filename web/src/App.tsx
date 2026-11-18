@@ -1,4 +1,4 @@
-import { NewOrderPage } from "./pages/NewOrderPage";
+import { OrdersPage } from "./pages/OrdersPage";
 
 export function App() {
   return (
@@ -8,7 +8,7 @@ export function App() {
         <p>Production orders</p>
       </header>
       <main className="app__main">
-        <NewOrderPage />
+        <OrdersPage />
       </main>
     </div>
   );

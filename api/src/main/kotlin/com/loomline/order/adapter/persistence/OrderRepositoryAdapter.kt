@@ -19,6 +19,12 @@ class OrderRepositoryAdapter : OrderRepository {
 
     override fun findByReference(reference: String): Order? =
         OrderEntity.findByReferenceIgnoreCase(reference)?.toDomain()
+
+    override fun findById(id: java.util.UUID): Order? =
+        OrderEntity.findById(id)?.toDomain()
+
+    override fun list(status: OrderStatus?, reference: String?): List<Order> =
+        OrderEntity.listFiltered(status?.name, reference).map { it.toDomain() }
 }
 
 private fun Order.toEntity() = OrderEntity().apply {
