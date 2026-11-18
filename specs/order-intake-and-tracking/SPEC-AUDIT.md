@@ -2,7 +2,7 @@
 
 - Repo: `~/factory/openharness/sources/LoomLine`
 - Spec: `specs/order-intake-and-tracking`
-- Generated: 2026-11-18T01:21:34Z
+- Generated: 2026-11-18T01:28:42Z
 - Phase: **spec**
 - Findings: **0 blockers · 0 concerns · 0 unverified**
 - This is a deterministic evidence brief, not a verdict. The `delivery-auditor` re-verifies it and fills the verdict.
@@ -39,13 +39,13 @@ PHASE: spec
 BLOCKERS: 0 — no missing artifacts, no untraceable acceptance criterion,
   no scenario without a wave, no wave item outside the backlog.
 CONCERNS: 0 — the earlier `LOOP.md does not exist` concern was resolved by
-  initialising the loop state, and the one cross-wave assertion found during
-  semantic review (wave 1 claiming "appears in the order list", which is
-  wave 2 scope) was reworded to "can be retrieved by its reference". The
-  stack amendment (Quarkus/Kotlin/Gradle/JDK 25) changed `ADR-0001-stack.md`
-  and `SPEC.md` D1/D7 only; scope, scenarios and waves are unchanged, and the
-  decision was re-challenged (ACCEPT, conditional on the wave-1 walking
-  skeleton).
+  initialising the loop state; the wave-1 scenario that leaked into wave-2
+  list scope was reworded to "can be retrieved by its reference"; and the
+  pre-merge review removed historical product references from the spec and
+  ADR (the repo must describe LoomLine only). The stack amendment
+  (Quarkus/Kotlin/Gradle/JDK 25) changed `ADR-0001-stack.md` and `SPEC.md`
+  D1/D7 only; scope, scenarios and waves are unchanged, and the decision was
+  re-challenged (ACCEPT, conditional on the wave-1 walking skeleton).
 UNVERIFIED: nothing in this phase depends on running code; the repo has no
   implementation yet, so there are no code claims to verify. The JDK 25 /
   Kotlin / Quarkus build path is a wave-1 obligation, not a spec claim.
@@ -59,8 +59,10 @@ EVIDENCE:
   - `python -m openharness run wave_plan ...` -> 3 waves, no warnings.
   - `python -m openharness run challenge_decision ... --focus=architecture
     --write --force` -> ACCEPT after the stack amendment (was REVISE).
-  - `python -m openharness run ship_loop ... --action=next` -> loop state
-    initialised; G1 met; G2 met; G3/G4 awaiting or given owner sign-off.
+  - `python -m openharness run scan_secrets --repo_path=sources/LoomLine`
+    -> no secrets found.
+  - `git grep -niE "rimweb|smartway|legacy|angularjs|spring boot 1"` -> no
+    historical references in the repo.
   - Read: SPEC.md, EXAMPLES.feature, BACKLOG.md, WAVES.md, GATES.md,
     DECISION-REVIEW.md, ADR-0001-stack.md, SEED-DATA.md, STATUS-RULES.md.
 ```

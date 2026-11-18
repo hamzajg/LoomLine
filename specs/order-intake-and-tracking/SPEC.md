@@ -7,8 +7,8 @@
 ## Problem
 
 Production planners have no trustworthy place to record a production order
-and follow it through the shop floor. In the legacy tool, order entry is the
-richest screen but it depends on an unauthenticated API, several reference
+and follow it through the shop floor. Order entry is the richest workflow in
+the domain, yet it is coupled to an unauthenticated API, several reference
 lists are empty, and order states are stored without enforced transitions.
 The result is duplicated or lost orders and no reliable answer to "what is
 ready to produce?" This feature establishes the core daily loop for the new
@@ -26,10 +26,9 @@ product.
 
 - Expected user outcome: a planner can capture an order in one flow and find
   or advance it later without a spreadsheet.
-- Opportunity evidence: the order form is the richest workflow observed in
-  the legacy system; no current product exists. The claim that this is the
-  highest-frequency task is an **assumption** to validate with the first
-  users.
+- Opportunity evidence: the order form is the richest workflow in the domain;
+  no current product exists. The claim that this is the highest-frequency task
+  is an **assumption** to validate with the first users.
 - Signal: median time to create an order and the share of orders with a valid,
   non-stale status. Baseline is unknown; no numeric target is asserted.
 - Follow-up owner/date: product owner, four weeks after first release.
@@ -80,8 +79,8 @@ product.
   fast-starting, container-friendly service with first-class Hibernate ORM
   and Flyway support, Kotlin adds null-safety and concise domain modelling,
   and Gradle 9 / JDK 25 are supported and available in the workspace (JDK 25
-  at `/usr/lib/jvm/java-25-openjdk-amd64`). React replaces the legacy
-  AngularJS SPA with a maintainable component model. Alternatives considered:
+  at `/usr/lib/jvm/java-25-openjdk-amd64`). React provides a maintainable
+  component model for the interactive order screens. Alternatives considered:
   Spring Boot 3 + Java 17 (the earlier proposal), .NET 10 + React, NestJS +
   React, and server-rendered Spring MVC + Thymeleaf (tradeoffs in
   `DECISION-REVIEW.md`). Owner: tech lead (stack proposed), product owner

@@ -12,10 +12,8 @@
 LoomLine's first feature is production-order intake and tracking: a small,
 transaction-heavy workflow whose hard part is business invariants (unique
 reference, positive quantity, legal status transitions) rather than UI
-volume. The legacy system was a Java 8 / Spring Boot 1.4 / MySQL / AngularJS
-application whose state handling was weak, so the rebuild needs stronger
-transactional guarantees and explicit state rules rather than a bigger
-surface.
+volume. The domain needs strong transactional guarantees and explicit state
+rules rather than a large surface.
 
 Workspace facts verified on 2026-11-18:
 
@@ -57,8 +55,8 @@ regardless of the JDK that launches Gradle.
    compile-time cost; rejected because null-safety and concise value types
    help the invariant-heavy domain, and the product owner chose Kotlin.
 3. **.NET 10 minimal API + React + PostgreSQL** — equal fit, toolchain
-   present; rejected for the same lack of an existing .NET estate and a weaker
-   mapping from the legacy JPA model.
+   present; rejected for the same lack of an existing .NET estate and a
+   weaker fit with the relational domain model we already understand.
 4. **NestJS + React + PostgreSQL** — one language across the stack, thinner
    transactional/domain tooling for this workflow.
 5. **Server-rendered Spring MVC + Thymeleaf** — fewest moving parts, but the
