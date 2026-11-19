@@ -15,15 +15,15 @@
     "realm": [
       {
         "name": "administrator",
-        "description": "Administrator — creates users and assigns roles"
+        "description": "Administrator \u2014 creates users and assigns roles"
       },
       {
         "name": "production-planner",
-        "description": "Production planner — works in the orders area"
+        "description": "Production planner \u2014 works in the orders area"
       },
       {
         "name": "production-supervisor",
-        "description": "Production supervisor — narrower production scope"
+        "description": "Production supervisor \u2014 narrower production scope"
       }
     ]
   },
@@ -42,8 +42,13 @@
       "serviceAccountsEnabled": false,
       "rootUrl": "http://localhost:8086",
       "baseUrl": "http://localhost:8086/",
-      "redirectUris": ["http://localhost:8085/api/auth/callback"],
-      "webOrigins": ["http://localhost:8086"],
+      "redirectUris": [
+        "http://localhost:8085/api/auth/callback",
+        "http://localhost:8086/api/auth/callback"
+      ],
+      "webOrigins": [
+        "http://localhost:8086"
+      ],
       "attributes": {
         "post.logout.redirect.uris": "http://localhost:8086/*"
       }
@@ -58,10 +63,16 @@
       "lastName": "Administrator",
       "email": "admin@loomline.local",
       "credentials": [
-        { "type": "password", "value": "ChangeMe!2026", "temporary": false }
+        {
+          "type": "password",
+          "value": "ChangeMe!2026",
+          "temporary": false
+        }
       ],
       "requiredActions": [],
-      "realmRoles": ["administrator"]
+      "realmRoles": [
+        "administrator"
+      ]
     },
     {
       "username": "planner",
@@ -71,10 +82,16 @@
       "lastName": "Planner",
       "email": "planner@loomline.local",
       "credentials": [
-        { "type": "password", "value": "Demo!2026", "temporary": false }
+        {
+          "type": "password",
+          "value": "Demo!2026",
+          "temporary": false
+        }
       ],
       "requiredActions": [],
-      "realmRoles": ["production-planner"]
+      "realmRoles": [
+        "production-planner"
+      ]
     },
     {
       "username": "supervisor",
@@ -84,10 +101,16 @@
       "lastName": "Supervisor",
       "email": "supervisor@loomline.local",
       "credentials": [
-        { "type": "password", "value": "Demo!2026", "temporary": false }
+        {
+          "type": "password",
+          "value": "Demo!2026",
+          "temporary": false
+        }
       ],
       "requiredActions": [],
-      "realmRoles": ["production-supervisor"]
+      "realmRoles": [
+        "production-supervisor"
+      ]
     }
   ]
 }
