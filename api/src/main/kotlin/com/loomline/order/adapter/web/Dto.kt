@@ -94,15 +94,6 @@ class QuantityLineInput {
     var quantity: Int? = null
 }
 
-data class ColourResponse(val id: UUID, val code: String, val label: String)
-
-data class SizeResponse(
-    val id: UUID,
-    val code: String,
-    val label: String,
-    val sizeType: String,
-)
-
 data class ErrorResponse(
     val code: String,
     val message: String,
@@ -120,4 +111,78 @@ data class ArticleResponse(
     val label: String,
     val clientId: UUID,
     val sizeType: String?,
-)
+    val unit: String,
+) {
+    companion object {
+        fun from(article: com.loomline.order.domain.Article) = ArticleResponse(
+            id = article.id,
+            reference = article.reference,
+            label = article.label,
+            clientId = article.clientId,
+            sizeType = article.sizeType,
+            unit = article.unit,
+        )
+    }
+}
+
+/** Request bodies for the catalogue writes. Plain mutable classes for binding. */
+class ArticleRequest {
+    var reference: String? = null
+    var label: String? = null
+    var clientId: UUID? = null
+    var sizeType: String? = null
+    var unit: String? = null
+
+    fun toDraft() = com.loomline.order.domain.ArticleDraft(
+        reference = reference,
+        label = label,
+        clientId = clientId,
+        sizeType = sizeType,
+        unit = unit,
+    )
+}
+
+class ColourRequest {
+    var code: String? = null
+    var label: String? = null
+
+    fun toDraft() = com.loomline.order.domain.ColourDraft(code = code, label = label)
+}
+
+class SizeRequest {
+    var code: String? = null
+    var label: String? = null
+    var sizeType: String? = null
+
+    fun toDraft() = com.loomline.order.domain.SizeDraft(
+        code = code,
+        label = label,
+        sizeType = sizeType,
+    )
+}
+
+data class ColourResponse(val id: UUID, val code: String, val label: String) {
+    companion object {
+        fun from(colour: com.loomline.order.domain.Colour) = ColourResponse(
+            id = colour.id,
+            code = colour.code,
+            label = colour.label,
+        )
+    }
+}
+
+data class SizeResponse(
+    val id: UUID,
+    val code: String,
+    val label: String,
+    val sizeType: String,
+) {
+    companion object {
+        fun from(size: com.loomline.order.domain.Size) = SizeResponse(
+            id = size.id,
+            code = size.code,
+            label = size.label,
+            sizeType = size.sizeType,
+        )
+    }
+}

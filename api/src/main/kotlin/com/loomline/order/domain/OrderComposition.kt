@@ -18,11 +18,6 @@ data class OrderQuantityLine(
     val quantity: Int,
 )
 
-/** Reference rows for the composition pickers. */
-data class ColourView(val id: UUID, val code: String, val label: String)
-
-data class SizeView(val id: UUID, val code: String, val label: String, val sizeType: String)
-
 sealed interface SetQuantitiesResult {
     data class Saved(val lines: List<OrderQuantityLine>) : SetQuantitiesResult
 

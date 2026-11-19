@@ -107,6 +107,12 @@ class ArticleEntity : PanacheEntityBase {
     @Column(name = "size_type")
     var sizeType: String? = null
 
+    @Column(name = "unit", nullable = false)
+    lateinit var unit: String
+
+    @Column(name = "created_at", nullable = false)
+    lateinit var createdAt: Instant
+
     companion object : PanacheCompanion<ArticleEntity>
 }
 
@@ -122,6 +128,9 @@ class ColourEntity : PanacheEntityBase {
 
     @Column(name = "label", nullable = false)
     lateinit var label: String
+
+    @Column(name = "created_at", nullable = false)
+    lateinit var createdAt: Instant
 
     companion object : PanacheCompanion<ColourEntity>
 }
@@ -141,6 +150,9 @@ class SizeEntity : PanacheEntityBase {
 
     @Column(name = "size_type", nullable = false)
     lateinit var sizeType: String
+
+    @Column(name = "created_at", nullable = false)
+    lateinit var createdAt: Instant
 
     companion object : PanacheCompanion<SizeEntity>
 }
