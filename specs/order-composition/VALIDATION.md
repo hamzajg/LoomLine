@@ -4,19 +4,19 @@
 
 | AC | Criterion | Scenarios | Wave(s) | Test evidence |
 |----|-----------|-----------|---------|---------------|
-| 1 | A planner can set the colour/size quantity breakdown on a… | Read the breakdown of an order, Reject a breakdown that does not reconcile, Reject a breakdown with an unknown colour or size, Set the colour-size breakdown of an order | 1 | (weak) NewOrderPage.test.tsx |
-| 2 | Invalid breakdowns are rejected with typed errors and… | Read the breakdown of an order, Reject a breakdown that does not reconcile, Reject a breakdown with an unknown colour or size, Set the colour-size breakdown of an order | 1 | (weak) NewOrderPage.test.tsx |
-| 3 | The breakdown locks once production starts | Reject composition changes on an order in progress, View the breakdown without manage rights | 2 | (weak) OrdersPage.test.tsx |
-| 4 | Viewers see the breakdown without being able to change it | Reject composition changes on an order in progress, View the breakdown without manage rights | 2 | (weak) OrdersPage.test.tsx |
+| 1 | A planner can set the colour/size quantity breakdown on a… | Read the breakdown of an order, Reject a breakdown exceeding the order quantity, Reject a breakdown with an unknown colour or size, Set the colour-size breakdown of an order | 1 | (weak) NewOrderPage.test.tsx, SetOrderQuantitiesUseCaseTest.kt |
+| 2 | Invalid breakdowns are rejected with typed errors and… | Read the breakdown of an order, Reject a breakdown exceeding the order quantity, Reject a breakdown with an unknown colour or size, Set the colour-size breakdown of an order | 1 | (weak) NewOrderPage.test.tsx, SetOrderQuantitiesUseCaseTest.kt |
+| 3 | The breakdown locks once production starts | Reject composition changes on an order in progress, View the breakdown without manage rights | 2 | (weak) OrdersPage.test.tsx, SetOrderQuantitiesUseCaseTest.kt |
+| 4 | Viewers see the breakdown without being able to change it | Reject composition changes on an order in progress, View the breakdown without manage rights | 2 | (weak) OrdersPage.test.tsx, SetOrderQuantitiesUseCaseTest.kt |
 
 ## Scenario coverage
 
-- Scenarios: 6 total, 0 with detected test evidence, 2 with weak (token-match) evidence only, 4 without
-- ✗ `Set the colour-size breakdown of an order` (@w1)
+- Scenarios: 6 total, 0 with detected test evidence, 6 with weak (token-match) evidence only, 0 without
+- ~ `Set the colour-size breakdown of an order` (@w1)
 - ~ `Read the breakdown of an order` (@w1)
-- ✗ `Reject a breakdown that does not reconcile` (@w1)
-- ✗ `Reject a breakdown with an unknown colour or size` (@w1)
-- ✗ `Reject composition changes on an order in progress` (@w2)
+- ~ `Reject a breakdown exceeding the order quantity` (@w1)
+- ~ `Reject a breakdown with an unknown colour or size` (@w1)
+- ~ `Reject composition changes on an order in progress` (@w2)
 - ~ `View the breakdown without manage rights` (@w2)
 
 ## Demo script (manual walkthrough)
@@ -27,7 +27,7 @@
 
 ## Gaps
 
-- 4 scenario(s) lack detected test evidence — verify manually or add checks
+- none — spec is fully traced
 
 Note: 'no evidence' means neither the scenario name nor a
 token match was found in test files — verify by hand before

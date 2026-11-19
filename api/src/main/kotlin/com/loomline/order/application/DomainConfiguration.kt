@@ -4,6 +4,7 @@ import com.loomline.order.domain.CreateOrderUseCase
 import com.loomline.order.domain.IdGenerator
 import com.loomline.order.domain.OrderRepository
 import com.loomline.order.domain.ReferenceCatalog
+import com.loomline.order.domain.SetOrderQuantitiesUseCase
 import com.loomline.order.domain.TimeSource
 import com.loomline.order.domain.TransitionOrderUseCase
 import jakarta.enterprise.context.ApplicationScoped
@@ -40,4 +41,11 @@ class DomainConfiguration {
         time: TimeSource,
         ids: IdGenerator,
     ): TransitionOrderUseCase = TransitionOrderUseCase(orders, time, ids)
+
+    @Produces
+    @Singleton
+    fun setOrderQuantitiesUseCase(
+        orders: OrderRepository,
+        catalog: ReferenceCatalog,
+    ): SetOrderQuantitiesUseCase = SetOrderQuantitiesUseCase(orders, catalog)
 }

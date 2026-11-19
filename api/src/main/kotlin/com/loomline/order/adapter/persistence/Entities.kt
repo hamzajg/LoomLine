@@ -104,5 +104,72 @@ class ArticleEntity : PanacheEntityBase {
     @Column(name = "client_id", nullable = false)
     lateinit var clientId: UUID
 
+    @Column(name = "size_type")
+    var sizeType: String? = null
+
     companion object : PanacheCompanion<ArticleEntity>
+}
+
+@Entity
+@Table(name = "colour")
+class ColourEntity : PanacheEntityBase {
+    @Id
+    @Column(name = "id", nullable = false, updatable = false)
+    lateinit var id: UUID
+
+    @Column(name = "code", nullable = false)
+    lateinit var code: String
+
+    @Column(name = "label", nullable = false)
+    lateinit var label: String
+
+    companion object : PanacheCompanion<ColourEntity>
+}
+
+@Entity
+@Table(name = "size")
+class SizeEntity : PanacheEntityBase {
+    @Id
+    @Column(name = "id", nullable = false, updatable = false)
+    lateinit var id: UUID
+
+    @Column(name = "code", nullable = false)
+    lateinit var code: String
+
+    @Column(name = "label", nullable = false)
+    lateinit var label: String
+
+    @Column(name = "size_type", nullable = false)
+    lateinit var sizeType: String
+
+    companion object : PanacheCompanion<SizeEntity>
+}
+
+@Entity
+@Table(name = "order_quantity_line")
+class OrderQuantityLineEntity : PanacheEntityBase {
+    @Id
+    @Column(name = "id", nullable = false, updatable = false)
+    lateinit var id: UUID
+
+    @Column(name = "order_id", nullable = false, updatable = false)
+    lateinit var orderId: UUID
+
+    @Column(name = "colour_id", nullable = false, updatable = false)
+    lateinit var colourId: UUID
+
+    @Column(name = "size_id", nullable = false, updatable = false)
+    lateinit var sizeId: UUID
+
+    @Column(name = "quantity", nullable = false)
+    var quantity: Int = 0
+
+    companion object : PanacheCompanion<OrderQuantityLineEntity> {
+        fun forOrder(orderId: UUID): List<OrderQuantityLineEntity> =
+            find("orderId", orderId).list()
+
+        fun deleteForOrder(orderId: UUID) {
+            delete("orderId", orderId)
+        }
+    }
 }

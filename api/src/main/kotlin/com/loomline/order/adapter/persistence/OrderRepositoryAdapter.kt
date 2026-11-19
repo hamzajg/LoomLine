@@ -1,9 +1,11 @@
 package com.loomline.order.adapter.persistence
 
 import com.loomline.order.domain.Order
+import com.loomline.order.domain.OrderQuantityLine
 import com.loomline.order.domain.OrderRepository
 import com.loomline.order.domain.OrderStatus
 import com.loomline.order.domain.OrderStatusHistoryEntry
+import com.loomline.order.domain.QuantityLine
 import jakarta.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
@@ -41,6 +43,32 @@ class OrderRepositoryAdapter : OrderRepository {
 
     override fun statusHistory(orderId: java.util.UUID): List<OrderStatusHistoryEntry> =
         OrderStatusHistoryEntity.forOrder(orderId).map { it.toDomain() }
+
+    override fun replaceQuantities(orderId: java.util.UUID, lines: List<QuantityLine>) {
+        OrderQuantityLineEntity.deleteForOrder(orderId)
+        lines.forEach { line ->
+            OrderQuantityLineEntity().apply {
+                id = java.util.UUID.randomUUID()
+                this.orderId = orderId
+                colourId = line.colourId
+                sizeId = line.sizeId
+                quantity = line.quantity
+            }.persist()
+        }
+    }
+
+    override fun quantities(orderId: java.util.UUID): List<OrderQuantityLine> =
+        OrderQuantityLineEntity.forOrder(orderId)
+            .sortedWith(compareBy({ it.colourId.toString() }, { it.sizeId.toString() }))
+            .map {
+                OrderQuantityLine(
+                    id = it.id,
+                    orderId = it.orderId,
+                    colourId = it.colourId,
+                    sizeId = it.sizeId,
+                    quantity = it.quantity,
+                )
+            }
 }
 
 private fun Order.toEntity() = OrderEntity().apply {

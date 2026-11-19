@@ -21,6 +21,11 @@ interface OrderRepository {
     fun appendStatusHistory(entry: OrderStatusHistoryEntry)
 
     fun statusHistory(orderId: UUID): List<OrderStatusHistoryEntry>
+
+    /** Replaces all quantity lines of an order atomically (replace-set). */
+    fun replaceQuantities(orderId: UUID, lines: List<QuantityLine>)
+
+    fun quantities(orderId: UUID): List<OrderQuantityLine>
 }
 
 /** Read-only access to the reference records an order may point at. */
@@ -28,6 +33,16 @@ interface ReferenceCatalog {
     fun clientExists(id: UUID): Boolean
 
     fun articleExists(id: UUID): Boolean
+
+    fun colourExists(id: UUID): Boolean
+
+    fun sizeExists(id: UUID): Boolean
+
+    /** The size type of the article an order points at, if known. */
+    fun articleSizeType(articleId: UUID): String?
+
+    /** The size type a size belongs to, if known. */
+    fun sizeTypeOf(sizeId: UUID): String?
 }
 
 /** Test seam for id generation, so domain tests are deterministic. */
@@ -40,6 +55,10 @@ interface ReferenceQuery {
     fun clients(): List<ClientView>
 
     fun articles(): List<ArticleView>
+
+    fun colours(): List<ColourView>
+
+    fun sizes(): List<SizeView>
 }
 
 data class ClientView(val id: UUID, val name: String, val country: String?)

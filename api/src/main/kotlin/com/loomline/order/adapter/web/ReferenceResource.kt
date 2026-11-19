@@ -28,4 +28,18 @@ class ReferenceResource(
         policy.require("production")
         return query.articles().map { ArticleResponse(it.id, it.reference, it.label, it.clientId) }
     }
+
+    @GET
+    @Path("/colours")
+    fun colours(): List<ColourResponse> {
+        policy.require("production")
+        return query.colours().map { ColourResponse(it.id, it.code, it.label) }
+    }
+
+    @GET
+    @Path("/sizes")
+    fun sizes(): List<SizeResponse> {
+        policy.require("production")
+        return query.sizes().map { SizeResponse(it.id, it.code, it.label, it.sizeType) }
+    }
 }

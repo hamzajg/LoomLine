@@ -4,9 +4,13 @@ import com.loomline.order.domain.CreateOrderResult
 import com.loomline.order.domain.CreateOrderUseCase
 import com.loomline.order.domain.NewOrder
 import com.loomline.order.domain.Order
+import com.loomline.order.domain.OrderQuantityLine
 import com.loomline.order.domain.OrderRepository
 import com.loomline.order.domain.OrderStatus
 import com.loomline.order.domain.OrderStatusHistoryEntry
+import com.loomline.order.domain.QuantityLine
+import com.loomline.order.domain.SetOrderQuantitiesUseCase
+import com.loomline.order.domain.SetQuantitiesResult
 import com.loomline.order.domain.TransitionOrderResult
 import com.loomline.order.domain.TransitionOrderUseCase
 import jakarta.enterprise.context.ApplicationScoped
@@ -23,6 +27,7 @@ import jakarta.transaction.Transactional
 class OrderApplicationService(
     private val createOrder: CreateOrderUseCase,
     private val transitionOrder: TransitionOrderUseCase,
+    private val setQuantities: SetOrderQuantitiesUseCase,
     private val orders: OrderRepository,
 ) {
     @Transactional
@@ -52,4 +57,12 @@ class OrderApplicationService(
     @Transactional
     fun history(orderId: java.util.UUID): List<OrderStatusHistoryEntry> =
         orders.statusHistory(orderId)
+
+    @Transactional
+    fun setQuantities(orderId: java.util.UUID, lines: List<QuantityLine>): SetQuantitiesResult =
+        setQuantities.set(orderId, lines)
+
+    @Transactional
+    fun quantities(orderId: java.util.UUID): List<OrderQuantityLine> =
+        orders.quantities(orderId)
 }
