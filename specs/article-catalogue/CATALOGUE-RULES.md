@@ -1,7 +1,7 @@
 # Catalogue rules — articles, colours, sizes
 
 Gate: **G3 — Catalogue rules agreed** (before wave 1). Owner: product
-owner. **STATUS: PENDING — awaiting product owner agreement.** This file is
+owner. **STATUS: AGREED by product owner 2026-11-19.** This file is
 the authority for the validation, uniqueness and delete rules below.
 
 ## Entities
