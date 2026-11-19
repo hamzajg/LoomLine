@@ -25,3 +25,31 @@ select '44444444-4444-4444-8444-444444444444', 'ART-200',
        (select id from client where client_key = 'client-atelier-nord'),
        'Alpha', 'pcs', now()
 where not exists (select 1 from article where lower(reference) = 'art-200');
+
+insert into colour (id, code, label, created_at)
+select '55555555-5555-4555-8555-555555555551', 'NOIR', 'Noir', now()
+where not exists (select 1 from colour where lower(code) = 'noir');
+
+insert into colour (id, code, label, created_at)
+select '55555555-5555-4555-8555-555555555552', 'ECRU', 'Ecru', now()
+where not exists (select 1 from colour where lower(code) = 'ecru');
+
+insert into colour (id, code, label, created_at)
+select '55555555-5555-4555-8555-555555555553', 'BLEU', 'Bleu roi', now()
+where not exists (select 1 from colour where lower(code) = 'bleu');
+
+insert into size (id, code, label, size_type, created_at)
+select '66666666-6666-4666-8666-666666666661', 'S', 'S', 'Alpha', now()
+where not exists (select 1 from size where lower(code) = 's' and lower(size_type) = 'alpha');
+
+insert into size (id, code, label, size_type, created_at)
+select '66666666-6666-4666-8666-666666666662', 'M', 'M', 'Alpha', now()
+where not exists (select 1 from size where lower(code) = 'm' and lower(size_type) = 'alpha');
+
+insert into size (id, code, label, size_type, created_at)
+select '66666666-6666-4666-8666-666666666663', 'L', 'L', 'Alpha', now()
+where not exists (select 1 from size where lower(code) = 'l' and lower(size_type) = 'alpha');
+
+insert into size (id, code, label, size_type, created_at)
+select '66666666-6666-4666-8666-666666666664', 'XL', 'XL', 'Alpha', now()
+where not exists (select 1 from size where lower(code) = 'xl' and lower(size_type) = 'alpha');

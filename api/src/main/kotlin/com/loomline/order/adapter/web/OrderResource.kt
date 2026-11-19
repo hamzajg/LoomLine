@@ -5,11 +5,14 @@ import com.loomline.order.application.OrderApplicationService
 import com.loomline.order.domain.CreateOrderResult
 import com.loomline.order.domain.NewOrder
 import com.loomline.order.domain.OrderStatus
+import com.loomline.order.domain.QuantityLine
+import com.loomline.order.domain.SetQuantitiesResult
 import com.loomline.order.domain.TransitionOrderResult
 import io.quarkus.security.identity.SecurityIdentity
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.GET
 import jakarta.ws.rs.POST
+import jakarta.ws.rs.PUT
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.PathParam
 import jakarta.ws.rs.QueryParam
@@ -187,6 +190,57 @@ class OrderResource(
         policy.require("production")
         if (service.findById(id) == null) return notFound(id)
         return Response.ok(service.history(id).map { StatusHistoryResponse.from(it) }).build()
+    }
+
+    @GET
+    @Path("/{id}/quantities")
+    fun quantities(@PathParam("id") id: UUID): Response {
+        policy.require("production")
+        if (service.findById(id) == null) return notFound(id)
+        return Response.ok(service.quantities(id).map { QuantityLineResponse.from(it) }).build()
+    }
+
+    @PUT
+    @Path("/{id}/quantities")
+    @Consumes(MediaType.APPLICATION_JSON)
+    fun setQuantities(@PathParam("id") id: UUID, request: SetQuantitiesRequest): Response {
+        policy.require("production", manage = true)
+        val raw = request.lines ?: emptyList()
+        val lines = raw.map { line ->
+            QuantityLine(
+                colourId = line.colourId ?: java.util.UUID(0, 0),
+                sizeId = line.sizeId ?: java.util.UUID(0, 0),
+                quantity = line.quantity ?: 0,
+            )
+        }
+        return when (val result = service.setQuantities(id, lines)) {
+            is SetQuantitiesResult.Saved ->
+                Response.ok(result.lines.map { QuantityLineResponse.from(it) }).build()
+
+            SetQuantitiesResult.OrderNotFound -> notFound(id)
+
+            is SetQuantitiesResult.Locked -> Response
+                .status(Response.Status.CONFLICT)
+                .entity(
+                    ErrorResponse(
+                        code = "COMPOSITION_LOCKED",
+                        message = "The order is ${result.status}; its breakdown can no longer change.",
+                        status = result.status.name,
+                    ),
+                )
+                .build()
+
+            is SetQuantitiesResult.Invalid -> Response
+                .status(Response.Status.BAD_REQUEST)
+                .entity(
+                    ErrorResponse(
+                        code = "VALIDATION_FAILED",
+                        message = "The breakdown could not be stored.",
+                        fieldErrors = result.fieldErrors,
+                    ),
+                )
+                .build()
+        }
     }
 
     private fun notFound(id: UUID): Response =

@@ -2,8 +2,16 @@
   "feature": "order-composition",
   "status": "running",
   "iterations": 0,
-  "updated": "2026-11-19T15:01:39Z",
-  "waves": {},
+  "updated": "2026-11-19T15:02:04Z",
+  "waves": {
+    "1": {
+      "status": "in-progress",
+      "branch": "feat/order-composition-w1",
+      "pr": "\u2014",
+      "evidence": "\u2014",
+      "updated": "2026-11-19T15:02:04Z"
+    }
+  },
   "gates": {
     "G3": {
       "status": "met",
@@ -25,6 +33,7 @@
     "2026-11-19T15:01:18Z gate G3 met: COMPOSITION-RULES.md agreed by product owner 2026-11-19: replace-set PUT, editable DRAFT/RELEASED, size-type match, sum ",
     "2026-11-19T15:01:18Z gate G2 met: SEED-DATA.md \u2014 colours/sizes with fixed UUIDs; tables via V2 migration, demo rows via repeatable seed (dev/test)",
     "2026-11-19T15:01:26Z gate G3 met: COMPOSITION-RULES.md agreed by product owner 2026-11-19",
-    "2026-11-19T15:01:39Z gate G1 met: DECISION-REVIEW.md \u2014 verdict ACCEPT; steelman on D2 answered by owner amendment (partial allowed)"
+    "2026-11-19T15:01:39Z gate G1 met: DECISION-REVIEW.md \u2014 verdict ACCEPT; steelman on D2 answered by owner amendment (partial allowed)",
+    "2026-11-19T15:02:04Z start wave 1 on feat/order-composition-w1"
   ]
 }

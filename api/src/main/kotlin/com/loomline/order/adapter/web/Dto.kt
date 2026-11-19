@@ -68,6 +68,41 @@ data class StatusHistoryResponse(
     }
 }
 
+/** One colour/size/quantity entry in a breakdown write or read. */
+data class QuantityLineResponse(
+    val colourId: UUID,
+    val sizeId: UUID,
+    val quantity: Int,
+) {
+    companion object {
+        fun from(line: com.loomline.order.domain.OrderQuantityLine) = QuantityLineResponse(
+            colourId = line.colourId,
+            sizeId = line.sizeId,
+            quantity = line.quantity,
+        )
+    }
+}
+
+/** Request body for `PUT /api/orders/{id}/quantities` — the full breakdown. */
+class SetQuantitiesRequest {
+    var lines: List<QuantityLineInput>? = null
+}
+
+class QuantityLineInput {
+    var colourId: UUID? = null
+    var sizeId: UUID? = null
+    var quantity: Int? = null
+}
+
+data class ColourResponse(val id: UUID, val code: String, val label: String)
+
+data class SizeResponse(
+    val id: UUID,
+    val code: String,
+    val label: String,
+    val sizeType: String,
+)
+
 data class ErrorResponse(
     val code: String,
     val message: String,

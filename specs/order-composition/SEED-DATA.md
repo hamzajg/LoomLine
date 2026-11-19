@@ -17,14 +17,14 @@ demos never depend on generated values.
 ## Sizes
 
 Both seeded articles carry `size_type = 'Alpha'` (see
-`R__seed_reference_data.sql`), so demo sizes use `size_type = 'ALPHA'`.
+`R__seed_reference_data.sql`), so demo sizes use `size_type = 'Alpha'`.
 
 | key | id | code | label | size_type |
 |-----|----|------|-------|-----------|
-| s | `66666666-6666-4666-8666-666666666661` | S | S | ALPHA |
-| m | `66666666-6666-4666-8666-666666666662` | M | M | ALPHA |
-| l | `66666666-6666-4666-8666-666666666663` | L | L | ALPHA |
-| xl | `66666666-6666-4666-8666-666666666664` | XL | XL | ALPHA |
+| s | `66666666-6666-4666-8666-666666666661` | S | S | Alpha |
+| m | `66666666-6666-4666-8666-666666666662` | M | M | Alpha |
+| l | `66666666-6666-4666-8666-666666666663` | L | L | Alpha |
+| xl | `66666666-6666-4666-8666-666666666664` | XL | XL | Alpha |
 
 ## Demo breakdown
 

@@ -150,6 +150,23 @@ class InMemoryOrderRepository : OrderRepository {
 
     override fun statusHistory(orderId: UUID): List<OrderStatusHistoryEntry> =
         history.filter { it.orderId == orderId }
+
+    private val quantitiesByOrder = mutableMapOf<UUID, MutableList<OrderQuantityLine>>()
+
+    override fun replaceQuantities(orderId: UUID, lines: List<QuantityLine>) {
+        quantitiesByOrder[orderId] = lines.map {
+            OrderQuantityLine(
+                id = UUID.randomUUID(),
+                orderId = orderId,
+                colourId = it.colourId,
+                sizeId = it.sizeId,
+                quantity = it.quantity,
+            )
+        }.toMutableList()
+    }
+
+    override fun quantities(orderId: UUID): List<OrderQuantityLine> =
+        quantitiesByOrder[orderId] ?: emptyList()
 }
 
 private class FakeReferenceCatalog(
@@ -159,4 +176,17 @@ private class FakeReferenceCatalog(
     override fun clientExists(id: UUID): Boolean = id in clients
 
     override fun articleExists(id: UUID): Boolean = id in articles
+
+    override fun colourExists(id: UUID): Boolean = id in colours
+
+    override fun sizeExists(id: UUID): Boolean = id in sizes
+
+    override fun articleSizeType(articleId: UUID): String? = "Alpha"
+
+    override fun sizeTypeOf(sizeId: UUID): String? = "Alpha"
+
+    companion object {
+        val colours = setOf(UUID.fromString("55555555-5555-4555-8555-555555555551"))
+        val sizes = setOf(UUID.fromString("66666666-6666-4666-8666-666666666661"))
+    }
 }
