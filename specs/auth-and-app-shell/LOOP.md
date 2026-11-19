@@ -1,8 +1,8 @@
 # Delivery Loop — auth-and-app-shell
 
-Status: blocked
-Iterations: 0
-Updated: 2026-11-19T03:19:26Z
+Status: running
+Iterations: 2
+Updated: 2026-11-19T10:23:28Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
@@ -16,7 +16,7 @@ Updated: 2026-11-19T03:19:26Z
 |------|--------|----------|---------|
 | G1 | met | specs/auth-and-app-shell/DECISION-REVIEW.md (verdict ACCEPT) | 2026-11-18T19:27:28Z |
 | G2 | met | ADR-0002-identity.md accepted by architect 2026-11-18 (Keycloak OIDC identity store, Argon2id credential hashing, LoomLi | 2026-11-18T20:03:57Z |
-| G3 | pending | — | — |
+| G3 | met | ACCESS-MATRIX.md agreed by product-owner 2026-11-19: administrator all sections+access admin; production-planner product | 2026-11-19T10:23:26Z |
 | G4 | met | specs/auth-and-app-shell/SEED-DATA.md — Keycloak realm 'loomline' import: confidential client loomline-app, realm roles  | 2026-11-18T20:04:30Z |
 | G5 | pending | — | — |
 
@@ -30,3 +30,5 @@ Updated: 2026-11-19T03:19:26Z
 - 2026-11-18T20:05:24Z start wave 2 on feat/auth-and-app-shell-w2
 - 2026-11-19T03:18:53Z complete wave 2 (#9): 25/25 Gradle :api:test (ApiAuthenticationIT 4 new) + 17/17 Vitest incl. 5 new wave-2 tests + npm run build green; docker
 - 2026-11-19T03:19:26Z blocked: G3: role access matrix must be agreed before wave 3 — which roles exist and exactly which sections/actions each role gra
+- 2026-11-19T10:23:26Z gate G3 met: ACCESS-MATRIX.md agreed by product-owner 2026-11-19: administrator all sections+access admin; production-planner product
+- 2026-11-19T10:23:28Z resumed

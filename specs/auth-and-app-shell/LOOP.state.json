@@ -1,8 +1,8 @@
 {
   "feature": "auth-and-app-shell",
-  "status": "blocked",
-  "iterations": 0,
-  "updated": "2026-11-19T03:19:26Z",
+  "status": "running",
+  "iterations": 2,
+  "updated": "2026-11-19T10:23:28Z",
   "waves": {
     "1": {
       "status": "done",
@@ -34,6 +34,11 @@
       "status": "met",
       "evidence": "specs/auth-and-app-shell/SEED-DATA.md \u2014 Keycloak realm 'loomline' import: confidential client loomline-app, realm roles ",
       "updated": "2026-11-18T20:04:30Z"
+    },
+    "G3": {
+      "status": "met",
+      "evidence": "ACCESS-MATRIX.md agreed by product-owner 2026-11-19: administrator all sections+access admin; production-planner product",
+      "updated": "2026-11-19T10:23:26Z"
     }
   },
   "events": [
@@ -44,6 +49,8 @@
     "2026-11-18T20:04:30Z gate G4 met: specs/auth-and-app-shell/SEED-DATA.md \u2014 Keycloak realm 'loomline' import: confidential client loomline-app, realm roles ",
     "2026-11-18T20:05:24Z start wave 2 on feat/auth-and-app-shell-w2",
     "2026-11-19T03:18:53Z complete wave 2 (#9): 25/25 Gradle :api:test (ApiAuthenticationIT 4 new) + 17/17 Vitest incl. 5 new wave-2 tests + npm run build green; docker",
-    "2026-11-19T03:19:26Z blocked: G3: role access matrix must be agreed before wave 3 \u2014 which roles exist and exactly which sections/actions each role gra"
+    "2026-11-19T03:19:26Z blocked: G3: role access matrix must be agreed before wave 3 \u2014 which roles exist and exactly which sections/actions each role gra",
+    "2026-11-19T10:23:26Z gate G3 met: ACCESS-MATRIX.md agreed by product-owner 2026-11-19: administrator all sections+access admin; production-planner product",
+    "2026-11-19T10:23:28Z resumed"
   ]
 }
