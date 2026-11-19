@@ -10,8 +10,8 @@ const clients: Client[] = [
 ];
 
 const articles: Article[] = [
-  { id: "a1", reference: "ART-100", label: "Chemise Popeline", clientId: "c1", sizeType: "Alpha" },
-  { id: "a2", reference: "ART-200", label: "Pantalon Toile", clientId: "c2", sizeType: "Alpha" },
+  { id: "a1", reference: "ART-100", label: "Chemise Popeline", clientId: "c1", sizeType: "Alpha", unit: "pcs" },
+  { id: "a2", reference: "ART-200", label: "Pantalon Toile", clientId: "c2", sizeType: "Alpha", unit: "pcs" },
 ];
 
 const mockOrders: CreatedOrder[] = [
@@ -236,8 +236,8 @@ describe("OrdersPage — order-composition Wave 2", () => {
     { id: "col-ecru", code: "ECRU", label: "Ecru" },
   ];
   const sizes = [
-    { id: "size-s", code: "S", label: "S", sizeType: "Alpha" },
-    { id: "size-m", code: "M", label: "M", sizeType: "Alpha" },
+    { id: "size-s", code: "S", label: "S", sizeType: "Alpha", unit: "pcs" },
+    { id: "size-m", code: "M", label: "M", sizeType: "Alpha", unit: "pcs" },
   ];
   const lines = [
     { colourId: "col-noir", sizeId: "size-s", quantity: 40 },

@@ -10,6 +10,7 @@ export type Article = {
   label: string;
   clientId: string;
   sizeType: string | null;
+  unit: string;
 };
 
 export type Colour = {
@@ -85,6 +86,118 @@ export type QuantityLineResponse = QuantityLine & { id?: string };
 export type OrderFilter = {
   status?: string;
   reference?: string;
+};
+
+export type ArticleInput = {
+  reference: string;
+  label: string;
+  clientId: string;
+  sizeType?: string | null;
+  unit: string;
+};
+
+export type ColourInput = { code: string; label: string };
+export type SizeInput = { code: string; label: string; sizeType: string };
+
+export interface CatalogueApi {
+  clients(): Promise<Client[]>;
+  searchArticles(query?: string): Promise<Article[]>;
+  createArticle(input: ArticleInput): Promise<Article>;
+  updateArticle(id: string, input: ArticleInput): Promise<Article>;
+  deleteArticle(id: string): Promise<void>;
+  searchColours(query?: string): Promise<Colour[]>;
+  createColour(input: ColourInput): Promise<Colour>;
+  updateColour(id: string, input: ColourInput): Promise<Colour>;
+  deleteColour(id: string): Promise<void>;
+  searchSizes(query?: string): Promise<Size[]>;
+  createSize(input: SizeInput): Promise<Size>;
+  updateSize(id: string, input: SizeInput): Promise<Size>;
+  deleteSize(id: string): Promise<void>;
+}
+
+function qs(params: Record<string, string | undefined>): string {
+  const search = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value) search.set(key, value);
+  }
+  const text = search.toString();
+  return text ? `?${text}` : "";
+}
+
+async function writeJson<T>(path: string, method: string, body: unknown): Promise<T> {
+  return readJson<T>(
+    await fetch(path, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }),
+  );
+}
+
+async function deleteJson(path: string): Promise<void> {
+  const response = await fetch(path, { method: "DELETE" });
+  if (!response.ok) {
+    const body = (await response.json().catch(() => ({}))) as ErrorBody;
+    throw new ApiFailure(
+      body.code ?? "REQUEST_FAILED",
+      body.message ?? "The request failed.",
+      body.fieldErrors ?? {},
+    );
+  }
+}
+
+export const httpCatalogueApi: CatalogueApi = {
+  async clients() {
+    return readJson<Client[]>(await fetch("/api/clients"));
+  },
+
+  async searchArticles(query) {
+    return readJson<Article[]>(await fetch(`/api/articles${qs({ q: query })}`));
+  },
+
+  async createArticle(input) {
+    return writeJson<Article>("/api/articles", "POST", input);
+  },
+
+  async updateArticle(id, input) {
+    return writeJson<Article>(`/api/articles/${encodeURIComponent(id)}`, "PUT", input);
+  },
+
+  async deleteArticle(id) {
+    await deleteJson(`/api/articles/${encodeURIComponent(id)}`);
+  },
+
+  async searchColours(query) {
+    return readJson<Colour[]>(await fetch(`/api/colours${qs({ q: query })}`));
+  },
+
+  async createColour(input) {
+    return writeJson<Colour>("/api/colours", "POST", input);
+  },
+
+  async updateColour(id, input) {
+    return writeJson<Colour>(`/api/colours/${encodeURIComponent(id)}`, "PUT", input);
+  },
+
+  async deleteColour(id) {
+    await deleteJson(`/api/colours/${encodeURIComponent(id)}`);
+  },
+
+  async searchSizes(query) {
+    return readJson<Size[]>(await fetch(`/api/sizes${qs({ q: query })}`));
+  },
+
+  async createSize(input) {
+    return writeJson<Size>("/api/sizes", "POST", input);
+  },
+
+  async updateSize(id, input) {
+    return writeJson<Size>(`/api/sizes/${encodeURIComponent(id)}`, "PUT", input);
+  },
+
+  async deleteSize(id) {
+    await deleteJson(`/api/sizes/${encodeURIComponent(id)}`);
+  },
 };
 
 export interface OrdersApi {

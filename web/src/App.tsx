@@ -3,6 +3,7 @@ import { fetchNavigation, type SectionGrant } from "./access";
 import { LocaleProvider, useLocale } from "./i18n/LocaleProvider";
 import { resolveRoute, routeAllowed, visibleSections } from "./navigation";
 import { AccessDeniedPage } from "./pages/AccessDeniedPage";
+import { CataloguePage } from "./pages/CataloguePage";
 import { AreaPlaceholder } from "./pages/AreaPlaceholder";
 import { OrdersPage } from "./pages/OrdersPage";
 import { RolesPage } from "./pages/RolesPage";
@@ -25,6 +26,10 @@ function CurrentScreen({ grants }: { grants: SectionGrant[] }) {
   if (route.item?.id === "orders") {
     const canManage = grants.some((g) => g.id === "production" && g.manage);
     return <OrdersPage canManage={canManage} />;
+  }
+  if (route.item?.id === "articles") {
+    const canManage = grants.some((g) => g.id === "production" && g.manage);
+    return <CataloguePage canManage={canManage} />;
   }
   if (route.item?.id === "users") return <UsersPage />;
   if (route.item?.id === "roles") return <RolesPage />;
