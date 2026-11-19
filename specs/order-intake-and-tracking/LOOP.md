@@ -1,14 +1,14 @@
 # Delivery Loop — order-intake-and-tracking
 
 Status: running
-Iterations: 3
-Updated: 2026-11-18T18:59:32Z
+Iterations: 4
+Updated: 2026-11-19T13:09:57Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
 | 1 | done | feat/order-intake-and-tracking-w1 | #2 | 17 backend tests + 6 frontend tests pass, walking skeleton verified, UI screenshots captured | 2026-11-18T18:59:32Z |
 | 2 | done | feat/order-intake-and-tracking-w2 | #3 | wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte | 2026-11-18T18:59:32Z |
-| 3 | pending | — | — | — | — |
+| 3 | in-progress | feat/order-intake-and-tracking-w3 | — | — | 2026-11-19T13:09:57Z |
 
 ## Gates
 
@@ -35,3 +35,4 @@ Updated: 2026-11-18T18:59:32Z
 - 2026-11-18T18:55:54Z complete wave 2: wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte
 - 2026-11-18T18:59:32Z complete wave 1 (#2): 17 backend tests + 6 frontend tests pass, walking skeleton verified, UI screenshots captured
 - 2026-11-18T18:59:32Z complete wave 2 (#3): wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte
+- 2026-11-19T13:09:57Z start wave 3 on feat/order-intake-and-tracking-w3

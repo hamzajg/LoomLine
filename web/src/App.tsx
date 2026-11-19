@@ -22,7 +22,10 @@ function CurrentScreen({ grants }: { grants: SectionGrant[] }) {
   // never the section's content.
   if (!routeAllowed(route, grants)) return <AccessDeniedPage />;
 
-  if (route.item?.id === "orders") return <OrdersPage />;
+  if (route.item?.id === "orders") {
+    const canManage = grants.some((g) => g.id === "production" && g.manage);
+    return <OrdersPage canManage={canManage} />;
+  }
   if (route.item?.id === "users") return <UsersPage />;
   if (route.item?.id === "roles") return <RolesPage />;
   if (route.item) {

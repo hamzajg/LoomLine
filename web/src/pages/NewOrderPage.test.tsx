@@ -29,6 +29,8 @@ function fakeApi(overrides: Partial<OrdersApi> = {}): OrdersApi {
     }),
     list: vi.fn().mockResolvedValue([]),
     get: vi.fn().mockRejectedValue(new Error("not found")),
+    transition: vi.fn(),
+    history: vi.fn().mockResolvedValue([]),
     ...overrides,
   };
 }

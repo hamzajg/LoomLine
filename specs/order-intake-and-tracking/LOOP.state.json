@@ -1,8 +1,8 @@
 {
   "feature": "order-intake-and-tracking",
   "status": "running",
-  "iterations": 3,
-  "updated": "2026-11-18T18:59:32Z",
+  "iterations": 4,
+  "updated": "2026-11-19T13:09:57Z",
   "waves": {
     "1": {
       "status": "done",
@@ -17,6 +17,13 @@
       "pr": "#3",
       "evidence": "wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte",
       "updated": "2026-11-18T18:59:32Z"
+    },
+    "3": {
+      "status": "in-progress",
+      "branch": "feat/order-intake-and-tracking-w3",
+      "pr": "\u2014",
+      "evidence": "\u2014",
+      "updated": "2026-11-19T13:09:57Z"
     }
   },
   "gates": {
@@ -59,6 +66,7 @@
     "2026-11-18T13:05:15Z gate G5 reset to pending",
     "2026-11-18T18:55:54Z complete wave 2: wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte",
     "2026-11-18T18:59:32Z complete wave 1 (#2): 17 backend tests + 6 frontend tests pass, walking skeleton verified, UI screenshots captured",
-    "2026-11-18T18:59:32Z complete wave 2 (#3): wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte"
+    "2026-11-18T18:59:32Z complete wave 2 (#3): wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte",
+    "2026-11-19T13:09:57Z start wave 3 on feat/order-intake-and-tracking-w3"
   ]
 }

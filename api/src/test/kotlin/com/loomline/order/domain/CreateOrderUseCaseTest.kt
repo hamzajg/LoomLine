@@ -111,7 +111,7 @@ class CreateOrderUseCaseTest {
     }
 }
 
-private class InMemoryOrderRepository : OrderRepository {
+class InMemoryOrderRepository : OrderRepository {
     private val byReference = mutableMapOf<String, Order>()
     private val byId = mutableMapOf<UUID, Order>()
 
@@ -135,6 +135,21 @@ private class InMemoryOrderRepository : OrderRepository {
             .filter { status == null || it.status == status }
             .filter { reference.isNullOrBlank() || it.reference.contains(reference.trim(), ignoreCase = true) }
     }
+
+    override fun update(order: Order): Order {
+        byId[order.id] = order
+        byReference[order.reference.lowercase()] = order
+        return order
+    }
+
+    val history = mutableListOf<OrderStatusHistoryEntry>()
+
+    override fun appendStatusHistory(entry: OrderStatusHistoryEntry) {
+        history += entry
+    }
+
+    override fun statusHistory(orderId: UUID): List<OrderStatusHistoryEntry> =
+        history.filter { it.orderId == orderId }
 }
 
 private class FakeReferenceCatalog(

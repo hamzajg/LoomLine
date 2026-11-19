@@ -11,6 +11,13 @@ export type Article = {
   clientId: string;
 };
 
+export type OrderStatus =
+  | "DRAFT"
+  | "RELEASED"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "CANCELLED";
+
 export type CreatedOrder = {
   id: string;
   reference: string;
@@ -18,9 +25,17 @@ export type CreatedOrder = {
   articleId: string;
   quantity: number;
   dueDate: string;
-  status: "DRAFT" | "RELEASED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
+  status: OrderStatus;
   createdAt: string;
   updatedAt: string;
+};
+
+export type StatusHistoryEntry = {
+  fromStatus: OrderStatus | null;
+  toStatus: OrderStatus;
+  reason: string | null;
+  changedAt: string;
+  changedBy: string;
 };
 
 export type NewOrderInput = {
@@ -56,6 +71,8 @@ export interface OrdersApi {
   create(input: NewOrderInput): Promise<CreatedOrder>;
   list(filter?: OrderFilter): Promise<CreatedOrder[]>;
   get(id: string): Promise<CreatedOrder>;
+  transition(id: string, to: OrderStatus, reason?: string): Promise<CreatedOrder>;
+  history(id: string): Promise<StatusHistoryEntry[]>;
 }
 
 type ErrorBody = {
@@ -107,5 +124,21 @@ export const httpOrdersApi: OrdersApi = {
 
   async get(id: string) {
     return readJson<CreatedOrder>(await fetch(`/api/orders/${encodeURIComponent(id)}`));
+  },
+
+  async transition(id, to, reason) {
+    return readJson<CreatedOrder>(
+      await fetch(`/api/orders/${encodeURIComponent(id)}/transitions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to, reason: reason ?? null }),
+      }),
+    );
+  },
+
+  async history(id) {
+    return readJson<StatusHistoryEntry[]>(
+      await fetch(`/api/orders/${encodeURIComponent(id)}/history`),
+    );
   },
 };
