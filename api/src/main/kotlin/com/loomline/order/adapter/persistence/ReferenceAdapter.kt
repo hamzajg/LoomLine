@@ -42,6 +42,7 @@ class ReferenceAdapter : ReferenceCatalog, ReferenceQuery {
                 reference = it.reference,
                 label = it.label,
                 clientId = it.clientId,
+                sizeType = it.sizeType,
             )
         }
 

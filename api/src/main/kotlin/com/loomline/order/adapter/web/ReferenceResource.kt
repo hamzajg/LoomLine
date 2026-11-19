@@ -26,7 +26,7 @@ class ReferenceResource(
     @Path("/articles")
     fun articles(): List<ArticleResponse> {
         policy.require("production")
-        return query.articles().map { ArticleResponse(it.id, it.reference, it.label, it.clientId) }
+        return query.articles().map { ArticleResponse(it.id, it.reference, it.label, it.clientId, it.sizeType) }
     }
 
     @GET

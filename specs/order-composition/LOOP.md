@@ -2,12 +2,12 @@
 
 Status: running
 Iterations: 0
-Updated: 2026-11-19T15:20:58Z
+Updated: 2026-11-19T15:21:21Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
 | 1 | done | feat/order-composition-w1 | #22 | :api:test green, live verified, evidence 20261119T152049Z-9d3d3da | 2026-11-19T15:20:58Z |
-| 2 | pending | — | — | — | — |
+| 2 | in-progress | feat/order-composition-w2 | — | — | 2026-11-19T15:21:21Z |
 
 ## Gates
 
@@ -26,3 +26,4 @@ Updated: 2026-11-19T15:20:58Z
 - 2026-11-19T15:01:39Z gate G1 met: DECISION-REVIEW.md — verdict ACCEPT; steelman on D2 answered by owner amendment (partial allowed)
 - 2026-11-19T15:02:04Z start wave 1 on feat/order-composition-w1
 - 2026-11-19T15:20:58Z complete wave 1 (#22): :api:test green, live verified, evidence 20261119T152049Z-9d3d3da
+- 2026-11-19T15:21:21Z start wave 2 on feat/order-composition-w2

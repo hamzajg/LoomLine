@@ -10,8 +10,8 @@ const clients: Client[] = [
 ];
 
 const articles: Article[] = [
-  { id: "a1", reference: "ART-100", label: "Chemise Popeline", clientId: "c1" },
-  { id: "a2", reference: "ART-200", label: "Pantalon Toile", clientId: "c2" },
+  { id: "a1", reference: "ART-100", label: "Chemise Popeline", clientId: "c1", sizeType: "Alpha" },
+  { id: "a2", reference: "ART-200", label: "Pantalon Toile", clientId: "c2", sizeType: "Alpha" },
 ];
 
 const mockOrders: CreatedOrder[] = [
@@ -74,6 +74,10 @@ function fakeApi(overrides: Partial<OrdersApi> = {}): OrdersApi {
     }),
     transition: vi.fn(),
     history: vi.fn().mockResolvedValue([]),
+    colours: vi.fn().mockResolvedValue([]),
+    sizes: vi.fn().mockResolvedValue([]),
+    quantities: vi.fn().mockResolvedValue([]),
+    setQuantities: vi.fn().mockResolvedValue([]),
     ...overrides,
   };
 }
@@ -223,5 +227,101 @@ describe("OrdersPage — Wave 3", () => {
     });
     expect(screen.queryByTestId("transition-completed")).not.toBeInTheDocument();
     expect(screen.queryByTestId("transition-cancelled")).not.toBeInTheDocument();
+  });
+});
+
+describe("OrdersPage — order-composition Wave 2", () => {
+  const colours = [
+    { id: "col-noir", code: "NOIR", label: "Noir" },
+    { id: "col-ecru", code: "ECRU", label: "Ecru" },
+  ];
+  const sizes = [
+    { id: "size-s", code: "S", label: "S", sizeType: "Alpha" },
+    { id: "size-m", code: "M", label: "M", sizeType: "Alpha" },
+  ];
+  const lines = [
+    { colourId: "col-noir", sizeId: "size-s", quantity: 40 },
+    { colourId: "col-ecru", sizeId: "size-m", quantity: 30 },
+  ];
+
+  it("View the breakdown without manage rights", async () => {
+    const api = fakeApi({
+      colours: vi.fn().mockResolvedValue(colours),
+      sizes: vi.fn().mockResolvedValue(sizes),
+      quantities: vi.fn().mockResolvedValue(lines),
+    });
+    const user = userEvent.setup();
+
+    render(<OrdersPage api={api} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-001")).toBeInTheDocument();
+    });
+    await user.click(screen.getByLabelText("View order OF-2026-001"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Colour / size breakdown")).toBeInTheDocument();
+    });
+    expect(screen.getByTestId("quantity-line-0")).toHaveTextContent("NOIR");
+    expect(screen.getByTestId("quantity-line-0")).toHaveTextContent("40");
+    expect(screen.queryByTestId("edit-breakdown")).not.toBeInTheDocument();
+  });
+
+  it("lets a manager edit and save the breakdown", async () => {
+    const api = fakeApi({
+      colours: vi.fn().mockResolvedValue(colours),
+      sizes: vi.fn().mockResolvedValue(sizes),
+      quantities: vi.fn().mockResolvedValue(lines),
+      setQuantities: vi.fn().mockResolvedValue([
+        { colourId: "col-noir", sizeId: "size-m", quantity: 100 },
+      ]),
+    });
+    const user = userEvent.setup();
+
+    render(<OrdersPage api={api} canManage />);
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-001")).toBeInTheDocument();
+    });
+    await user.click(screen.getByLabelText("View order OF-2026-001"));
+
+    await waitFor(() => {
+      expect(screen.getByTestId("edit-breakdown")).toBeInTheDocument();
+    });
+    await user.click(screen.getByTestId("edit-breakdown"));
+
+    await user.click(screen.getByTestId("save-breakdown"));
+
+    await waitFor(() => {
+      expect(api.setQuantities).toHaveBeenCalledWith("o1", lines);
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId("quantity-line-0")).toHaveTextContent("100");
+    });
+  });
+
+  it("hides the edit control on an order in progress", async () => {
+    const inProgress = { ...mockOrders[1], status: "IN_PROGRESS" as const };
+    const api = fakeApi({
+      get: vi.fn().mockImplementation(async (id: string) =>
+        id === "o2" ? inProgress : mockOrders.find((o) => o.id === id)!,
+      ),
+      colours: vi.fn().mockResolvedValue(colours),
+      sizes: vi.fn().mockResolvedValue(sizes),
+      quantities: vi.fn().mockResolvedValue(lines),
+    });
+    const user = userEvent.setup();
+
+    render(<OrdersPage api={api} canManage />);
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-002")).toBeInTheDocument();
+    });
+    await user.click(screen.getByLabelText("View order OF-2026-002"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Colour / size breakdown")).toBeInTheDocument();
+    });
+    expect(screen.queryByTestId("edit-breakdown")).not.toBeInTheDocument();
   });
 });
