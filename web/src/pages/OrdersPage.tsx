@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import {
+  ApiFailure,
   httpOrdersApi,
   type Article,
   type Client,
+  type Colour,
   type CreatedOrder,
   type OrdersApi,
   type OrderStatus,
+  type QuantityLine,
+  type QuantityLineResponse,
+  type Size,
   type StatusHistoryEntry,
 } from "../api";
 import { NewOrderPage } from "./NewOrderPage";
@@ -43,6 +48,12 @@ export function OrdersPage({ api = httpOrdersApi, canManage = false }: Props) {
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<CreatedOrder | null>(null);
   const [history, setHistory] = useState<StatusHistoryEntry[]>([]);
+  const [quantities, setQuantities] = useState<QuantityLineResponse[]>([]);
+  const [colours, setColours] = useState<Colour[]>([]);
+  const [sizes, setSizes] = useState<Size[]>([]);
+  const [editingBreakdown, setEditingBreakdown] = useState(false);
+  const [draftLines, setDraftLines] = useState<QuantityLine[]>([]);
+  const [breakdownError, setBreakdownError] = useState<string | null>(null);
   const [transitionError, setTransitionError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
@@ -80,11 +91,60 @@ export function OrdersPage({ api = httpOrdersApi, canManage = false }: Props) {
     if (!selectedOrderId) {
       setSelectedOrder(null);
       setHistory([]);
+      setQuantities([]);
+      setEditingBreakdown(false);
       return;
     }
     api.get(selectedOrderId).then(setSelectedOrder).catch(() => {});
     api.history(selectedOrderId).then(setHistory).catch(() => setHistory([]));
+    api.quantities(selectedOrderId).then(setQuantities).catch(() => setQuantities([]));
+    api.colours().then(setColours).catch(() => {});
+    api.sizes().then(setSizes).catch(() => {});
   }, [api, selectedOrderId]);
+
+  const articleSizeType = selectedOrder
+    ? articles.find((a) => a.id === selectedOrder.articleId)?.sizeType ?? null
+    : null;
+
+  const editableBreakdown =
+    canManage &&
+    selectedOrder !== null &&
+    (selectedOrder.status === "DRAFT" || selectedOrder.status === "RELEASED");
+
+  const colourLabel = (id: string) => {
+    const c = colours.find((x) => x.id === id);
+    return c ? `${c.code} — ${c.label}` : id;
+  };
+  const sizeLabel = (id: string) => {
+    const s = sizes.find((x) => x.id === id);
+    return s ? `${s.code} (${s.sizeType})` : id;
+  };
+
+  const startEditingBreakdown = () => {
+    setBreakdownError(null);
+    setDraftLines(
+      quantities.map((q) => ({ colourId: q.colourId, sizeId: q.sizeId, quantity: q.quantity })),
+    );
+    setEditingBreakdown(true);
+  };
+
+  const saveBreakdown = () => {
+    if (!selectedOrder) return;
+    setBreakdownError(null);
+    api
+      .setQuantities(selectedOrder.id, draftLines)
+      .then((saved) => {
+        setQuantities(saved);
+        setEditingBreakdown(false);
+      })
+      .catch((err: Error) => {
+        setBreakdownError(
+          err instanceof ApiFailure
+            ? Object.values(err.fieldErrors).join(" ") || err.message
+            : err.message,
+        );
+      });
+  };
 
   const runTransition = (to: OrderStatus) => {
     if (!selectedOrder) return;
@@ -284,6 +344,150 @@ export function OrdersPage({ api = httpOrdersApi, canManage = false }: Props) {
                   ))}
                 </div>
               )}
+
+              <div className="order-breakdown">
+                <div className="order-breakdown__header">
+                  <h4>Colour / size breakdown</h4>
+                  {editableBreakdown && !editingBreakdown && (
+                    <button
+                      type="button"
+                      className="btn btn--sm"
+                      data-testid="edit-breakdown"
+                      onClick={startEditingBreakdown}
+                    >
+                      Edit
+                    </button>
+                  )}
+                </div>
+
+                {!editingBreakdown ? (
+                  quantities.length === 0 ? (
+                    <p className="empty-state">No breakdown recorded.</p>
+                  ) : (
+                    <table className="orders-table orders-table--compact">
+                      <thead>
+                        <tr>
+                          <th>Colour</th>
+                          <th>Size</th>
+                          <th>Quantity</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {quantities.map((q, i) => (
+                          <tr key={i} data-testid={`quantity-line-${i}`}>
+                            <td>{colourLabel(q.colourId)}</td>
+                            <td>{sizeLabel(q.sizeId)}</td>
+                            <td>{q.quantity}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )
+                ) : (
+                  <div className="breakdown-editor">
+                    {breakdownError && (
+                      <p className="form-error" role="alert">
+                        {breakdownError}
+                      </p>
+                    )}
+                    {draftLines.map((line, i) => (
+                      <div className="breakdown-editor__row" key={i}>
+                        <select
+                          aria-label={`Colour ${i + 1}`}
+                          value={line.colourId}
+                          onChange={(e) =>
+                            setDraftLines((prev) =>
+                              prev.map((l, j) =>
+                                j === i ? { ...l, colourId: e.target.value } : l,
+                              ),
+                            )
+                          }
+                        >
+                          <option value="">Colour…</option>
+                          {colours.map((c) => (
+                            <option key={c.id} value={c.id}>
+                              {c.code} — {c.label}
+                            </option>
+                          ))}
+                        </select>
+                        <select
+                          aria-label={`Size ${i + 1}`}
+                          value={line.sizeId}
+                          onChange={(e) =>
+                            setDraftLines((prev) =>
+                              prev.map((l, j) =>
+                                j === i ? { ...l, sizeId: e.target.value } : l,
+                              ),
+                            )
+                          }
+                        >
+                          <option value="">Size…</option>
+                          {sizes
+                            .filter((s) => !articleSizeType || s.sizeType === articleSizeType)
+                            .map((s) => (
+                              <option key={s.id} value={s.id}>
+                                {s.code} ({s.sizeType})
+                              </option>
+                            ))}
+                        </select>
+                        <input
+                          aria-label={`Quantity ${i + 1}`}
+                          type="number"
+                          min={1}
+                          value={line.quantity}
+                          onChange={(e) =>
+                            setDraftLines((prev) =>
+                              prev.map((l, j) =>
+                                j === i ? { ...l, quantity: Number(e.target.value) } : l,
+                              ),
+                            )
+                          }
+                        />
+                        <button
+                          type="button"
+                          className="btn btn--sm"
+                          aria-label={`Remove line ${i + 1}`}
+                          onClick={() =>
+                            setDraftLines((prev) => prev.filter((_, j) => j !== i))
+                          }
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                    <div className="breakdown-editor__actions">
+                      <button
+                        type="button"
+                        className="btn btn--sm"
+                        data-testid="add-line"
+                        onClick={() =>
+                          setDraftLines((prev) => [
+                            ...prev,
+                            { colourId: "", sizeId: "", quantity: 1 },
+                          ])
+                        }
+                      >
+                        + Add line
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn--primary"
+                        data-testid="save-breakdown"
+                        onClick={saveBreakdown}
+                      >
+                        Save breakdown
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn--secondary"
+                        onClick={() => setEditingBreakdown(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
 
               {history.length > 0 && (
                 <div className="order-history">

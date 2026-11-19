@@ -9,7 +9,7 @@ const clients: Client[] = [
 ];
 
 const articles: Article[] = [
-  { id: "a1", reference: "ART-100", label: "Chemise", clientId: "c1" },
+  { id: "a1", reference: "ART-100", label: "Chemise", clientId: "c1", sizeType: "Alpha" },
 ];
 
 function fakeApi(overrides: Partial<OrdersApi> = {}): OrdersApi {
@@ -31,6 +31,10 @@ function fakeApi(overrides: Partial<OrdersApi> = {}): OrdersApi {
     get: vi.fn().mockRejectedValue(new Error("not found")),
     transition: vi.fn(),
     history: vi.fn().mockResolvedValue([]),
+    colours: vi.fn().mockResolvedValue([]),
+    sizes: vi.fn().mockResolvedValue([]),
+    quantities: vi.fn().mockResolvedValue([]),
+    setQuantities: vi.fn().mockResolvedValue([]),
     ...overrides,
   };
 }

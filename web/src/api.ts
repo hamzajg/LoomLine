@@ -9,6 +9,26 @@ export type Article = {
   reference: string;
   label: string;
   clientId: string;
+  sizeType: string | null;
+};
+
+export type Colour = {
+  id: string;
+  code: string;
+  label: string;
+};
+
+export type Size = {
+  id: string;
+  code: string;
+  label: string;
+  sizeType: string;
+};
+
+export type QuantityLine = {
+  colourId: string;
+  sizeId: string;
+  quantity: number;
 };
 
 export type OrderStatus =
@@ -60,6 +80,8 @@ export class ApiFailure extends Error {
   }
 }
 
+export type QuantityLineResponse = QuantityLine & { id?: string };
+
 export type OrderFilter = {
   status?: string;
   reference?: string;
@@ -73,6 +95,10 @@ export interface OrdersApi {
   get(id: string): Promise<CreatedOrder>;
   transition(id: string, to: OrderStatus, reason?: string): Promise<CreatedOrder>;
   history(id: string): Promise<StatusHistoryEntry[]>;
+  colours(): Promise<Colour[]>;
+  sizes(): Promise<Size[]>;
+  quantities(id: string): Promise<QuantityLineResponse[]>;
+  setQuantities(id: string, lines: QuantityLine[]): Promise<QuantityLineResponse[]>;
 }
 
 type ErrorBody = {
@@ -139,6 +165,30 @@ export const httpOrdersApi: OrdersApi = {
   async history(id) {
     return readJson<StatusHistoryEntry[]>(
       await fetch(`/api/orders/${encodeURIComponent(id)}/history`),
+    );
+  },
+
+  async colours() {
+    return readJson<Colour[]>(await fetch("/api/colours"));
+  },
+
+  async sizes() {
+    return readJson<Size[]>(await fetch("/api/sizes"));
+  },
+
+  async quantities(id) {
+    return readJson<QuantityLineResponse[]>(
+      await fetch(`/api/orders/${encodeURIComponent(id)}/quantities`),
+    );
+  },
+
+  async setQuantities(id, lines) {
+    return readJson<QuantityLineResponse[]>(
+      await fetch(`/api/orders/${encodeURIComponent(id)}/quantities`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lines }),
+      }),
     );
   },
 };

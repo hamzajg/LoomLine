@@ -119,4 +119,5 @@ data class ArticleResponse(
     val reference: String,
     val label: String,
     val clientId: UUID,
+    val sizeType: String?,
 )

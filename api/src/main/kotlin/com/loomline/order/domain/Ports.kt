@@ -63,7 +63,7 @@ interface ReferenceQuery {
 
 data class ClientView(val id: UUID, val name: String, val country: String?)
 
-data class ArticleView(val id: UUID, val reference: String, val label: String, val clientId: UUID)
+data class ArticleView(val id: UUID, val reference: String, val label: String, val clientId: UUID, val sizeType: String?)
 
 /** Clock port. Kept as a plain function so the domain stays dependency-free. */
 fun interface TimeSource {
