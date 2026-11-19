@@ -2,12 +2,12 @@
 
 Status: running
 Iterations: 0
-Updated: 2026-11-18T20:04:30Z
+Updated: 2026-11-19T03:18:53Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
 | 1 | done | feat/auth-and-app-shell-w1 | #6 | 12/12 Vitest (AppShell 3, OrdersPage 3, NewOrderPage 6) + npm run build green; no CI configured in repo; evidence auth-a | 2026-11-18T19:53:34Z |
-| 2 | pending | — | — | — | — |
+| 2 | done | feat/auth-and-app-shell-w2 | #9 | 25/25 Gradle :api:test (ApiAuthenticationIT 4 new) + 17/17 Vitest incl. 5 new wave-2 tests + npm run build green; docker | 2026-11-19T03:18:53Z |
 | 3 | pending | — | — | — | — |
 
 ## Gates
@@ -27,3 +27,5 @@ Updated: 2026-11-18T20:04:30Z
 - 2026-11-18T19:53:34Z complete wave 1 (#6): 12/12 Vitest (AppShell 3, OrdersPage 3, NewOrderPage 6) + npm run build green; no CI configured in repo; evidence auth-a
 - 2026-11-18T20:03:57Z gate G2 met: ADR-0002-identity.md accepted by architect 2026-11-18 (Keycloak OIDC identity store, Argon2id credential hashing, LoomLi
 - 2026-11-18T20:04:30Z gate G4 met: specs/auth-and-app-shell/SEED-DATA.md — Keycloak realm 'loomline' import: confidential client loomline-app, realm roles 
+- 2026-11-18T20:05:24Z start wave 2 on feat/auth-and-app-shell-w2
+- 2026-11-19T03:18:53Z complete wave 2 (#9): 25/25 Gradle :api:test (ApiAuthenticationIT 4 new) + 17/17 Vitest incl. 5 new wave-2 tests + npm run build green; docker
