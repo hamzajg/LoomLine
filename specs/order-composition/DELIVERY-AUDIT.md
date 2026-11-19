@@ -41,20 +41,18 @@
 ```
 AUDIT: CONCERNS
 PHASE: delivery
-BLOCKERS: 0 confirmed — both placeholder-gate-evidence findings are false
-  positives: the evidence strings ARE the records (DECISION-REVIEW.md verdict
-  ACCEPT; COMPOSITION-RULES.md owner approval 2026-11-19).
-CONCERNS: accepted — (a) weak-evidence rows map wave-2 scenarios
-  (lock-on-progress is covered by OrderCompositionIT; the UI half lands in
-  wave 2); (b) scope-no-paths is pre-existing spec style; (c) size-type
-  matching is case-insensitive text equality per D5 — revisit trigger
-  recorded in DECISION-REVIEW.md.
-UNVERIFIED: scope drift (no in-scope paths recorded — same as prior features).
-EVIDENCE: read OrderComposition.kt, SetOrderQuantitiesUseCase wiring,
-  OrderResource.kt quantities endpoints, V2 migration, seed additions;
-  ran :api:test (all green incl. 11 domain + 7 composition ITs), live
-  verify-composition.sh against compose (valid/partial/exceeding/unknown/
-  locked/403/200 all correct), bundle 20261119T152030Z-e189f26 verified.
+BLOCKERS: 0 confirmed — placeholder-gate-evidence findings are false
+  positives (evidence strings are the actual acceptance records).
+CONCERNS: accepted — (a) weak-evidence rows are token-match noise; real
+  proof is OrderCompositionIT + SetOrderQuantitiesUseCaseTest + live
+  verify-composition.sh + 5 browser screenshots in bundle
+  20261119T152442Z-9730f4f; (b) "unfinished-code" is an HTML input
+  placeholder attribute; (c) wave-2 UI verified via Playwright-core +
+  system chromium, not the harness (policy: harness never drives browsers).
+UNVERIFIED: scope drift (no in-scope paths — pre-existing).
+EVIDENCE: read OrdersPage.tsx breakdown editor, api.ts additions,
+  OrderBreakdown flows; ran web 27/27 + build, :api:test green, live
+  OIDC script (lock/403/read paths), screenshots attached and verified.
 ```
 
 Rules: `BLOCK` on any confirmed blocker, hallucinated claim, or
