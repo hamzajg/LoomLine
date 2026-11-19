@@ -1,0 +1,23 @@
+{
+  "feature": "article-catalogue",
+  "status": "running",
+  "iterations": 1,
+  "updated": "2026-11-19T16:20:34Z",
+  "waves": {},
+  "gates": {
+    "G1": {
+      "status": "met",
+      "evidence": "DECISION-REVIEW.md \u2014 verdict ACCEPT; steelman on scope/delete answered in review",
+      "updated": "2026-11-19T16:20:34Z"
+    },
+    "G2": {
+      "status": "met",
+      "evidence": "api/src/main/resources/db/seed/R__seed_reference_data.sql \u2014 clients/articles/colours/sizes seeded (dev/test)",
+      "updated": "2026-11-19T16:20:34Z"
+    }
+  },
+  "events": [
+    "2026-11-19T16:20:34Z gate G1 met: DECISION-REVIEW.md \u2014 verdict ACCEPT; steelman on scope/delete answered in review",
+    "2026-11-19T16:20:34Z gate G2 met: api/src/main/resources/db/seed/R__seed_reference_data.sql \u2014 clients/articles/colours/sizes seeded (dev/test)"
+  ]
+}
