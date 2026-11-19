@@ -2,12 +2,12 @@
 
 Status: running
 Iterations: 1
-Updated: 2026-11-19T17:11:13Z
+Updated: 2026-11-19T17:11:56Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
 | 1 | done | feat/article-catalogue-w1 | #28 | :api:test green (domain + CatalogueIT), live OIDC verify-catalogue.sh all paths pass, evidence 20261119T171108Z-ebadfd1 | 2026-11-19T17:11:13Z |
-| 2 | pending | — | — | — | — |
+| 2 | in-progress | feat/article-catalogue-w2 | — | — | 2026-11-19T17:11:56Z |
 
 ## Gates
 
@@ -25,3 +25,4 @@ Updated: 2026-11-19T17:11:13Z
 - 2026-11-19T16:51:59Z gate G3 met: CATALOGUE-RULES.md agreed by product owner 2026-11-19
 - 2026-11-19T16:51:59Z start wave 1 on feat/article-catalogue-w1
 - 2026-11-19T17:11:13Z complete wave 1 (#28): :api:test green (domain + CatalogueIT), live OIDC verify-catalogue.sh all paths pass, evidence 20261119T171108Z-ebadfd1
+- 2026-11-19T17:11:56Z start wave 2 on feat/article-catalogue-w2
