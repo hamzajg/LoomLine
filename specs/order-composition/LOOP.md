@@ -2,12 +2,12 @@
 
 Status: running
 Iterations: 0
-Updated: 2026-11-19T15:21:21Z
+Updated: 2026-11-19T15:25:35Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
 | 1 | done | feat/order-composition-w1 | #22 | :api:test green, live verified, evidence 20261119T152049Z-9d3d3da | 2026-11-19T15:20:58Z |
-| 2 | in-progress | feat/order-composition-w2 | — | — | 2026-11-19T15:21:21Z |
+| 2 | done | feat/order-composition-w2 | #24 | web 27/27 + build, api green, 5 browser screenshots, evidence 20261119T152524Z-94478b4 | 2026-11-19T15:25:35Z |
 
 ## Gates
 
@@ -27,3 +27,4 @@ Updated: 2026-11-19T15:21:21Z
 - 2026-11-19T15:02:04Z start wave 1 on feat/order-composition-w1
 - 2026-11-19T15:20:58Z complete wave 1 (#22): :api:test green, live verified, evidence 20261119T152049Z-9d3d3da
 - 2026-11-19T15:21:21Z start wave 2 on feat/order-composition-w2
+- 2026-11-19T15:25:35Z complete wave 2 (#24): web 27/27 + build, api green, 5 browser screenshots, evidence 20261119T152524Z-94478b4
