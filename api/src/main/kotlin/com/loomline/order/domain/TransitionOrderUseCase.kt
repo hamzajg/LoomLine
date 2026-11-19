@@ -12,7 +12,7 @@ import java.util.UUID
  * - IN_PROGRESS -> CANCELLED requires a non-empty reason
  * - the order's status and exactly one history row are written together
  * - `changedAt` comes from [TimeSource], never the request; `changedBy` is the
- *   caller-supplied actor (placeholder until per-user attribution lands)
+ *   authenticated caller's name until per-user attribution is designed
  */
 class TransitionOrderUseCase(
     private val orders: OrderRepository,
