@@ -3,6 +3,7 @@
 | Feature | Stories | Scenarios | Waves | Planned | Validated |
 |---------|---------|-----------|-------|---------|-----------|
 | Identity, access control, and the application shell (`auth-and-app-shell/`) | 7 | 12 | 3 | yes | yes |
+| order-composition (`order-composition/`) | 3 | 6 | 2 | yes | yes |
 | Order intake and tracking (`order-intake-and-tracking/`) | 4 | 10 | 3 | yes | yes |
 
 
