@@ -1,8 +1,8 @@
 # Delivery Loop — auth-and-app-shell
 
-Status: running
+Status: blocked
 Iterations: 0
-Updated: 2026-11-19T03:18:53Z
+Updated: 2026-11-19T03:19:26Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
@@ -29,3 +29,4 @@ Updated: 2026-11-19T03:18:53Z
 - 2026-11-18T20:04:30Z gate G4 met: specs/auth-and-app-shell/SEED-DATA.md — Keycloak realm 'loomline' import: confidential client loomline-app, realm roles 
 - 2026-11-18T20:05:24Z start wave 2 on feat/auth-and-app-shell-w2
 - 2026-11-19T03:18:53Z complete wave 2 (#9): 25/25 Gradle :api:test (ApiAuthenticationIT 4 new) + 17/17 Vitest incl. 5 new wave-2 tests + npm run build green; docker
+- 2026-11-19T03:19:26Z blocked: G3: role access matrix must be agreed before wave 3 — which roles exist and exactly which sections/actions each role gra
