@@ -1,0 +1,24 @@
+{
+  "feature": "order-composition",
+  "status": "running",
+  "iterations": 0,
+  "updated": "2026-11-19T15:01:26Z",
+  "waves": {},
+  "gates": {
+    "G3": {
+      "status": "met",
+      "evidence": "COMPOSITION-RULES.md agreed by product owner 2026-11-19",
+      "updated": "2026-11-19T15:01:26Z"
+    },
+    "G2": {
+      "status": "met",
+      "evidence": "SEED-DATA.md \u2014 colours/sizes with fixed UUIDs; tables via V2 migration, demo rows via repeatable seed (dev/test)",
+      "updated": "2026-11-19T15:01:18Z"
+    }
+  },
+  "events": [
+    "2026-11-19T15:01:18Z gate G3 met: COMPOSITION-RULES.md agreed by product owner 2026-11-19: replace-set PUT, editable DRAFT/RELEASED, size-type match, sum ",
+    "2026-11-19T15:01:18Z gate G2 met: SEED-DATA.md \u2014 colours/sizes with fixed UUIDs; tables via V2 migration, demo rows via repeatable seed (dev/test)",
+    "2026-11-19T15:01:26Z gate G3 met: COMPOSITION-RULES.md agreed by product owner 2026-11-19"
+  ]
+}

@@ -37,12 +37,22 @@ None.
 ## Verdict (agent fills after verifying the code)
 
 ```
-AUDIT: PASS | CONCERNS | BLOCK
-PHASE: spec | delivery
-BLOCKERS: <confirmed count and why>
-CONCERNS: <accepted concerns and why>
-UNVERIFIED: <what could not be checked>
-EVIDENCE: <commands run, files read, tests observed>
+AUDIT: CONCERNS
+PHASE: spec
+BLOCKERS: 0 confirmed — all findings are heuristic noise or pre-loop state.
+CONCERNS: accepted — (a) backlog-no-scenarios findings were a format issue
+  (names vs @wN tags), fixed in BACKLOG.md and re-planned via wave_plan;
+  (b) missing LOOP.md is expected before ship_loop start; (c) G3 is a human
+  gate — rules doc was approved by the product owner 2026-11-19 with one
+  amendment (partial breakdowns allowed, sum <= total), folded into SPEC
+  D2, COMPOSITION-RULES.md, EXAMPLES.feature and BACKLOG.md.
+UNVERIFIED: none — spec artifacts are self-consistent; scenario-to-AC
+  traceability verified by ship_validate (4 scenarios lack test evidence
+  only because no code exists yet).
+EVIDENCE: read SPEC.md, EXAMPLES.feature, BACKLOG.md, GATES.md,
+  COMPOSITION-RULES.md, SEED-DATA.md, DECISION-REVIEW.md; ran wave_plan
+  (2 waves generated), ship_validate, challenge_decision; cross-checked
+  size_type='Alpha' against R__seed_reference_data.sql.
 ```
 
 Rules: `BLOCK` on any confirmed blocker, hallucinated claim, or
