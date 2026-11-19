@@ -1,6 +1,7 @@
 package com.loomline.order.adapter.web
 
 import io.quarkus.test.junit.QuarkusTest
+import io.quarkus.test.security.TestSecurity
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import org.hamcrest.Matchers.equalTo
@@ -9,7 +10,10 @@ import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.Test
 import java.util.UUID
 
+// Order behaviour assumes a signed-in user; authentication itself is covered by
+// ApiAuthenticationIT, so the identity is provided rather than obtained.
 @QuarkusTest
+@TestSecurity(user = "tester", roles = ["administrator"])
 class OrderResourceIT {
 
     private val clientId = "11111111-1111-4111-8111-111111111111"

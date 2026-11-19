@@ -23,7 +23,11 @@ function renderShell(children: ReactNode) {
   return render(
     <LocaleProvider>
       <AppShell
-        user={{ displayName: "Demo operator", role: "Administrator" }}
+        user={{
+          username: "demo.operator",
+          displayName: "Demo operator",
+          roles: ["administrator"],
+        }}
       >
         {children}
       </AppShell>
