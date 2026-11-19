@@ -1,8 +1,8 @@
 {
   "feature": "auth-and-app-shell",
-  "status": "running",
-  "iterations": 2,
-  "updated": "2026-11-19T11:24:52Z",
+  "status": "done",
+  "iterations": 3,
+  "updated": "2026-11-19T12:33:24Z",
   "waves": {
     "1": {
       "status": "done",
@@ -19,11 +19,11 @@
       "updated": "2026-11-19T03:18:53Z"
     },
     "3": {
-      "status": "in-progress",
+      "status": "done",
       "branch": "feat/auth-and-app-shell-w3",
-      "pr": "\u2014",
-      "evidence": "\u2014",
-      "updated": "2026-11-19T11:24:52Z"
+      "pr": "#13",
+      "evidence": "32/32 api tests + 21/21 vitest + vite build green; live compose matrix verified for planner/supervisor/admin and admin-c",
+      "updated": "2026-11-19T12:33:20Z"
     }
   },
   "gates": {
@@ -59,6 +59,8 @@
     "2026-11-19T03:19:26Z blocked: G3: role access matrix must be agreed before wave 3 \u2014 which roles exist and exactly which sections/actions each role gra",
     "2026-11-19T10:23:26Z gate G3 met: ACCESS-MATRIX.md agreed by product-owner 2026-11-19: administrator all sections+access admin; production-planner product",
     "2026-11-19T10:23:28Z resumed",
-    "2026-11-19T11:24:52Z start wave 3 on feat/auth-and-app-shell-w3"
+    "2026-11-19T11:24:52Z start wave 3 on feat/auth-and-app-shell-w3",
+    "2026-11-19T12:33:20Z complete wave 3 (#13): 32/32 api tests + 21/21 vitest + vite build green; live compose matrix verified for planner/supervisor/admin and admin-c",
+    "2026-11-19T12:33:24Z feature validated and shipped"
   ]
 }

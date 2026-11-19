@@ -1,14 +1,14 @@
 # Delivery Loop — auth-and-app-shell
 
-Status: running
-Iterations: 2
-Updated: 2026-11-19T11:24:52Z
+Status: done
+Iterations: 3
+Updated: 2026-11-19T12:33:24Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
 | 1 | done | feat/auth-and-app-shell-w1 | #6 | 12/12 Vitest (AppShell 3, OrdersPage 3, NewOrderPage 6) + npm run build green; no CI configured in repo; evidence auth-a | 2026-11-18T19:53:34Z |
 | 2 | done | feat/auth-and-app-shell-w2 | #9 | 25/25 Gradle :api:test (ApiAuthenticationIT 4 new) + 17/17 Vitest incl. 5 new wave-2 tests + npm run build green; docker | 2026-11-19T03:18:53Z |
-| 3 | in-progress | feat/auth-and-app-shell-w3 | — | — | 2026-11-19T11:24:52Z |
+| 3 | done | feat/auth-and-app-shell-w3 | #13 | 32/32 api tests + 21/21 vitest + vite build green; live compose matrix verified for planner/supervisor/admin and admin-c | 2026-11-19T12:33:20Z |
 
 ## Gates
 
@@ -33,3 +33,5 @@ Updated: 2026-11-19T11:24:52Z
 - 2026-11-19T10:23:26Z gate G3 met: ACCESS-MATRIX.md agreed by product-owner 2026-11-19: administrator all sections+access admin; production-planner product
 - 2026-11-19T10:23:28Z resumed
 - 2026-11-19T11:24:52Z start wave 3 on feat/auth-and-app-shell-w3
+- 2026-11-19T12:33:20Z complete wave 3 (#13): 32/32 api tests + 21/21 vitest + vite build green; live compose matrix verified for planner/supervisor/admin and admin-c
+- 2026-11-19T12:33:24Z feature validated and shipped
