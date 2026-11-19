@@ -1,10 +1,16 @@
 package com.loomline.order.application
 
+import com.loomline.order.domain.ArticleCatalogue
+import com.loomline.order.domain.ArticleStore
+import com.loomline.order.domain.ColourCatalogue
+import com.loomline.order.domain.ColourStore
 import com.loomline.order.domain.CreateOrderUseCase
 import com.loomline.order.domain.IdGenerator
 import com.loomline.order.domain.OrderRepository
 import com.loomline.order.domain.ReferenceCatalog
 import com.loomline.order.domain.SetOrderQuantitiesUseCase
+import com.loomline.order.domain.SizeCatalogue
+import com.loomline.order.domain.SizeStore
 import com.loomline.order.domain.TimeSource
 import com.loomline.order.domain.TransitionOrderUseCase
 import jakarta.enterprise.context.ApplicationScoped
@@ -48,4 +54,30 @@ class DomainConfiguration {
         orders: OrderRepository,
         catalog: ReferenceCatalog,
     ): SetOrderQuantitiesUseCase = SetOrderQuantitiesUseCase(orders, catalog)
+
+    @Produces
+    @Singleton
+    fun articleCatalogue(
+        articles: ArticleStore,
+        catalog: ReferenceCatalog,
+        sizes: SizeStore,
+        time: TimeSource,
+        ids: IdGenerator,
+    ): ArticleCatalogue = ArticleCatalogue(articles, catalog, sizes, time, ids)
+
+    @Produces
+    @Singleton
+    fun colourCatalogue(
+        colours: ColourStore,
+        time: TimeSource,
+        ids: IdGenerator,
+    ): ColourCatalogue = ColourCatalogue(colours, time, ids)
+
+    @Produces
+    @Singleton
+    fun sizeCatalogue(
+        sizes: SizeStore,
+        time: TimeSource,
+        ids: IdGenerator,
+    ): SizeCatalogue = SizeCatalogue(sizes, time, ids)
 }
