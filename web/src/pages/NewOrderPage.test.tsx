@@ -9,7 +9,7 @@ const clients: Client[] = [
 ];
 
 const articles: Article[] = [
-  { id: "a1", reference: "ART-100", label: "Chemise", clientId: "c1", sizeType: "Alpha" },
+  { id: "a1", reference: "ART-100", label: "Chemise", clientId: "c1", sizeType: "Alpha", unit: "pcs" },
 ];
 
 function fakeApi(overrides: Partial<OrdersApi> = {}): OrdersApi {
