@@ -2,7 +2,7 @@
   "feature": "order-composition",
   "status": "running",
   "iterations": 0,
-  "updated": "2026-11-19T15:21:21Z",
+  "updated": "2026-11-19T15:25:35Z",
   "waves": {
     "1": {
       "status": "done",
@@ -12,11 +12,11 @@
       "updated": "2026-11-19T15:20:58Z"
     },
     "2": {
-      "status": "in-progress",
+      "status": "done",
       "branch": "feat/order-composition-w2",
-      "pr": "\u2014",
-      "evidence": "\u2014",
-      "updated": "2026-11-19T15:21:21Z"
+      "pr": "#24",
+      "evidence": "web 27/27 + build, api green, 5 browser screenshots, evidence 20261119T152524Z-94478b4",
+      "updated": "2026-11-19T15:25:35Z"
     }
   },
   "gates": {
@@ -43,6 +43,7 @@
     "2026-11-19T15:01:39Z gate G1 met: DECISION-REVIEW.md \u2014 verdict ACCEPT; steelman on D2 answered by owner amendment (partial allowed)",
     "2026-11-19T15:02:04Z start wave 1 on feat/order-composition-w1",
     "2026-11-19T15:20:58Z complete wave 1 (#22): :api:test green, live verified, evidence 20261119T152049Z-9d3d3da",
-    "2026-11-19T15:21:21Z start wave 2 on feat/order-composition-w2"
+    "2026-11-19T15:21:21Z start wave 2 on feat/order-composition-w2",
+    "2026-11-19T15:25:35Z complete wave 2 (#24): web 27/27 + build, api green, 5 browser screenshots, evidence 20261119T152524Z-94478b4"
   ]
 }
