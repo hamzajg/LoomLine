@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 
 /**
- * Wave 3 — US5/US6/US7: the approved access matrix is enforced server-side.
+ * Wave 3 — US5/US6/US7 / scenario "API rejects an out-of-role action": the approved access matrix is enforced server-side.
  * Realm roles come from @TestSecurity; the Keycloak admin port is mocked so
  * the suite stays hermetic (the real provider is exercised on Compose).
  */
