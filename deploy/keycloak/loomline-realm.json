@@ -1,0 +1,93 @@
+{
+  "realm": "loomline",
+  "displayName": "LoomLine",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "resetPasswordAllowed": false,
+  "rememberMe": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "passwordPolicy": "hashAlgorithm(argon2) and length(8) and notUsername",
+  "roles": {
+    "realm": [
+      {
+        "name": "administrator",
+        "description": "Administrator — creates users and assigns roles"
+      },
+      {
+        "name": "production-planner",
+        "description": "Production planner — works in the orders area"
+      },
+      {
+        "name": "production-supervisor",
+        "description": "Production supervisor — narrower production scope"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "loomline-app",
+      "name": "LoomLine web application",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "bearerOnly": false,
+      "secret": "loomline-demo-secret",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "rootUrl": "http://localhost:8086",
+      "baseUrl": "http://localhost:8086/",
+      "redirectUris": ["http://localhost:8085/api/auth/callback"],
+      "webOrigins": ["http://localhost:8086"],
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:8086/*"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "admin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Ada",
+      "lastName": "Administrator",
+      "email": "admin@loomline.local",
+      "credentials": [
+        { "type": "password", "value": "ChangeMe!2026", "temporary": false }
+      ],
+      "requiredActions": [],
+      "realmRoles": ["administrator"]
+    },
+    {
+      "username": "planner",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Nadia",
+      "lastName": "Planner",
+      "email": "planner@loomline.local",
+      "credentials": [
+        { "type": "password", "value": "Demo!2026", "temporary": false }
+      ],
+      "requiredActions": [],
+      "realmRoles": ["production-planner"]
+    },
+    {
+      "username": "supervisor",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Sam",
+      "lastName": "Supervisor",
+      "email": "supervisor@loomline.local",
+      "credentials": [
+        { "type": "password", "value": "Demo!2026", "temporary": false }
+      ],
+      "requiredActions": [],
+      "realmRoles": ["production-supervisor"]
+    }
+  ]
+}

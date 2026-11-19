@@ -15,6 +15,32 @@ services:
       timeout: 3s
       retries: 20
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    # `--import-realm` loads deploy/keycloak/loomline-realm.json once, when the
+    # realm does not already exist (see SEED-DATA.md for the seed contents).
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_HEALTH_ENABLED: "true"
+      # Fixed frontend URL so tokens carry a stable issuer
+      # (http://localhost:8087/...) even though the API reaches Keycloak
+      # internally on http://keycloak:8080.
+      KC_HOSTNAME: ${KC_HOSTNAME:-http://localhost:8087}
+    volumes:
+      - ./deploy/keycloak:/opt/keycloak/data/import:ro
+    ports:
+      - "8087:8080"
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "exec 3<>/dev/tcp/127.0.0.1/9000; printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3; grep -q '\"status\": \"UP\"' <&3"
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+
   api:
     build:
       context: .
@@ -27,10 +53,20 @@ services:
       DB_URL: jdbc:postgresql://db:5432/loomline
       DB_USER: loomline
       DB_PASSWORD: ${DB_PASSWORD:-loomline}
+      # Identity (ADR-0002): reach Keycloak on the container network, send the
+      # browser to the published address, keep the issuer on the frontend URL.
+      OIDC_AUTH_SERVER_URL: ${OIDC_AUTH_SERVER_URL:-http://keycloak:8080/realms/loomline}
+      OIDC_CLIENT_ID: ${OIDC_CLIENT_ID:-loomline-app}
+      OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET:-loomline-demo-secret}
+      OIDC_ISSUER: ${OIDC_ISSUER:-http://localhost:8087/realms/loomline}
+      OIDC_AUTHORIZATION_PATH: ${OIDC_AUTHORIZATION_PATH:-http://localhost:8087/realms/loomline/protocol/openid-connect/auth}
+      OIDC_END_SESSION_PATH: ${OIDC_END_SESSION_PATH:-http://localhost:8087/realms/loomline/protocol/openid-connect/logout}
     ports:
       - "8085:8080"
     depends_on:
       db:
+        condition: service_healthy
+      keycloak:
         condition: service_healthy
 
   web:

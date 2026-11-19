@@ -1,6 +1,6 @@
 import { useLocale } from "../i18n/LocaleProvider";
 import { LANGUAGE_NAMES, LOCALES, type Locale } from "../i18n/messages";
-import { type ShellUser } from "../session";
+import { SIGN_OUT_PATH, type ShellUser } from "../session";
 import { Icon } from "./Icon";
 
 function initials(name: string): string {
@@ -54,15 +54,19 @@ export function AppHeader({ user, navOpen, onToggleNav }: Props) {
         ))}
       </select>
 
-      <div className="app-header__user">
+      <div className="app-header__user" title={`${t("signedInAs")} ${user.username}`}>
         <span className="app-header__avatar" aria-hidden="true">
           {initials(user.displayName)}
         </span>
         <span className="app-header__user-id">
           <span className="app-header__user-name">{user.displayName}</span>
-          <span className="app-header__user-role">{user.role}</span>
+          <span className="app-header__user-role">{user.roles.join(", ")}</span>
         </span>
       </div>
+
+      <a className="app-header__signout" href={SIGN_OUT_PATH}>
+        {t("signOut")}
+      </a>
     </header>
   );
 }
