@@ -64,6 +64,25 @@ const en: Record<string, string> = {
   "item.absences": "Absences",
   "item.users": "Users",
   "item.roles": "Roles",
+
+  accessDeniedTitle: "Access denied",
+  accessDeniedDetail:
+    "Your role does not include this section. Ask an administrator if you need access.",
+  usersTitle: "Users",
+  rolesTitle: "Roles",
+  username: "Username",
+  email: "Email",
+  password: "Password",
+  role: "Role",
+  createUser: "Create user",
+  creating: "Creating…",
+  userCreated: "User created",
+  createFailed: "The user could not be created.",
+  loadFailed: "The data could not be loaded.",
+  loading: "Loading…",
+  "role.administrator": "Administrator",
+  "role.production-planner": "Production planner",
+  "role.production-supervisor": "Production supervisor",
 };
 
 const fr: Record<string, string> = {
@@ -116,6 +135,25 @@ const fr: Record<string, string> = {
   "item.absences": "Absences",
   "item.users": "Utilisateurs",
   "item.roles": "Rôles",
+
+  accessDeniedTitle: "Accès refusé",
+  accessDeniedDetail:
+    "Votre rôle ne comprend pas cette section. Demandez à un administrateur si vous en avez besoin.",
+  usersTitle: "Utilisateurs",
+  rolesTitle: "Rôles",
+  username: "Nom d'utilisateur",
+  email: "E-mail",
+  password: "Mot de passe",
+  role: "Rôle",
+  createUser: "Créer un utilisateur",
+  creating: "Création…",
+  userCreated: "Utilisateur créé",
+  createFailed: "L'utilisateur n'a pas pu être créé.",
+  loadFailed: "Les données n'ont pas pu être chargées.",
+  loading: "Chargement…",
+  "role.administrator": "Administrateur",
+  "role.production-planner": "Planificateur de production",
+  "role.production-supervisor": "Superviseur de production",
 };
 
 export const messages: Record<Locale, Record<string, string>> = { en, fr };

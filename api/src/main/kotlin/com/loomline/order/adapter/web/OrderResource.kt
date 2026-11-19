@@ -1,5 +1,6 @@
 package com.loomline.order.adapter.web
 
+import com.loomline.identity.adapter.web.AccessPolicy
 import com.loomline.order.application.OrderApplicationService
 import com.loomline.order.domain.CreateOrderResult
 import com.loomline.order.domain.NewOrder
@@ -16,13 +17,17 @@ import java.util.UUID
 
 @Path("/api/orders")
 @Produces(MediaType.APPLICATION_JSON)
-class OrderResource(private val service: OrderApplicationService) {
+class OrderResource(
+    private val service: OrderApplicationService,
+    private val policy: AccessPolicy,
+) {
 
     @GET
     fun list(
         @QueryParam("status") statusStr: String?,
         @QueryParam("reference") reference: String?,
     ): Response {
+        policy.require("production")
         val status = statusStr?.trim()?.takeIf { it.isNotEmpty() }?.let {
             try {
                 com.loomline.order.domain.OrderStatus.valueOf(it.uppercase())
@@ -44,6 +49,7 @@ class OrderResource(private val service: OrderApplicationService) {
     @GET
     @Path("/{id}")
     fun getById(@PathParam("id") id: UUID): Response {
+        policy.require("production")
         val order = service.findById(id)
             ?: return Response.status(Response.Status.NOT_FOUND)
                 .entity(
@@ -60,6 +66,7 @@ class OrderResource(private val service: OrderApplicationService) {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     fun create(request: CreateOrderRequest): Response {
+        policy.require("production", manage = true)
         val result = service.create(
             NewOrder(
                 reference = request.reference,
@@ -101,6 +108,7 @@ class OrderResource(private val service: OrderApplicationService) {
     @GET
     @Path("/by-reference/{reference}")
     fun byReference(@PathParam("reference") reference: String): Response {
+        policy.require("production")
         val order = service.findByReference(reference)
             ?: return Response
                 .status(Response.Status.NOT_FOUND)

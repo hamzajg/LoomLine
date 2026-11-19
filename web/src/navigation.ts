@@ -1,3 +1,4 @@
+import { type SectionGrant } from "./access";
 import { type IconName } from "./shell/Icon";
 
 /**
@@ -110,14 +111,30 @@ function normalise(path: string): string {
   return path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
 }
 
-export function resolveRoute(path: string): ResolvedRoute {
+export function resolveRoute(path: string, sections: NavSection[] = SECTIONS): ResolvedRoute {
   const target = normalise(path);
-  for (const section of SECTIONS) {
+  for (const section of sections) {
     for (const item of section.items) {
       if (item.path === target) return { path: target, section, item };
     }
   }
   return { path: target, section: null, item: null };
+}
+
+/**
+ * The taxonomy projected through the session's grants: only sections the
+ * server says the user may view appear in the shell (US5). The client never
+ * decides access itself — it renders the server's projection.
+ */
+export function visibleSections(grants: SectionGrant[]): NavSection[] {
+  const viewable = new Set(grants.filter((g) => g.view).map((g) => g.id));
+  return SECTIONS.filter((section) => viewable.has(section.id));
+}
+
+/** True when the route's section is inside the granted projection. */
+export function routeAllowed(route: ResolvedRoute, grants: SectionGrant[]): boolean {
+  if (!route.section) return true; // unknown paths keep the not-available state
+  return grants.some((g) => g.id === route.section!.id && g.view);
 }
 
 export type Breadcrumb = { labelKey: string; current?: boolean };
