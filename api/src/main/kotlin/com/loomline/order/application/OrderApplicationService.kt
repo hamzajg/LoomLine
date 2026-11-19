@@ -5,6 +5,10 @@ import com.loomline.order.domain.CreateOrderUseCase
 import com.loomline.order.domain.NewOrder
 import com.loomline.order.domain.Order
 import com.loomline.order.domain.OrderRepository
+import com.loomline.order.domain.OrderStatus
+import com.loomline.order.domain.OrderStatusHistoryEntry
+import com.loomline.order.domain.TransitionOrderResult
+import com.loomline.order.domain.TransitionOrderUseCase
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 
@@ -18,6 +22,7 @@ import jakarta.transaction.Transactional
 @ApplicationScoped
 class OrderApplicationService(
     private val createOrder: CreateOrderUseCase,
+    private val transitionOrder: TransitionOrderUseCase,
     private val orders: OrderRepository,
 ) {
     @Transactional
@@ -34,4 +39,17 @@ class OrderApplicationService(
     @Transactional
     fun list(status: com.loomline.order.domain.OrderStatus? = null, reference: String? = null): List<Order> =
         orders.list(status, reference)
+
+    @Transactional
+    fun transition(
+        orderId: java.util.UUID,
+        to: OrderStatus,
+        reason: String?,
+        actor: String,
+    ): TransitionOrderResult =
+        transitionOrder.transition(orderId, to, reason, actor)
+
+    @Transactional
+    fun history(orderId: java.util.UUID): List<OrderStatusHistoryEntry> =
+        orders.statusHistory(orderId)
 }

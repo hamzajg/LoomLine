@@ -72,6 +72,8 @@ function fakeApi(overrides: Partial<OrdersApi> = {}): OrdersApi {
       if (!found) throw new Error("Order not found");
       return found;
     }),
+    transition: vi.fn(),
+    history: vi.fn().mockResolvedValue([]),
     ...overrides,
   };
 }
@@ -150,5 +152,76 @@ describe("OrdersPage — Wave 2", () => {
     await waitFor(() => {
       expect(screen.queryByTestId("order-detail-modal")).not.toBeInTheDocument();
     });
+  });
+});
+
+describe("OrdersPage — Wave 3", () => {
+  it("Advance an order through its lifecycle", async () => {
+    const released = { ...mockOrders[0], status: "RELEASED" as const };
+    const api = fakeApi({
+      transition: vi.fn().mockResolvedValue(released),
+      history: vi.fn().mockResolvedValue([
+        {
+          fromStatus: "DRAFT" as const,
+          toStatus: "RELEASED" as const,
+          reason: null,
+          changedAt: "2026-11-19T09:00:00Z",
+          changedBy: "planner",
+        },
+      ]),
+    });
+    const user = userEvent.setup();
+
+    render(<OrdersPage api={api} canManage />);
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-001")).toBeInTheDocument();
+    });
+    await user.click(screen.getByLabelText("View order OF-2026-001"));
+
+    await waitFor(() => {
+      expect(screen.getByTestId("transition-released")).toBeInTheDocument();
+    });
+    await user.click(screen.getByTestId("transition-released"));
+
+    await waitFor(() => {
+      expect(api.transition).toHaveBeenCalledWith("o1", "RELEASED", undefined);
+    });
+    expect(await screen.findByText(/DRAFT → RELEASED/)).toBeInTheDocument();
+  });
+
+  it("hides transition actions without manage rights", async () => {
+    const api = fakeApi();
+    const user = userEvent.setup();
+
+    render(<OrdersPage api={api} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-001")).toBeInTheDocument();
+    });
+    await user.click(screen.getByLabelText("View order OF-2026-001"));
+
+    await waitFor(() => {
+      expect(screen.getByTestId("order-detail-modal")).toBeInTheDocument();
+    });
+    expect(screen.queryByTestId("transition-released")).not.toBeInTheDocument();
+  });
+
+  it("shows no transition actions on a terminal order", async () => {
+    const api = fakeApi();
+    const user = userEvent.setup();
+
+    render(<OrdersPage api={api} canManage />);
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-003")).toBeInTheDocument();
+    });
+    await user.click(screen.getByLabelText("View order OF-2026-003"));
+
+    await waitFor(() => {
+      expect(screen.getByTestId("order-detail-modal")).toBeInTheDocument();
+    });
+    expect(screen.queryByTestId("transition-completed")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("transition-cancelled")).not.toBeInTheDocument();
   });
 });

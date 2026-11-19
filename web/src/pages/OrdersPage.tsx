@@ -5,14 +5,36 @@ import {
   type Client,
   type CreatedOrder,
   type OrdersApi,
+  type OrderStatus,
+  type StatusHistoryEntry,
 } from "../api";
 import { NewOrderPage } from "./NewOrderPage";
 
 type Props = {
   api?: OrdersApi;
+  /** Whether the session may mutate orders; the server still enforces it. */
+  canManage?: boolean;
 };
 
-export function OrdersPage({ api = httpOrdersApi }: Props) {
+/** UI convenience only — the server owns the real transition table. */
+const TRANSITIONS: Record<OrderStatus, { to: OrderStatus; label: string }[]> = {
+  DRAFT: [
+    { to: "RELEASED", label: "Release" },
+    { to: "CANCELLED", label: "Cancel" },
+  ],
+  RELEASED: [
+    { to: "IN_PROGRESS", label: "Start work" },
+    { to: "CANCELLED", label: "Cancel" },
+  ],
+  IN_PROGRESS: [
+    { to: "COMPLETED", label: "Complete" },
+    { to: "CANCELLED", label: "Cancel" },
+  ],
+  COMPLETED: [],
+  CANCELLED: [],
+};
+
+export function OrdersPage({ api = httpOrdersApi, canManage = false }: Props) {
   const [orders, setOrders] = useState<CreatedOrder[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
@@ -20,6 +42,8 @@ export function OrdersPage({ api = httpOrdersApi }: Props) {
   const [referenceQuery, setReferenceQuery] = useState<string>("");
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<CreatedOrder | null>(null);
+  const [history, setHistory] = useState<StatusHistoryEntry[]>([]);
+  const [transitionError, setTransitionError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
 
@@ -55,10 +79,31 @@ export function OrdersPage({ api = httpOrdersApi }: Props) {
   useEffect(() => {
     if (!selectedOrderId) {
       setSelectedOrder(null);
+      setHistory([]);
       return;
     }
     api.get(selectedOrderId).then(setSelectedOrder).catch(() => {});
+    api.history(selectedOrderId).then(setHistory).catch(() => setHistory([]));
   }, [api, selectedOrderId]);
+
+  const runTransition = (to: OrderStatus) => {
+    if (!selectedOrder) return;
+    setTransitionError(null);
+    const reason =
+      selectedOrder.status === "IN_PROGRESS" && to === "CANCELLED"
+        ? window.prompt("Reason for cancelling this order:")
+        : undefined;
+    if (reason === null) return; // user dismissed the prompt
+    api
+      .transition(selectedOrder.id, to, reason ?? undefined)
+      .then((updated) => {
+        setSelectedOrder(updated);
+        fetchOrders();
+        return api.history(updated.id);
+      })
+      .then(setHistory)
+      .catch((err: Error) => setTransitionError(err.message));
+  };
 
   const clientName = (id: string) =>
     clients.find((c) => c.id === id)?.name || id;
@@ -218,6 +263,43 @@ export function OrdersPage({ api = httpOrdersApi }: Props) {
                 <dt>Due date</dt>
                 <dd aria-label="Detail Due Date">{selectedOrder.dueDate}</dd>
               </dl>
+
+              {canManage && TRANSITIONS[selectedOrder.status].length > 0 && (
+                <div className="order-transitions">
+                  {transitionError && (
+                    <p className="form-error" role="alert">
+                      {transitionError}
+                    </p>
+                  )}
+                  {TRANSITIONS[selectedOrder.status].map((action) => (
+                    <button
+                      key={action.to}
+                      type="button"
+                      className="btn btn--secondary"
+                      data-testid={`transition-${action.to.toLowerCase()}`}
+                      onClick={() => runTransition(action.to)}
+                    >
+                      {action.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {history.length > 0 && (
+                <div className="order-history">
+                  <h4>Status history</h4>
+                  <ul>
+                    {history.map((entry, i) => (
+                      <li key={i}>
+                        {entry.fromStatus ?? "—"} → {entry.toStatus}
+                        {entry.reason ? ` (${entry.reason})` : ""} —{" "}
+                        {new Date(entry.changedAt).toLocaleString()} by{" "}
+                        {entry.changedBy}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>

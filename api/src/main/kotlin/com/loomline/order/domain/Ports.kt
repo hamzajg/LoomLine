@@ -14,6 +14,13 @@ interface OrderRepository {
     fun findById(id: UUID): Order?
 
     fun list(status: OrderStatus? = null, reference: String? = null): List<Order>
+
+    /** Persists a mutated order. Optimistic-lock failures surface as 409. */
+    fun update(order: Order): Order
+
+    fun appendStatusHistory(entry: OrderStatusHistoryEntry)
+
+    fun statusHistory(orderId: UUID): List<OrderStatusHistoryEntry>
 }
 
 /** Read-only access to the reference records an order may point at. */

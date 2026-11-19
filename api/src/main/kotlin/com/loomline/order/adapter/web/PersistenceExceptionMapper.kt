@@ -1,10 +1,12 @@
 package com.loomline.order.adapter.web
 
+import jakarta.persistence.OptimisticLockException
 import jakarta.persistence.PersistenceException
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import jakarta.ws.rs.ext.ExceptionMapper
 import jakarta.ws.rs.ext.Provider
+import org.hibernate.StaleObjectStateException
 import org.hibernate.exception.ConstraintViolationException
 import java.sql.SQLException
 
@@ -33,6 +35,19 @@ class PersistenceExceptionMapper : ExceptionMapper<PersistenceException> {
                 .build()
         }
 
+        if (exception.isStaleWrite()) {
+            return Response
+                .status(Response.Status.CONFLICT)
+                .type(MediaType.APPLICATION_JSON)
+                .entity(
+                    ErrorResponse(
+                        code = "STALE_ORDER",
+                        message = "The order was modified by someone else; reload and retry.",
+                    ),
+                )
+                .build()
+        }
+
         return Response
             .status(Response.Status.INTERNAL_SERVER_ERROR)
             .type(MediaType.APPLICATION_JSON)
@@ -44,6 +59,15 @@ class PersistenceExceptionMapper : ExceptionMapper<PersistenceException> {
             )
             .build()
     }
+}
+
+private fun PersistenceException.isStaleWrite(): Boolean {
+    var cause: Throwable? = this
+    while (cause != null) {
+        if (cause is OptimisticLockException || cause is StaleObjectStateException) return true
+        cause = cause.cause
+    }
+    return false
 }
 
 private fun PersistenceException.isDuplicateReference(): Boolean {

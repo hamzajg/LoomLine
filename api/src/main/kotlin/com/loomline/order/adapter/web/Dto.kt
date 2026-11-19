@@ -44,10 +44,37 @@ data class OrderResponse(
     }
 }
 
+/** Request body for `POST /api/orders/{id}/transitions`. */
+class TransitionRequest {
+    var to: String? = null
+    var reason: String? = null
+}
+
+data class StatusHistoryResponse(
+    val fromStatus: String?,
+    val toStatus: String,
+    val reason: String?,
+    val changedAt: Instant,
+    val changedBy: String,
+) {
+    companion object {
+        fun from(entry: com.loomline.order.domain.OrderStatusHistoryEntry) = StatusHistoryResponse(
+            fromStatus = entry.fromStatus?.name,
+            toStatus = entry.toStatus.name,
+            reason = entry.reason,
+            changedAt = entry.changedAt,
+            changedBy = entry.changedBy,
+        )
+    }
+}
+
 data class ErrorResponse(
     val code: String,
     val message: String,
     val fieldErrors: Map<String, String>? = null,
+    val from: String? = null,
+    val to: String? = null,
+    val status: String? = null,
 )
 
 data class ClientResponse(val id: UUID, val name: String, val country: String?)

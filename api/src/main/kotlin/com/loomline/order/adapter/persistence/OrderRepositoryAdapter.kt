@@ -3,6 +3,7 @@ package com.loomline.order.adapter.persistence
 import com.loomline.order.domain.Order
 import com.loomline.order.domain.OrderRepository
 import com.loomline.order.domain.OrderStatus
+import com.loomline.order.domain.OrderStatusHistoryEntry
 import jakarta.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
@@ -25,6 +26,21 @@ class OrderRepositoryAdapter : OrderRepository {
 
     override fun list(status: OrderStatus?, reference: String?): List<Order> =
         OrderEntity.listFiltered(status?.name, reference).map { it.toDomain() }
+
+    override fun update(order: Order): Order {
+        val entity = OrderEntity.findById(order.id)
+            ?: error("Order ${order.id} disappeared during update")
+        entity.status = order.status.name
+        entity.updatedAt = order.updatedAt
+        return entity.toDomain()
+    }
+
+    override fun appendStatusHistory(entry: OrderStatusHistoryEntry) {
+        entry.toEntity().persist()
+    }
+
+    override fun statusHistory(orderId: java.util.UUID): List<OrderStatusHistoryEntry> =
+        OrderStatusHistoryEntity.forOrder(orderId).map { it.toDomain() }
 }
 
 private fun Order.toEntity() = OrderEntity().apply {

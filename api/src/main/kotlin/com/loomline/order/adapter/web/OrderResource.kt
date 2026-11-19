@@ -4,6 +4,9 @@ import com.loomline.identity.adapter.web.AccessPolicy
 import com.loomline.order.application.OrderApplicationService
 import com.loomline.order.domain.CreateOrderResult
 import com.loomline.order.domain.NewOrder
+import com.loomline.order.domain.OrderStatus
+import com.loomline.order.domain.TransitionOrderResult
+import io.quarkus.security.identity.SecurityIdentity
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.GET
 import jakarta.ws.rs.POST
@@ -20,6 +23,7 @@ import java.util.UUID
 class OrderResource(
     private val service: OrderApplicationService,
     private val policy: AccessPolicy,
+    private val identity: SecurityIdentity,
 ) {
 
     @GET
@@ -104,6 +108,96 @@ class OrderResource(
                 .build()
         }
     }
+
+    @POST
+    @Path("/{id}/transitions")
+    @Consumes(MediaType.APPLICATION_JSON)
+    fun transition(@PathParam("id") id: UUID, request: TransitionRequest): Response {
+        policy.require("production", manage = true)
+        val to = request.to?.trim()?.uppercase()?.let {
+            try {
+                OrderStatus.valueOf(it)
+            } catch (e: IllegalArgumentException) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(
+                        ErrorResponse(
+                            code = "INVALID_STATUS",
+                            message = "Unknown status: ${request.to}",
+                        ),
+                    )
+                    .build()
+            }
+        } ?: return Response.status(Response.Status.BAD_REQUEST)
+            .entity(
+                ErrorResponse(
+                    code = "VALIDATION_FAILED",
+                    message = "The transition could not be applied.",
+                    fieldErrors = mapOf("to" to "Target status is required."),
+                ),
+            )
+            .build()
+
+        return when (
+            val result = service.transition(id, to, request.reason, identity.principal.name)
+        ) {
+            is TransitionOrderResult.Transitioned ->
+                Response.ok(OrderResponse.from(result.order)).build()
+
+            TransitionOrderResult.OrderNotFound -> notFound(id)
+
+            is TransitionOrderResult.InvalidTransition -> Response
+                .status(Response.Status.CONFLICT)
+                .entity(
+                    ErrorResponse(
+                        code = "INVALID_STATUS_TRANSITION",
+                        message = "Cannot move an order from ${result.from} to ${result.to}.",
+                        from = result.from.name,
+                        to = result.to.name,
+                    ),
+                )
+                .build()
+
+            is TransitionOrderResult.Terminal -> Response
+                .status(Response.Status.CONFLICT)
+                .entity(
+                    ErrorResponse(
+                        code = "ORDER_TERMINAL",
+                        message = "Order is in terminal status ${result.status}; no transitions are allowed.",
+                        status = result.status.name,
+                    ),
+                )
+                .build()
+
+            TransitionOrderResult.ReasonRequired -> Response
+                .status(Response.Status.BAD_REQUEST)
+                .entity(
+                    ErrorResponse(
+                        code = "VALIDATION_FAILED",
+                        message = "Cancelling an order in progress requires a reason.",
+                        fieldErrors = mapOf("reason" to "A cancellation reason is required."),
+                    ),
+                )
+                .build()
+        }
+    }
+
+    @GET
+    @Path("/{id}/history")
+    fun history(@PathParam("id") id: UUID): Response {
+        policy.require("production")
+        if (service.findById(id) == null) return notFound(id)
+        return Response.ok(service.history(id).map { StatusHistoryResponse.from(it) }).build()
+    }
+
+    private fun notFound(id: UUID): Response =
+        Response.status(Response.Status.NOT_FOUND)
+            .entity(
+                ErrorResponse(
+                    code = "ORDER_NOT_FOUND",
+                    message = "No order with id \"$id\".",
+                ),
+            )
+            .build()
 
     @GET
     @Path("/by-reference/{reference}")
