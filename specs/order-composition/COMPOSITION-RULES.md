@@ -1,7 +1,7 @@
 # Composition rules — order quantity breakdown
 
 Gate: **G3 — Composition rules agreed** (before wave 1). Owner: product
-owner. **STATUS: PROPOSED — awaiting owner sign-off.** This file is the
+owner. **STATUS: AGREED by product owner 2026-11-19** (partial breakdowns allowed; clearing allowed). This file is the
 authority for the validation and locking rules below.
 
 ## Entities
@@ -16,10 +16,11 @@ authority for the validation and locking rules below.
 1. **Replace-set writes.** `PUT /api/orders/{id}/quantities` accepts the
    complete desired list; the server replaces all lines atomically. An
    empty list clears the breakdown.
-2. **Optional but reconciling.** An order may have zero lines. When at
-   least one line exists, every quantity must be a positive integer and
-   `sum(quantity) == order.quantity`. A mismatch rejects the whole write —
-   partial breakdowns are never stored.
+2. **Optional, partial allowed, never exceeding.** An order may have zero
+   lines, and lines may cover only part of the order quantity (progressive
+   entry is legitimate). Every quantity must be a positive integer and
+   `sum(quantity) <= order.quantity`; exceeding the total rejects the whole
+   write.
 3. **Edit window.** Lines may be written only while the order is `DRAFT` or
    `RELEASED`. From `IN_PROGRESS` onward the breakdown is locked; attempts
    return `409 COMPOSITION_LOCKED`.
@@ -33,8 +34,5 @@ authority for the validation and locking rules below.
 
 ## Open questions for the owner
 
-- Should clearing all lines be allowed on a RELEASED order (returns the
-  order to "no breakdown")? Proposed: yes — the lock, not emptiness, is the
-  guard.
-- Do partial (non-reconciling) breakdowns have a legitimate use? Proposed:
-  no for v1; revisit if planners need progressive entry.
+- Resolved 2026-11-19: partial breakdowns ARE allowed (sum <= total);
+  clearing all lines IS allowed while the order is editable.

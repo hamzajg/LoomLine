@@ -8,7 +8,7 @@ parse them. Write the story as: "As a <role>, I want <goal>, so that
 ## US1 — As a production planner, I want to record the colour and size quantities of an order, so that production can be planned per variant
 - Scenarios: @w1
 - Size: M
-- Notes: replace-set API; sum must equal order quantity when lines exist
+- Notes: replace-set API; sum may not exceed order quantity (partial allowed)
 
 ## US2 — As a production planner, I want composition changes blocked once production starts, so that the breakdown stays a fact of production
 - Scenarios: @w2

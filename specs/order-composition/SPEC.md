@@ -42,7 +42,8 @@ with the same server-enforced rigour the lifecycle already has.
 - Replace-set API: the client submits the full desired breakdown; the
   server validates and stores it atomically.
 - Validation: positive quantities, known colour/size, size compatible with
-  the article's size type, sum of lines equals the order quantity.
+  the article's size type, sum of lines does not exceed the order quantity
+  (partial breakdowns allowed).
 - Composition editable only while the order is `DRAFT` or `RELEASED`;
   locked from `IN_PROGRESS` onward (same boundary as the lifecycle).
 - Order detail shows the breakdown; the list is unchanged.
@@ -61,7 +62,7 @@ with the same server-enforced rigour the lifecycle already has.
 | # | Criterion | Scenario(s) |
 |---|-----------|-------------|
 | 1 | A planner can set the colour/size quantity breakdown on a plannable order | Set the colour-size breakdown of an order, Read the breakdown of an order |
-| 2 | Invalid breakdowns are rejected with typed errors and nothing is stored | Reject a breakdown that does not reconcile, Reject a breakdown with an unknown colour or size |
+| 2 | Invalid breakdowns are rejected with typed errors and nothing is stored | Reject a breakdown exceeding the order quantity, Reject a breakdown with an unknown colour or size |
 | 3 | The breakdown locks once production starts | Reject composition changes on an order in progress |
 | 4 | Viewers see the breakdown without being able to change it | View the breakdown without manage rights |
 
@@ -73,13 +74,13 @@ with the same server-enforced rigour the lifecycle already has.
   uniqueness are whole-set properties — validating them per-line invites
   intermediate invalid states. Reversibility: two-way door; a per-line API
   can be added later without changing stored data.
-- **D2 — Lines are optional but must reconcile when present.** An order may
-  have zero lines (backwards compatible with orders created before this
-  feature). Once at least one line exists, quantities must be positive and
-  their sum must equal the order's total quantity. Chosen over "lines always
-  required" (would break existing orders and the create flow) and over
-  "sum may differ" (a breakdown that doesn't add up is worse than none).
-  Reversibility: two-way door — the rule lives in one use case.
+- **D2 — Lines are optional, may be partial, and may not exceed the total.**
+  An order may have zero lines (backwards compatible), and lines may cover
+  only part of the quantity — progressive entry is legitimate. The only sum
+  rule is `sum <= order.quantity`: a breakdown claiming more than the order
+  holds is nonsense. Agreed by the product owner 2026-11-19 (see
+  COMPOSITION-RULES.md). Reversibility: two-way door — the rule lives in
+  one use case.
 - **D3 — Composition is locked from IN_PROGRESS onward.** Editing is
   allowed in DRAFT and RELEASED only. This mirrors the lifecycle boundary:
   once work has started, the breakdown is a fact of production, not a

@@ -18,9 +18,9 @@ Feature: order-composition
     Then the lines are returned with colour, size and quantity
 
   @w1 @edge-case
-  Scenario: Reject a breakdown that does not reconcile
+  Scenario: Reject a breakdown exceeding the order quantity
     Given an order for 100 units
-    When the planner sets lines summing to 90
+    When the planner sets lines summing to 110
     Then the request is rejected and no lines are stored
 
   @w1 @edge-case
