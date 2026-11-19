@@ -129,7 +129,9 @@ can do only what their job requires.
   recorded in `ADR-0002-identity.md`; this **supersedes** the earlier (b) choice
   in this spec. LoomLine keeps only a projection of the user (keyed by the OIDC
   subject) and never stores a password; credential hashing is **Argon2id**,
-  owned by the realm. *Consequences:* positive — no in-house secret handling,
+  owned by the realm. User administration (US7) delegates to the provider's
+  Admin API for the same reason — the API orchestrates but never holds
+  credential material. *Consequences:* positive — no in-house secret handling,
   central lifecycle, Argon2id by default; negative — an extra runtime
   dependency, an offline/degraded-mode gap, and a projection that can go stale
   between sign-ins. *Reversibility:* one-way door for the account source of

@@ -2,13 +2,13 @@
 
 Status: running
 Iterations: 2
-Updated: 2026-11-19T10:23:28Z
+Updated: 2026-11-19T11:24:52Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
 | 1 | done | feat/auth-and-app-shell-w1 | #6 | 12/12 Vitest (AppShell 3, OrdersPage 3, NewOrderPage 6) + npm run build green; no CI configured in repo; evidence auth-a | 2026-11-18T19:53:34Z |
 | 2 | done | feat/auth-and-app-shell-w2 | #9 | 25/25 Gradle :api:test (ApiAuthenticationIT 4 new) + 17/17 Vitest incl. 5 new wave-2 tests + npm run build green; docker | 2026-11-19T03:18:53Z |
-| 3 | pending | — | — | — | — |
+| 3 | in-progress | feat/auth-and-app-shell-w3 | — | — | 2026-11-19T11:24:52Z |
 
 ## Gates
 
@@ -32,3 +32,4 @@ Updated: 2026-11-19T10:23:28Z
 - 2026-11-19T03:19:26Z blocked: G3: role access matrix must be agreed before wave 3 — which roles exist and exactly which sections/actions each role gra
 - 2026-11-19T10:23:26Z gate G3 met: ACCESS-MATRIX.md agreed by product-owner 2026-11-19: administrator all sections+access admin; production-planner product
 - 2026-11-19T10:23:28Z resumed
+- 2026-11-19T11:24:52Z start wave 3 on feat/auth-and-app-shell-w3

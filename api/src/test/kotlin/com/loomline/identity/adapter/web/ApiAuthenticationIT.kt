@@ -7,7 +7,7 @@ import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
 
 /**
- * Wave 2 — US4: every API request requires a session.
+ * Wave 2 — US4 / scenario "API rejects a request without a session": every API request requires a session.
  *
  * No @TestSecurity here on purpose: these checks exercise the real, enforced
  * behaviour of an anonymous caller. The OIDC provider is not contacted (tests

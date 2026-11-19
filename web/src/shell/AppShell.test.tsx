@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { type ReactNode } from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { LocaleProvider } from "../i18n/LocaleProvider";
+import { SECTIONS } from "../navigation";
 import { AppShell } from "./AppShell";
 
 function setViewport(narrow: boolean) {
@@ -28,6 +29,7 @@ function renderShell(children: ReactNode) {
           displayName: "Demo operator",
           roles: ["administrator"],
         }}
+        sections={SECTIONS}
       >
         {children}
       </AppShell>

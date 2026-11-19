@@ -13,7 +13,7 @@ type Props = {
 
 export function AppSidebar({ sections, currentPath, navOpen, onNavigate }: Props) {
   const { t } = useLocale();
-  const active = resolveRoute(currentPath);
+  const active = resolveRoute(currentPath, sections);
   const [expanded, setExpanded] = useState<string[]>(() =>
     active.section ? [active.section.id] : [],
   );

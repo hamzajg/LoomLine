@@ -61,6 +61,12 @@ services:
       OIDC_ISSUER: ${OIDC_ISSUER:-http://localhost:8087/realms/loomline}
       OIDC_AUTHORIZATION_PATH: ${OIDC_AUTHORIZATION_PATH:-http://localhost:8087/realms/loomline/protocol/openid-connect/auth}
       OIDC_END_SESSION_PATH: ${OIDC_END_SESSION_PATH:-http://localhost:8087/realms/loomline/protocol/openid-connect/logout}
+      # Access administration (US7): the API reaches the Keycloak Admin API on
+      # the container network with the bootstrap admin account.
+      KEYCLOAK_ADMIN_URL: ${KEYCLOAK_ADMIN_URL:-http://keycloak:8080}
+      KEYCLOAK_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USERNAME:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM:-loomline}
     ports:
       - "8085:8080"
     depends_on:

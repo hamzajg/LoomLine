@@ -6,7 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import { useLocale } from "../i18n/LocaleProvider";
-import { breadcrumbsFor, resolveRoute, SECTIONS } from "../navigation";
+import { breadcrumbsFor, resolveRoute, type NavSection } from "../navigation";
 import { useRoute } from "../router";
 import { type ShellUser } from "../session";
 import { AppHeader } from "./AppHeader";
@@ -32,6 +32,8 @@ function useIsNarrow() {
 
 type Props = {
   user: ShellUser;
+  /** The role-filtered projection of the taxonomy (US5). */
+  sections: NavSection[];
   children: ReactNode;
 };
 
@@ -40,7 +42,7 @@ type Props = {
  * and the content area. On narrow viewports the sidebar is a header-toggled
  * drawer over the content.
  */
-export function AppShell({ user, children }: Props) {
+export function AppShell({ user, sections, children }: Props) {
   const { t } = useLocale();
   const { path } = useRoute();
   const narrow = useIsNarrow();
@@ -54,7 +56,7 @@ export function AppShell({ user, children }: Props) {
   const closeNav = useCallback(() => setNavOpen(false), []);
   const toggleNav = useCallback(() => setNavOpen((open) => !open), []);
 
-  const route = resolveRoute(path);
+  const route = resolveRoute(path, sections);
 
   useEffect(() => {
     const screen = route.item ? t(route.item.labelKey) : t("home");
@@ -77,7 +79,7 @@ export function AppShell({ user, children }: Props) {
 
       <div className="app-shell__body">
         <AppSidebar
-          sections={SECTIONS}
+          sections={sections}
           currentPath={path}
           navOpen={navOpen}
           onNavigate={narrow ? closeNav : undefined}

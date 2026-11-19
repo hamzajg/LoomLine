@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
+import type { SectionGrant } from "./access";
 import { App } from "./App";
 
 /** A minimal fetch Response stand-in (jsdom keeps `Response` optional). */
@@ -17,7 +18,27 @@ const planner = {
   roles: ["production-planner"],
 };
 
+/** The planner's projection of the taxonomy, as /api/navigation serves it. */
+const plannerGrants: SectionGrant[] = [
+  { id: "production", view: true, manage: true },
+  { id: "stock", view: true, manage: false },
+  { id: "commercial", view: true, manage: false },
+  { id: "quality", view: false, manage: false },
+  { id: "equipment", view: false, manage: false },
+  { id: "hr", view: false, manage: false },
+  { id: "access", view: false, manage: false },
+];
+
 let fetchMock: ReturnType<typeof vi.fn>;
+
+function mockApi(session: unknown, grants: SectionGrant[] = plannerGrants) {
+  fetchMock.mockImplementation((input: RequestInfo | URL) => {
+    const url = String(input);
+    if (url === "/api/auth/session") return Promise.resolve(jsonResponse(session));
+    if (url === "/api/navigation") return Promise.resolve(jsonResponse({ sections: grants }));
+    return Promise.resolve(jsonResponse({}, 404));
+  });
+}
 
 beforeEach(() => {
   fetchMock = vi.fn();
@@ -46,7 +67,8 @@ describe("auth-and-app-shell — Wave 2", () => {
   });
 
   it("Valid credentials sign a user in", async () => {
-    fetchMock.mockResolvedValue(jsonResponse(planner));
+    window.history.replaceState(null, "", "/production/orders");
+    mockApi(planner);
 
     render(<App />);
 
@@ -59,7 +81,8 @@ describe("auth-and-app-shell — Wave 2", () => {
   });
 
   it("Signing out ends the session", async () => {
-    fetchMock.mockResolvedValue(jsonResponse(planner));
+    window.history.replaceState(null, "", "/production/orders");
+    mockApi(planner);
 
     render(<App />);
     await waitFor(() => expect(screen.getByTestId("app-shell")).toBeInTheDocument());
@@ -69,5 +92,35 @@ describe("auth-and-app-shell — Wave 2", () => {
       "href",
       "/api/auth/logout",
     );
+  });
+});
+
+describe("auth-and-app-shell — Wave 3", () => {
+  it("Navigation is limited to the role's sections", async () => {
+    window.history.replaceState(null, "", "/production/orders");
+    mockApi(planner);
+
+    render(<App />);
+    await waitFor(() => expect(screen.getByTestId("app-shell")).toBeInTheDocument());
+
+    const nav = screen.getByRole("navigation", { name: /sections/i });
+    // Granted: production (view+manage), stock, commercial (view).
+    expect(nav).toHaveTextContent(/production/i);
+    expect(nav).toHaveTextContent(/stock/i);
+    expect(nav).toHaveTextContent(/commercial/i);
+    // Not granted: quality, equipment, hr, access.
+    expect(nav).not.toHaveTextContent(/quality/i);
+    expect(nav).not.toHaveTextContent(/equipment/i);
+    expect(nav).not.toHaveTextContent(/workforce/i);
+    expect(nav).not.toHaveTextContent(/access/i);
+  });
+
+  it("Access-denied state for an ungranted route", async () => {
+    window.history.replaceState(null, "", "/quality/controls");
+    mockApi(planner);
+
+    render(<App />);
+    await waitFor(() => expect(screen.getByTestId("access-denied")).toBeInTheDocument());
+    expect(screen.queryByText(/controls/i)).not.toBeInTheDocument();
   });
 });
