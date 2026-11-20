@@ -1,0 +1,18 @@
+{
+  "feature": "production-routing",
+  "status": "blocked",
+  "iterations": 0,
+  "updated": "2026-11-20T05:43:39Z",
+  "waves": {},
+  "gates": {
+    "G1": {
+      "status": "met",
+      "evidence": "specs/production-routing/DECISION-REVIEW.md",
+      "updated": "2026-11-20T05:43:29Z"
+    }
+  },
+  "events": [
+    "2026-11-20T05:43:29Z gate G1 met: specs/production-routing/DECISION-REVIEW.md",
+    "2026-11-20T05:43:39Z blocked: G3: Confirm routing rules - single minutes field, optional sheet at release, seeded read-only machines, IN_PROGRESS lock"
+  ]
+}

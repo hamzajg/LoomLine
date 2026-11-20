@@ -6,6 +6,7 @@
 | Identity, access control, and the application shell (`auth-and-app-shell/`) | 7 | 12 | 3 | yes | yes |
 | order-composition (`order-composition/`) | 3 | 6 | 2 | yes | yes |
 | Order intake and tracking (`order-intake-and-tracking/`) | 4 | 10 | 3 | yes | yes |
+| Production routing (`production-routing/`) | 4 | 9 | 3 | yes | no |
 
 
 Rule: ship ONE feature at a time — finish its waves and
