@@ -1,0 +1,8 @@
+$ ./gradlew :api:test
+cwd: /home/kali/factory/openharness/sources/LoomLine/api
+started: 2026-11-21T14:58:08Z
+--- stdout ---
+
+--- stderr ---
+/bin/sh: 1: ./gradlew: not found
+--- exit 127 in 1ms ---

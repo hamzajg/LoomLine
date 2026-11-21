@@ -2,8 +2,24 @@
   "feature": "production-routing",
   "status": "running",
   "iterations": 0,
-  "updated": "2026-11-20T05:47:41Z",
-  "waves": {},
+  "review": "required",
+  "updated": "2026-11-21T14:59:09Z",
+  "waves": {
+    "1": {
+      "status": "done",
+      "branch": "feat/production-routing-w1",
+      "pr": "7b5c9e3",
+      "evidence": "106 tests pass, 0 failed; PUT/GET /api/orders/{id}/routing, GET /api/phases, GET /api/machines endpoints; V3 migration +",
+      "updated": "2026-11-21T14:59:00Z"
+    },
+    "2": {
+      "status": "in-progress",
+      "branch": "feat/production-routing-w2",
+      "pr": "\u2014",
+      "evidence": "\u2014",
+      "updated": "2026-11-21T14:59:09Z"
+    }
+  },
   "gates": {
     "G1": {
       "status": "met",
@@ -26,6 +42,9 @@
     "2026-11-20T05:43:39Z blocked: G3: Confirm routing rules - single minutes field, optional sheet at release, seeded read-only machines, IN_PROGRESS lock",
     "2026-11-20T05:47:32Z resumed",
     "2026-11-20T05:47:41Z gate G2 met: SEED-DATA.md \u2014 6 phases, 4 machines with fixed UUIDs; schema V3 + repeatable seed owned by wave 1",
-    "2026-11-20T05:47:41Z gate G3 met: ROUTING-RULES.md agreed by product owner 2026-11-20 (single duration, optional sheet, seeded read-only machines, IN_PROG"
+    "2026-11-20T05:47:41Z gate G3 met: ROUTING-RULES.md agreed by product owner 2026-11-20 (single duration, optional sheet, seeded read-only machines, IN_PROG",
+    "2026-11-21T14:59:00Z start wave 1 on feat/production-routing-w1",
+    "2026-11-21T14:59:00Z complete wave 1 (7b5c9e3): 106 tests pass, 0 failed; PUT/GET /api/orders/{id}/routing, GET /api/phases, GET /api/machines endpoints; V3 migration +",
+    "2026-11-21T14:59:09Z start wave 2 on feat/production-routing-w2"
   ]
 }
