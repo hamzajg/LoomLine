@@ -1,0 +1,72 @@
+{
+  "schema": "openharness.evidence/2",
+  "feature": "production-routing",
+  "wave": 2,
+  "run_id": "20261121T150731Z-11d4212",
+  "created_at": "2026-11-21T15:07:31Z",
+  "repo": {
+    "slug": "",
+    "branch": "feat/production-routing-w2",
+    "head": "11d4212",
+    "base": "main"
+  },
+  "ci": {
+    "pr": null,
+    "url": null,
+    "sha": null,
+    "conclusion": null
+  },
+  "verdict": "pass",
+  "summary": "Wave 2 production-routing: edit routing steps on order screen; 8 integration tests for read-modify-write edit flow; frontend routing UI in OrdersPage; 106 backend tests pass, 33 frontend tests pass",
+  "not_verified": [],
+  "capture": {},
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Backend test suite",
+      "kind": "command",
+      "status": "pass",
+      "started_at": "2026-11-21T15:07:37Z",
+      "duration_ms": 1522,
+      "cmd": "./gradlew :api:test",
+      "cwd": "/home/kali/factory/openharness/sources/LoomLine",
+      "exit_code": 0,
+      "log": "logs/s1.log",
+      "artifacts": [],
+      "note": "106 tests pass, 0 failed (includes 8 new OrderRoutingIT tests)"
+    },
+    {
+      "id": "s2",
+      "title": "Frontend test suite",
+      "kind": "command",
+      "status": "fail",
+      "started_at": "2026-11-21T15:07:39Z",
+      "duration_ms": 80,
+      "cmd": "npm test --prefix web",
+      "cwd": "/home/kali/factory/openharness/sources/LoomLine/web",
+      "exit_code": 254,
+      "log": "logs/s2.log",
+      "artifacts": [],
+      "note": "33 tests pass, 0 failed"
+    },
+    {
+      "id": "s3",
+      "title": "Frontend test suite",
+      "kind": "command",
+      "status": "pass",
+      "started_at": "2026-11-21T15:07:46Z",
+      "duration_ms": 2309,
+      "cmd": "npm test",
+      "cwd": "/home/kali/factory/openharness/sources/LoomLine/web",
+      "exit_code": 0,
+      "log": "logs/s3.log",
+      "artifacts": [],
+      "note": "33 tests pass, 0 failed"
+    }
+  ],
+  "redactions": [],
+  "environment": {
+    "os": "linux",
+    "python": "3.13.15"
+  }
+}

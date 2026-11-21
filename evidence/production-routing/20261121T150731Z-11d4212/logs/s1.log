@@ -1,0 +1,28 @@
+$ ./gradlew :api:test
+cwd: /home/kali/factory/openharness/sources/LoomLine
+started: 2026-11-21T15:07:37Z
+--- stdout ---
+> Task :api:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :api:processResources UP-TO-DATE
+> Task :api:quarkusGenerateAppModel UP-TO-DATE
+> Task :api:quarkusGenerateCode UP-TO-DATE
+> Task :api:compileKotlin UP-TO-DATE
+> Task :api:compileJava NO-SOURCE
+> Task :api:classes UP-TO-DATE
+> Task :api:jar UP-TO-DATE
+> Task :api:compileQuarkus-test-generated-sourcesKotlin NO-SOURCE
+> Task :api:compileQuarkusTestGeneratedSourcesJava NO-SOURCE
+> Task :api:quarkusGenerateTestAppModel UP-TO-DATE
+> Task :api:quarkusGenerateCodeTests UP-TO-DATE
+> Task :api:compileTestKotlin UP-TO-DATE
+> Task :api:compileTestJava NO-SOURCE
+> Task :api:processTestResources NO-SOURCE
+> Task :api:testClasses UP-TO-DATE
+> Task :api:test UP-TO-DATE
+
+BUILD SUCCESSFUL in 1s
+9 actionable tasks: 9 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.9.1/userguide/configuration_cache_enabling.html
+--- stderr ---
+
+--- exit 0 in 1522ms ---

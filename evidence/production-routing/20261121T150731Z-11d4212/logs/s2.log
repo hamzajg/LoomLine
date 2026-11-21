@@ -1,0 +1,15 @@
+$ npm test --prefix web
+cwd: /home/kali/factory/openharness/sources/LoomLine/web
+started: 2026-11-21T15:07:39Z
+--- stdout ---
+
+--- stderr ---
+npm error code ENOENT
+npm error syscall open
+npm error path /home/kali/factory/openharness/sources/LoomLine/web/web/package.json
+npm error errno -2
+npm error enoent Could not read package.json: Error: ENOENT: no such file or directory, open '/home/kali/factory/openharness/sources/LoomLine/web/web/package.json'
+npm error enoent This is related to npm not being able to find a file.
+npm error enoent
+npm error A complete log of this run can be found in: /home/kali/.npm/_logs/2026-11-21T15_07_39_222Z-debug-0.log
+--- exit 254 in 80ms ---
