@@ -35,6 +35,10 @@ function fakeApi(overrides: Partial<OrdersApi> = {}): OrdersApi {
     sizes: vi.fn().mockResolvedValue([]),
     quantities: vi.fn().mockResolvedValue([]),
     setQuantities: vi.fn().mockResolvedValue([]),
+    phases: vi.fn().mockResolvedValue([]),
+    machines: vi.fn().mockResolvedValue([]),
+    routing: vi.fn().mockResolvedValue([]),
+    setRouting: vi.fn().mockResolvedValue([]),
     ...overrides,
   };
 }

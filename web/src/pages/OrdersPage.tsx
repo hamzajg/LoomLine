@@ -6,10 +6,14 @@ import {
   type Client,
   type Colour,
   type CreatedOrder,
+  type MachineResponse,
   type OrdersApi,
   type OrderStatus,
+  type PhaseResponse,
   type QuantityLine,
   type QuantityLineResponse,
+  type RoutingStep,
+  type RoutingStepResponse,
   type Size,
   type StatusHistoryEntry,
 } from "../api";
@@ -49,11 +53,17 @@ export function OrdersPage({ api = httpOrdersApi, canManage = false }: Props) {
   const [selectedOrder, setSelectedOrder] = useState<CreatedOrder | null>(null);
   const [history, setHistory] = useState<StatusHistoryEntry[]>([]);
   const [quantities, setQuantities] = useState<QuantityLineResponse[]>([]);
+  const [routing, setRouting] = useState<RoutingStepResponse[]>([]);
+  const [phases, setPhases] = useState<PhaseResponse[]>([]);
+  const [machines, setMachines] = useState<MachineResponse[]>([]);
   const [colours, setColours] = useState<Colour[]>([]);
   const [sizes, setSizes] = useState<Size[]>([]);
   const [editingBreakdown, setEditingBreakdown] = useState(false);
+  const [editingRouting, setEditingRouting] = useState(false);
   const [draftLines, setDraftLines] = useState<QuantityLine[]>([]);
+  const [draftSteps, setDraftSteps] = useState<RoutingStep[]>([]);
   const [breakdownError, setBreakdownError] = useState<string | null>(null);
+  const [routingError, setRoutingError] = useState<string | null>(null);
   const [transitionError, setTransitionError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
@@ -92,14 +102,21 @@ export function OrdersPage({ api = httpOrdersApi, canManage = false }: Props) {
       setSelectedOrder(null);
       setHistory([]);
       setQuantities([]);
+      setRouting([]);
+      setPhases([]);
+      setMachines([]);
       setEditingBreakdown(false);
+      setEditingRouting(false);
       return;
     }
     api.get(selectedOrderId).then(setSelectedOrder).catch(() => {});
     api.history(selectedOrderId).then(setHistory).catch(() => setHistory([]));
     api.quantities(selectedOrderId).then(setQuantities).catch(() => setQuantities([]));
+    api.routing(selectedOrderId).then(setRouting).catch(() => setRouting([]));
     api.colours().then(setColours).catch(() => {});
     api.sizes().then(setSizes).catch(() => {});
+    api.phases().then(setPhases).catch(() => {});
+    api.machines().then(setMachines).catch(() => {});
   }, [api, selectedOrderId]);
 
   const articleSizeType = selectedOrder
@@ -111,6 +128,8 @@ export function OrdersPage({ api = httpOrdersApi, canManage = false }: Props) {
     selectedOrder !== null &&
     (selectedOrder.status === "DRAFT" || selectedOrder.status === "RELEASED");
 
+  const editableRouting = editableBreakdown;
+
   const colourLabel = (id: string) => {
     const c = colours.find((x) => x.id === id);
     return c ? `${c.code} — ${c.label}` : id;
@@ -118,6 +137,17 @@ export function OrdersPage({ api = httpOrdersApi, canManage = false }: Props) {
   const sizeLabel = (id: string) => {
     const s = sizes.find((x) => x.id === id);
     return s ? `${s.code} (${s.sizeType})` : id;
+  };
+
+  const phaseLabel = (id: string) => {
+    const p = phases.find((x) => x.id === id);
+    return p ? `${p.code} — ${p.label}` : id;
+  };
+
+  const machineLabel = (id: string | null) => {
+    if (!id) return "—";
+    const m = machines.find((x) => x.id === id);
+    return m ? `${m.reference} — ${m.label}` : id;
   };
 
   const startEditingBreakdown = () => {
@@ -139,6 +169,40 @@ export function OrdersPage({ api = httpOrdersApi, canManage = false }: Props) {
       })
       .catch((err: Error) => {
         setBreakdownError(
+          err instanceof ApiFailure
+            ? Object.values(err.fieldErrors).join(" ") || err.message
+            : err.message,
+        );
+      });
+  };
+
+  const startEditingRouting = () => {
+    setRoutingError(null);
+    setDraftSteps(
+      routing.map((s, i) => ({
+        position: i + 1,
+        label: s.label,
+        phaseId: s.phaseId,
+        machineId: s.machineId,
+        repetitions: s.repetitions,
+        minutes: s.minutes,
+      })),
+    );
+    setEditingRouting(true);
+  };
+
+  const saveRouting = () => {
+    if (!selectedOrder) return;
+    setRoutingError(null);
+    const steps = draftSteps.map(({ position, ...step }) => step);
+    api
+      .setRouting(selectedOrder.id, steps)
+      .then((saved) => {
+        setRouting(saved);
+        setEditingRouting(false);
+      })
+      .catch((err: Error) => {
+        setRoutingError(
           err instanceof ApiFailure
             ? Object.values(err.fieldErrors).join(" ") || err.message
             : err.message,
@@ -481,6 +545,190 @@ export function OrdersPage({ api = httpOrdersApi, canManage = false }: Props) {
                         type="button"
                         className="btn btn--secondary"
                         onClick={() => setEditingBreakdown(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="order-routing">
+                <div className="order-breakdown__header">
+                  <h4>Production routing</h4>
+                  {editableRouting && !editingRouting && (
+                    <button
+                      type="button"
+                      className="btn btn--sm"
+                      data-testid="edit-routing"
+                      onClick={startEditingRouting}
+                    >
+                      Edit
+                    </button>
+                  )}
+                </div>
+
+                {!editingRouting ? (
+                  routing.length === 0 ? (
+                    <p className="empty-state">No routing sheet recorded.</p>
+                  ) : (
+                    <table className="orders-table orders-table--compact">
+                      <thead>
+                        <tr>
+                          <th>Position</th>
+                          <th>Label</th>
+                          <th>Phase</th>
+                          <th>Machine</th>
+                          <th>Reps</th>
+                          <th>Min.</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {routing.map((r) => (
+                          <tr key={r.position} data-testid={`routing-step-${r.position}`}>
+                            <td>{r.position}</td>
+                            <td>{r.label}</td>
+                            <td>{phaseLabel(r.phaseId)}</td>
+                            <td>{machineLabel(r.machineId)}</td>
+                            <td>{r.repetitions}</td>
+                            <td>{r.minutes}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )
+                ) : (
+                  <div className="breakdown-editor">
+                    {routingError && (
+                      <p className="form-error" role="alert">
+                        {routingError}
+                      </p>
+                    )}
+                    {draftSteps.map((step, i) => (
+                      <div className="breakdown-editor__row" key={i}>
+                        <input
+                          aria-label={`Label ${i + 1}`}
+                          type="text"
+                          value={step.label}
+                          onChange={(e) =>
+                            setDraftSteps((prev) =>
+                              prev.map((s, j) =>
+                                j === i ? { ...s, label: e.target.value } : s,
+                              ),
+                            )
+                          }
+                        />
+                        <select
+                          aria-label={`Phase ${i + 1}`}
+                          value={step.phaseId}
+                          onChange={(e) =>
+                            setDraftSteps((prev) =>
+                              prev.map((s, j) =>
+                                j === i ? { ...s, phaseId: e.target.value } : s,
+                              ),
+                            )
+                          }
+                        >
+                          <option value="">Phase…</option>
+                          {phases.map((p) => (
+                            <option key={p.id} value={p.id}>
+                              {p.code} — {p.label}
+                            </option>
+                          ))}
+                        </select>
+                        <select
+                          aria-label={`Machine ${i + 1}`}
+                          value={step.machineId ?? ""}
+                          onChange={(e) =>
+                            setDraftSteps((prev) =>
+                              prev.map((s, j) =>
+                                j === i ? { ...s, machineId: e.target.value || null } : s,
+                              ),
+                            )
+                          }
+                        >
+                          <option value="">None</option>
+                          {machines.map((m) => (
+                            <option key={m.id} value={m.id}>
+                              {m.reference} — {m.label} ({m.active ? "active" : "inactive"})
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          aria-label={`Reps ${i + 1}`}
+                          type="number"
+                          min={1}
+                          value={step.repetitions}
+                          onChange={(e) =>
+                            setDraftSteps((prev) =>
+                              prev.map((s, j) =>
+                                j === i ? { ...s, repetitions: Number(e.target.value) } : s,
+                              ),
+                            )
+                          }
+                        />
+                        <input
+                          aria-label={`Minutes ${i + 1}`}
+                          type="number"
+                          min={1}
+                          value={step.minutes}
+                          onChange={(e) =>
+                            setDraftSteps((prev) =>
+                              prev.map((s, j) =>
+                                j === i ? { ...s, minutes: Number(e.target.value) } : s,
+                              ),
+                            )
+                          }
+                        />
+                        <button
+                          type="button"
+                          className="btn btn--sm"
+                          aria-label={`Remove step ${i + 1}`}
+                          onClick={() =>
+                            setDraftSteps((prev) =>
+                              prev
+                                .filter((_, j) => j !== i)
+                                .map((s, j) => ({ ...s, position: j + 1 })),
+                            )
+                          }
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                    <div className="breakdown-editor__actions">
+                      <button
+                        type="button"
+                        className="btn btn--sm"
+                        data-testid="add-routing-step"
+                        onClick={() =>
+                          setDraftSteps((prev) => [
+                            ...prev,
+                            {
+                              position: prev.length + 1,
+                              label: "",
+                              phaseId: "",
+                              machineId: null,
+                              repetitions: 1,
+                              minutes: 1,
+                            },
+                          ])
+                        }
+                      >
+                        + Add step
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn--primary"
+                        data-testid="save-routing"
+                        onClick={saveRouting}
+                      >
+                        Save routing
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn--secondary"
+                        onClick={() => setEditingRouting(false)}
                       >
                         Cancel
                       </button>

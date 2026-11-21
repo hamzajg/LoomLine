@@ -83,6 +83,41 @@ export class ApiFailure extends Error {
 
 export type QuantityLineResponse = QuantityLine & { id?: string };
 
+export type RoutingStep = {
+  position: number;
+  label: string;
+  phaseId: string;
+  machineId: string | null;
+  repetitions: number;
+  minutes: number;
+};
+
+export type RoutingStepResponse = RoutingStep & {
+  phaseCode: string | null;
+  machineReference: string | null;
+};
+
+export type RoutingStepInput = {
+  label: string;
+  phaseId: string;
+  machineId: string | null;
+  repetitions: number;
+  minutes: number;
+};
+
+export type PhaseResponse = {
+  id: string;
+  code: string;
+  label: string;
+};
+
+export type MachineResponse = {
+  id: string;
+  reference: string;
+  label: string;
+  active: boolean;
+};
+
 export type OrderFilter = {
   status?: string;
   reference?: string;
@@ -212,6 +247,10 @@ export interface OrdersApi {
   sizes(): Promise<Size[]>;
   quantities(id: string): Promise<QuantityLineResponse[]>;
   setQuantities(id: string, lines: QuantityLine[]): Promise<QuantityLineResponse[]>;
+  phases(): Promise<PhaseResponse[]>;
+  machines(): Promise<MachineResponse[]>;
+  routing(id: string): Promise<RoutingStepResponse[]>;
+  setRouting(id: string, steps: RoutingStepInput[]): Promise<RoutingStepResponse[]>;
 }
 
 type ErrorBody = {
@@ -301,6 +340,30 @@ export const httpOrdersApi: OrdersApi = {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ lines }),
+      }),
+    );
+  },
+
+  async phases() {
+    return readJson<PhaseResponse[]>(await fetch("/api/phases"));
+  },
+
+  async machines() {
+    return readJson<MachineResponse[]>(await fetch("/api/machines"));
+  },
+
+  async routing(id) {
+    return readJson<RoutingStepResponse[]>(
+      await fetch(`/api/orders/${encodeURIComponent(id)}/routing`),
+    );
+  },
+
+  async setRouting(id, steps) {
+    return readJson<RoutingStepResponse[]>(
+      await fetch(`/api/orders/${encodeURIComponent(id)}/routing`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ steps }),
       }),
     );
   },
