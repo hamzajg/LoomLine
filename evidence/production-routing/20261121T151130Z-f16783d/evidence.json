@@ -1,0 +1,58 @@
+{
+  "schema": "openharness.evidence/2",
+  "feature": "production-routing",
+  "wave": 3,
+  "run_id": "20261121T151130Z-f16783d",
+  "created_at": "2026-11-21T15:11:30Z",
+  "repo": {
+    "slug": "",
+    "branch": "feat/production-routing-w3",
+    "head": "f16783d",
+    "base": "main"
+  },
+  "ci": {
+    "pr": null,
+    "url": null,
+    "sha": null,
+    "conclusion": null
+  },
+  "verdict": "pass",
+  "summary": "Wave 3 production-routing: read-only routing view + locked message for IN_PROGRESS orders; 2 new frontend tests; backend 106 pass, frontend 35 pass, build green",
+  "not_verified": [],
+  "capture": {},
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Backend test suite",
+      "kind": "command",
+      "status": "pass",
+      "started_at": "2026-11-21T15:11:38Z",
+      "duration_ms": 1350,
+      "cmd": "./gradlew :api:test",
+      "cwd": "/home/kali/factory/openharness/sources/LoomLine",
+      "exit_code": 0,
+      "log": "logs/s1.log",
+      "artifacts": [],
+      "note": "106 tests pass, 0 failed"
+    },
+    {
+      "id": "s2",
+      "title": "Frontend test suite",
+      "kind": "command",
+      "status": "pass",
+      "started_at": "2026-11-21T15:11:40Z",
+      "duration_ms": 2409,
+      "cmd": "npm test",
+      "cwd": "/home/kali/factory/openharness/sources/LoomLine/web",
+      "exit_code": 0,
+      "log": "logs/s2.log",
+      "artifacts": [],
+      "note": "35 tests pass, 0 failed"
+    }
+  ],
+  "redactions": [],
+  "environment": {
+    "os": "linux",
+    "python": "3.13.15"
+  }
+}

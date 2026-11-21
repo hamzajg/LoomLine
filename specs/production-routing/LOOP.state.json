@@ -3,7 +3,7 @@
   "status": "running",
   "iterations": 0,
   "review": "required",
-  "updated": "2026-11-21T14:59:09Z",
+  "updated": "2026-11-21T15:11:48Z",
   "waves": {
     "1": {
       "status": "done",
@@ -13,11 +13,18 @@
       "updated": "2026-11-21T14:59:00Z"
     },
     "2": {
-      "status": "in-progress",
+      "status": "done",
       "branch": "feat/production-routing-w2",
-      "pr": "\u2014",
-      "evidence": "\u2014",
-      "updated": "2026-11-21T14:59:09Z"
+      "pr": "36",
+      "evidence": "106 backend tests pass, 33 frontend tests pass; 8 OrderRoutingIT integration tests for edit flow; frontend routing UI in",
+      "updated": "2026-11-21T15:08:13Z"
+    },
+    "3": {
+      "status": "done",
+      "branch": "feat/production-routing-w3",
+      "pr": "37",
+      "evidence": "106 backend tests pass, 35 frontend tests pass; locked message for IN_PROGRESS orders; read-only routing view; all 3 wav",
+      "updated": "2026-11-21T15:11:48Z"
     }
   },
   "gates": {
@@ -45,6 +52,9 @@
     "2026-11-20T05:47:41Z gate G3 met: ROUTING-RULES.md agreed by product owner 2026-11-20 (single duration, optional sheet, seeded read-only machines, IN_PROG",
     "2026-11-21T14:59:00Z start wave 1 on feat/production-routing-w1",
     "2026-11-21T14:59:00Z complete wave 1 (7b5c9e3): 106 tests pass, 0 failed; PUT/GET /api/orders/{id}/routing, GET /api/phases, GET /api/machines endpoints; V3 migration +",
-    "2026-11-21T14:59:09Z start wave 2 on feat/production-routing-w2"
+    "2026-11-21T14:59:09Z start wave 2 on feat/production-routing-w2",
+    "2026-11-21T15:08:13Z complete wave 2 (36): 106 backend tests pass, 33 frontend tests pass; 8 OrderRoutingIT integration tests for edit flow; frontend routing UI in",
+    "2026-11-21T15:08:36Z start wave 3 on feat/production-routing-w3",
+    "2026-11-21T15:11:48Z complete wave 3 (37): 106 backend tests pass, 35 frontend tests pass; locked message for IN_PROGRESS orders; read-only routing view; all 3 wav"
   ]
 }
