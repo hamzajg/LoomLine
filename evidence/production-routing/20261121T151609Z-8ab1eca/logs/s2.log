@@ -1,0 +1,29 @@
+$ npm test
+cwd: /home/kali/factory/openharness/sources/LoomLine/web
+started: 2026-11-21T15:16:22Z
+--- stdout ---
+
+ RUN  v3.2.7 /home/kali/factory/openharness/sources/LoomLine/web
+
+ ✓ src/pages/SignInPage.test.tsx (2 tests) 245ms
+ ✓ src/pages/UsersPage.test.tsx (2 tests) 550ms
+   ✓ auth-and-app-shell — Wave 3 (US7) > Administrator creates a user with a role  486ms
+ ✓ src/App.test.tsx (5 tests) 465ms
+ ✓ src/pages/CataloguePage.test.tsx (6 tests) 725ms
+   ✓ CataloguePage > shows colours and sizes on their tabs  323ms
+ ✓ src/shell/AppShell.test.tsx (3 tests) 867ms
+   ✓ auth-and-app-shell — Wave 1 > Shell renders navigation for a signed-in user  529ms
+ ✓ src/pages/NewOrderPage.test.tsx (6 tests) 949ms
+   ✓ NewOrderPage > creates an order and shows its draft status  505ms
+ ✓ src/pages/OrdersPage.test.tsx (11 tests) 871ms
+   ✓ OrdersPage — Wave 2 > Filter orders by status  307ms
+
+ Test Files  7 passed (7)
+      Tests  35 passed (35)
+   Start at  16:16:22
+   Duration  1.91s (transform 424ms, setup 349ms, collect 1.30s, tests 4.67s, environment 3.30s, prepare 604ms)
+
+--- stderr ---
+npm notice run loomline-web@0.1.0 test
+npm notice run vitest run
+--- exit 0 in 2326ms ---
