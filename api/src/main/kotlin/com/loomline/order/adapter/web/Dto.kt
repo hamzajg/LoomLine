@@ -126,8 +126,7 @@ data class ArticleResponse(
 }
 
 /** Request bodies for the catalogue writes. Plain mutable classes for binding. */
-class ArticleRequest {
-    var reference: String? = null
+class ArticleRequest {    var reference: String? = null
     var label: String? = null
     var clientId: UUID? = null
     var sizeType: String? = null
@@ -185,4 +184,50 @@ data class SizeResponse(
             sizeType = size.sizeType,
         )
     }
+}
+
+data class PhaseResponse(val id: UUID, val code: String, val label: String) {
+    companion object {
+        fun from(phase: com.loomline.order.domain.Phase) = PhaseResponse(
+            id = phase.id,
+            code = phase.code,
+            label = phase.label,
+        )
+    }
+}
+
+data class MachineResponse(val id: UUID, val reference: String, val label: String, val active: Boolean) {
+    companion object {
+        fun from(machine: com.loomline.order.domain.Machine) = MachineResponse(
+            id = machine.id,
+            reference = machine.reference,
+            label = machine.label,
+            active = machine.active,
+        )
+    }
+}
+
+/** One routing step in a write or read. */
+data class RoutingStepResponse(
+    val position: Int,
+    val label: String,
+    val phaseId: UUID,
+    val phaseCode: String?,
+    val machineId: UUID?,
+    val machineReference: String?,
+    val repetitions: Int,
+    val minutes: Int,
+)
+
+/** Request body for `PUT /api/orders/{id}/routing` — the full routing sheet. */
+class SetRoutingRequest {
+    var steps: List<RoutingStepInput>? = null
+}
+
+class RoutingStepInput {
+    var label: String? = null
+    var phaseId: UUID? = null
+    var machineId: UUID? = null
+    var repetitions: Int? = null
+    var minutes: Int? = null
 }

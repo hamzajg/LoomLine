@@ -233,6 +233,9 @@ private class FakeCatalog(private val clients: Set<UUID>) : ReferenceCatalog {
     override fun sizeExists(id: UUID) = true
     override fun articleSizeType(articleId: UUID) = "Alpha"
     override fun sizeTypeOf(sizeId: UUID) = "Alpha"
+    override fun phaseExists(id: UUID) = true
+    override fun machineExists(id: UUID) = true
+    override fun machineActive(id: UUID) = true
 }
 
 private data class SeededArticle(val article: Article, val inUse: Boolean)

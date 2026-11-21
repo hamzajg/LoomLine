@@ -1,11 +1,15 @@
 package com.loomline.order.adapter.persistence
 
+import com.loomline.order.domain.Machine
 import com.loomline.order.domain.Order
 import com.loomline.order.domain.OrderQuantityLine
 import com.loomline.order.domain.OrderRepository
+import com.loomline.order.domain.OrderRoutingStep
 import com.loomline.order.domain.OrderStatus
 import com.loomline.order.domain.OrderStatusHistoryEntry
+import com.loomline.order.domain.Phase
 import com.loomline.order.domain.QuantityLine
+import com.loomline.order.domain.RoutingStep
 import jakarta.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
@@ -69,6 +73,28 @@ class OrderRepositoryAdapter : OrderRepository {
                     quantity = it.quantity,
                 )
             }
+
+    override fun replaceRouting(orderId: java.util.UUID, steps: List<RoutingStep>) {
+        OrderRoutingStepEntity.deleteForOrder(orderId)
+        steps.forEachIndexed { index, step ->
+            OrderRoutingStepEntity().apply {
+                id = java.util.UUID.randomUUID()
+                this.orderId = orderId
+                position = index + 1
+                label = step.label
+                phaseId = step.phaseId
+                machineId = step.machineId
+                repetitions = step.repetitions
+                minutes = step.minutes
+                createdAt = java.time.Instant.now()
+            }.persist()
+        }
+    }
+
+    override fun routingSteps(orderId: java.util.UUID): List<RoutingStep> =
+        OrderRoutingStepEntity.forOrder(orderId)
+            .sortedBy { it.position }
+            .map { it.toDomain() }
 }
 
 private fun Order.toEntity() = OrderEntity().apply {

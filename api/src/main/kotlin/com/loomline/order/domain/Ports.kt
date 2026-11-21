@@ -26,6 +26,11 @@ interface OrderRepository {
     fun replaceQuantities(orderId: UUID, lines: List<QuantityLine>)
 
     fun quantities(orderId: UUID): List<OrderQuantityLine>
+
+    /** Replaces all routing steps of an order atomically (replace-set). */
+    fun replaceRouting(orderId: UUID, steps: List<RoutingStep>)
+
+    fun routingSteps(orderId: UUID): List<RoutingStep>
 }
 
 /** Read-only access to the reference records an order may point at. */
@@ -43,6 +48,15 @@ interface ReferenceCatalog {
 
     /** The size type a size belongs to, if known. */
     fun sizeTypeOf(sizeId: UUID): String?
+
+    /** True if a phase with [id] exists. */
+    fun phaseExists(id: UUID): Boolean
+
+    /** True if a machine with [id] exists. */
+    fun machineExists(id: UUID): Boolean
+
+    /** True if a machine with [id] exists and is active. */
+    fun machineActive(id: UUID): Boolean
 }
 
 /** Storage port for catalogue articles. Implemented by the persistence adapter. */
@@ -105,6 +119,10 @@ fun interface IdGenerator {
 /** Persistence port for the reference lookups used by the order form. */
 interface ReferenceQuery {
     fun clients(): List<ClientView>
+
+    fun phases(): List<Phase>
+
+    fun machines(): List<Machine>
 }
 
 data class ClientView(val id: UUID, val name: String, val country: String?)

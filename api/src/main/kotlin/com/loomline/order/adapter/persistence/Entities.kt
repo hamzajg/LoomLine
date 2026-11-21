@@ -1,5 +1,8 @@
 package com.loomline.order.adapter.persistence
 
+import com.loomline.order.domain.Machine
+import com.loomline.order.domain.OrderQuantityLine
+import com.loomline.order.domain.Phase
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheCompanion
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import jakarta.persistence.Column
@@ -185,3 +188,109 @@ class OrderQuantityLineEntity : PanacheEntityBase {
         }
     }
 }
+
+@Entity
+@Table(name = "phase")
+class PhaseEntity : PanacheEntityBase {
+    @Id
+    @Column(name = "id", nullable = false, updatable = false)
+    lateinit var id: UUID
+
+    @Column(name = "code", nullable = false)
+    lateinit var code: String
+
+    @Column(name = "label", nullable = false)
+    lateinit var label: String
+
+    @Column(name = "created_at", nullable = false)
+    lateinit var createdAt: Instant
+
+    companion object : PanacheCompanion<PhaseEntity> {
+        fun findById(id: UUID): PhaseEntity? = find("id", id).firstResult()
+    }
+}
+
+@Entity
+@Table(name = "machine")
+class MachineEntity : PanacheEntityBase {
+    @Id
+    @Column(name = "id", nullable = false, updatable = false)
+    lateinit var id: UUID
+
+    @Column(name = "reference", nullable = false)
+    lateinit var reference: String
+
+    @Column(name = "label", nullable = false)
+    lateinit var label: String
+
+    @Column(name = "active", nullable = false)
+    var active: Boolean = true
+
+    @Column(name = "created_at", nullable = false)
+    lateinit var createdAt: Instant
+
+    companion object : PanacheCompanion<MachineEntity> {
+        fun findById(id: UUID): MachineEntity? = find("id", id).firstResult()
+    }
+}
+
+@Entity
+@Table(name = "order_routing_step")
+class OrderRoutingStepEntity : PanacheEntityBase {
+    @Id
+    @Column(name = "id", nullable = false, updatable = false)
+    lateinit var id: UUID
+
+    @Column(name = "order_id", nullable = false, updatable = false)
+    lateinit var orderId: UUID
+
+    @Column(name = "position", nullable = false)
+    var position: Int = 0
+
+    @Column(name = "label", nullable = false)
+    lateinit var label: String
+
+    @Column(name = "phase_id", nullable = false, updatable = false)
+    lateinit var phaseId: UUID
+
+    @Column(name = "machine_id", updatable = false)
+    var machineId: UUID? = null
+
+    @Column(name = "repetitions", nullable = false)
+    var repetitions: Int = 0
+
+    @Column(name = "minutes", nullable = false)
+    var minutes: Int = 0
+
+    @Column(name = "created_at", nullable = false)
+    lateinit var createdAt: Instant
+
+    companion object : PanacheCompanion<OrderRoutingStepEntity> {
+        fun forOrder(orderId: UUID): List<OrderRoutingStepEntity> =
+            find("orderId", orderId).list()
+
+        fun deleteForOrder(orderId: UUID) {
+            delete("orderId", orderId)
+        }
+    }
+}
+
+internal fun OrderRoutingStepEntity.toDomain() = com.loomline.order.domain.RoutingStep(
+    position = position,
+    label = label,
+    phaseId = phaseId,
+    machineId = machineId,
+    repetitions = repetitions,
+    minutes = minutes,
+)
+
+internal fun PhaseEntity.toDomain() =
+    com.loomline.order.domain.Phase(id = id, code = code, label = label)
+
+internal fun MachineEntity.toDomain() =
+    com.loomline.order.domain.Machine(
+        id = id,
+        reference = reference,
+        label = label,
+        active = active,
+    )

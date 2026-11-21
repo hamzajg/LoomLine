@@ -167,9 +167,20 @@ class InMemoryOrderRepository : OrderRepository {
 
     override fun quantities(orderId: UUID): List<OrderQuantityLine> =
         quantitiesByOrder[orderId] ?: emptyList()
+
+    private val routingByOrder = mutableMapOf<UUID, MutableList<RoutingStep>>()
+
+    override fun replaceRouting(orderId: UUID, steps: List<RoutingStep>) {
+        routingByOrder[orderId] = steps.mapIndexed { index, step ->
+            step.copy(position = index + 1)
+        }.toMutableList()
+    }
+
+    override fun routingSteps(orderId: UUID): List<RoutingStep> =
+        routingByOrder[orderId] ?: emptyList()
 }
 
-private class FakeReferenceCatalog(
+internal class FakeReferenceCatalog(
     private val clients: Set<UUID>,
     private val articles: Set<UUID>,
 ) : ReferenceCatalog {
@@ -185,8 +196,24 @@ private class FakeReferenceCatalog(
 
     override fun sizeTypeOf(sizeId: UUID): String? = "Alpha"
 
+    override fun phaseExists(id: UUID): Boolean = id in phases
+
+    override fun machineExists(id: UUID): Boolean = id in machines
+
+    override fun machineActive(id: UUID): Boolean = id in activeMachines
+
     companion object {
         val colours = setOf(UUID.fromString("55555555-5555-4555-8555-555555555551"))
         val sizes = setOf(UUID.fromString("66666666-6666-4666-8666-666666666661"))
+
+        val phases = setOf(
+            UUID.fromString("77777777-7777-4777-8777-777777777771"),
+            UUID.fromString("77777777-7777-4777-8777-777777777772"),
+        )
+        val machines = setOf(
+            UUID.fromString("88888888-8888-4888-8888-888888888881"),
+            UUID.fromString("88888888-8888-4888-8888-888888888882"),
+        )
+        val activeMachines = machines
     }
 }

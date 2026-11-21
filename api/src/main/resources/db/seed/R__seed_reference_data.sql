@@ -53,3 +53,43 @@ where not exists (select 1 from size where lower(code) = 'l' and lower(size_type
 insert into size (id, code, label, size_type, created_at)
 select '66666666-6666-4666-8666-666666666664', 'XL', 'XL', 'Alpha', now()
 where not exists (select 1 from size where lower(code) = 'xl' and lower(size_type) = 'alpha');
+
+insert into phase (id, code, label, created_at)
+select '77777777-7777-4777-8777-777777777771', 'CUT', 'Cutting', now()
+where not exists (select 1 from phase where lower(code) = 'cut');
+
+insert into phase (id, code, label, created_at)
+select '77777777-7777-4777-8777-777777777772', 'SEW', 'Sewing', now()
+where not exists (select 1 from phase where lower(code) = 'sew');
+
+insert into phase (id, code, label, created_at)
+select '77777777-7777-4777-8777-777777777773', 'ASM', 'Assembly', now()
+where not exists (select 1 from phase where lower(code) = 'asm');
+
+insert into phase (id, code, label, created_at)
+select '77777777-7777-4777-8777-777777777774', 'FIN', 'Finishing', now()
+where not exists (select 1 from phase where lower(code) = 'fin');
+
+insert into phase (id, code, label, created_at)
+select '77777777-7777-4777-8777-777777777775', 'QC', 'Quality check', now()
+where not exists (select 1 from phase where lower(code) = 'qc');
+
+insert into phase (id, code, label, created_at)
+select '77777777-7777-4777-8777-777777777776', 'PACK', 'Packing', now()
+where not exists (select 1 from phase where lower(code) = 'pack');
+
+insert into machine (id, reference, label, active, created_at)
+select '88888888-8888-4888-8888-888888888881', 'MC-01', 'Overlock machine', true, now()
+where not exists (select 1 from machine where lower(reference) = 'mc-01');
+
+insert into machine (id, reference, label, active, created_at)
+select '88888888-8888-4888-8888-888888888882', 'MC-02', 'Straight-stitch machine', true, now()
+where not exists (select 1 from machine where lower(reference) = 'mc-02');
+
+insert into machine (id, reference, label, active, created_at)
+select '88888888-8888-4888-8888-888888888883', 'MC-03', 'Cutting table', true, now()
+where not exists (select 1 from machine where lower(reference) = 'mc-03');
+
+insert into machine (id, reference, label, active, created_at)
+select '88888888-8888-4888-8888-888888888884', 'MC-04', 'Press station', false, now()
+where not exists (select 1 from machine where lower(reference) = 'mc-04');

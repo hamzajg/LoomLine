@@ -6,7 +6,9 @@ import com.loomline.order.domain.CreateOrderResult
 import com.loomline.order.domain.NewOrder
 import com.loomline.order.domain.OrderStatus
 import com.loomline.order.domain.QuantityLine
+import com.loomline.order.domain.RoutingStep
 import com.loomline.order.domain.SetQuantitiesResult
+import com.loomline.order.domain.SetRoutingResult
 import com.loomline.order.domain.TransitionOrderResult
 import io.quarkus.security.identity.SecurityIdentity
 import jakarta.ws.rs.Consumes
@@ -236,6 +238,84 @@ class OrderResource(
                     ErrorResponse(
                         code = "VALIDATION_FAILED",
                         message = "The breakdown could not be stored.",
+                        fieldErrors = result.fieldErrors,
+                    ),
+                )
+                .build()
+        }
+    }
+
+    @GET
+    @Path("/{id}/routing")
+    fun getRouting(@PathParam("id") id: UUID): Response {
+        policy.require("production")
+        if (service.findById(id) == null) return notFound(id)
+        return Response.ok(
+            service.routing(id).map { step ->
+                RoutingStepResponse(
+                    position = step.position,
+                    label = step.label,
+                    phaseId = step.phaseId,
+                    phaseCode = null,
+                    machineId = step.machineId,
+                    machineReference = null,
+                    repetitions = step.repetitions,
+                    minutes = step.minutes,
+                )
+            }
+        ).build()
+    }
+
+    @PUT
+    @Path("/{id}/routing")
+    @Consumes(MediaType.APPLICATION_JSON)
+    fun setRouting(@PathParam("id") id: UUID, request: SetRoutingRequest): Response {
+        policy.require("production", manage = true)
+        val raw = request.steps ?: emptyList()
+        val steps = raw.mapIndexed { index, step ->
+            RoutingStep(
+                position = index + 1,
+                label = step.label ?: "",
+                phaseId = step.phaseId ?: java.util.UUID(0, 0),
+                machineId = step.machineId,
+                repetitions = step.repetitions ?: 0,
+                minutes = step.minutes ?: 0,
+            )
+        }
+        return when (val result = service.setRouting(id, steps)) {
+            is SetRoutingResult.Saved ->
+                Response.ok(result.steps.map { step ->
+                    RoutingStepResponse(
+                        position = step.position,
+                        label = step.label,
+                        phaseId = step.phaseId,
+                        phaseCode = null,
+                        machineId = step.machineId,
+                        machineReference = null,
+                        repetitions = step.repetitions,
+                        minutes = step.minutes,
+                    )
+                }).build()
+
+            SetRoutingResult.OrderNotFound -> notFound(id)
+
+            is SetRoutingResult.Locked -> Response
+                .status(Response.Status.CONFLICT)
+                .entity(
+                    ErrorResponse(
+                        code = "ROUTING_LOCKED",
+                        message = "The order is ${result.status}; its routing can no longer change.",
+                        status = result.status.name,
+                    ),
+                )
+                .build()
+
+            is SetRoutingResult.Invalid -> Response
+                .status(Response.Status.BAD_REQUEST)
+                .entity(
+                    ErrorResponse(
+                        code = "VALIDATION_FAILED",
+                        message = "The routing could not be stored.",
                         fieldErrors = result.fieldErrors,
                     ),
                 )

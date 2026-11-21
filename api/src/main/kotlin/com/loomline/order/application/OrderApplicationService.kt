@@ -10,7 +10,9 @@ import com.loomline.order.domain.OrderStatus
 import com.loomline.order.domain.OrderStatusHistoryEntry
 import com.loomline.order.domain.QuantityLine
 import com.loomline.order.domain.SetOrderQuantitiesUseCase
+import com.loomline.order.domain.SetOrderRoutingUseCase
 import com.loomline.order.domain.SetQuantitiesResult
+import com.loomline.order.domain.SetRoutingResult
 import com.loomline.order.domain.TransitionOrderResult
 import com.loomline.order.domain.TransitionOrderUseCase
 import jakarta.enterprise.context.ApplicationScoped
@@ -28,6 +30,7 @@ class OrderApplicationService(
     private val createOrder: CreateOrderUseCase,
     private val transitionOrder: TransitionOrderUseCase,
     private val setQuantities: SetOrderQuantitiesUseCase,
+    private val setRouting: SetOrderRoutingUseCase,
     private val orders: OrderRepository,
 ) {
     @Transactional
@@ -65,4 +68,12 @@ class OrderApplicationService(
     @Transactional
     fun quantities(orderId: java.util.UUID): List<OrderQuantityLine> =
         orders.quantities(orderId)
+
+    @Transactional
+    fun setRouting(orderId: java.util.UUID, steps: List<com.loomline.order.domain.RoutingStep>): SetRoutingResult =
+        setRouting.set(orderId, steps)
+
+    @Transactional
+    fun routing(orderId: java.util.UUID): List<com.loomline.order.domain.RoutingStep> =
+        orders.routingSteps(orderId)
 }
