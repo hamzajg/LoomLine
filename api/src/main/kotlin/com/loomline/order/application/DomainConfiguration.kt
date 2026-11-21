@@ -8,7 +8,9 @@ import com.loomline.order.domain.CreateOrderUseCase
 import com.loomline.order.domain.IdGenerator
 import com.loomline.order.domain.OrderRepository
 import com.loomline.order.domain.ReferenceCatalog
+import com.loomline.order.domain.ReferenceQuery
 import com.loomline.order.domain.SetOrderQuantitiesUseCase
+import com.loomline.order.domain.SetOrderRoutingUseCase
 import com.loomline.order.domain.SizeCatalogue
 import com.loomline.order.domain.SizeStore
 import com.loomline.order.domain.TimeSource
@@ -54,6 +56,13 @@ class DomainConfiguration {
         orders: OrderRepository,
         catalog: ReferenceCatalog,
     ): SetOrderQuantitiesUseCase = SetOrderQuantitiesUseCase(orders, catalog)
+
+    @Produces
+    @Singleton
+    fun setOrderRoutingUseCase(
+        orders: OrderRepository,
+        reference: ReferenceCatalog,
+    ): SetOrderRoutingUseCase = SetOrderRoutingUseCase(orders, reference)
 
     @Produces
     @Singleton

@@ -165,4 +165,8 @@ private class FakeCompositionCatalog : ReferenceCatalog {
     override fun articleSizeType(articleId: UUID) = articleSizeType
     override fun sizeTypeOf(sizeId: UUID) =
         if (sizeId in alphaSizes) "Alpha" else "Beta"
+
+    override fun phaseExists(id: UUID) = true
+    override fun machineExists(id: UUID) = true
+    override fun machineActive(id: UUID) = true
 }

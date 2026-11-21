@@ -21,4 +21,18 @@ class ReferenceResource(
         policy.require("production")
         return query.clients().map { ClientResponse(it.id, it.name, it.country) }
     }
+
+    @GET
+    @Path("/phases")
+    fun phases(): List<PhaseResponse> {
+        policy.require("production")
+        return query.phases().map { PhaseResponse.from(it) }
+    }
+
+    @GET
+    @Path("/machines")
+    fun machines(): List<MachineResponse> {
+        policy.require("production")
+        return query.machines().map { MachineResponse.from(it) }
+    }
 }
