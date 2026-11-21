@@ -1,0 +1,72 @@
+{
+  "schema": "openharness.evidence/2",
+  "feature": "production-routing",
+  "wave": 1,
+  "run_id": "20261121T151423Z-2d20611",
+  "created_at": "2026-11-21T15:14:23Z",
+  "repo": {
+    "slug": "",
+    "branch": "main",
+    "head": "2d20611",
+    "base": "main"
+  },
+  "ci": {
+    "pr": null,
+    "url": null,
+    "sha": null,
+    "conclusion": null
+  },
+  "verdict": "pass",
+  "summary": "Wave 1 production-routing complete: writable credential store equivalent, routing sheet replace-set API; 106 tests pass",
+  "not_verified": [],
+  "capture": {},
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Backend test suite",
+      "kind": "command",
+      "status": "pass",
+      "started_at": "2026-11-21T15:14:29Z",
+      "duration_ms": 1415,
+      "cmd": "./gradlew :api:test",
+      "cwd": "/home/kali/factory/openharness/sources/LoomLine",
+      "exit_code": 0,
+      "log": "logs/s1.log",
+      "artifacts": [],
+      "note": "106 tests pass, 0 failed"
+    },
+    {
+      "id": "s2",
+      "title": "Backend test suite",
+      "kind": "command",
+      "status": "pass",
+      "started_at": "2026-11-21T15:14:37Z",
+      "duration_ms": 1179,
+      "cmd": "./gradlew :api:test",
+      "cwd": "/home/kali/factory/openharness/sources/LoomLine",
+      "exit_code": 0,
+      "log": "logs/s2.log",
+      "artifacts": [],
+      "note": "106 tests pass, 0 failed"
+    },
+    {
+      "id": "s3",
+      "title": "Frontend test suite",
+      "kind": "command",
+      "status": "pass",
+      "started_at": "2026-11-21T15:14:38Z",
+      "duration_ms": 2490,
+      "cmd": "npm test",
+      "cwd": "/home/kali/factory/openharness/sources/LoomLine/web",
+      "exit_code": 0,
+      "log": "logs/s3.log",
+      "artifacts": [],
+      "note": "33 tests pass, 0 failed"
+    }
+  ],
+  "redactions": [],
+  "environment": {
+    "os": "linux",
+    "python": "3.13.15"
+  }
+}
