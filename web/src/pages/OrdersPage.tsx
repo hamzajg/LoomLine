@@ -556,6 +556,11 @@ export function OrdersPage({ api = httpOrdersApi, canManage = false }: Props) {
               <div className="order-routing">
                 <div className="order-breakdown__header">
                   <h4>Production routing</h4>
+                  {selectedOrder?.status === "IN_PROGRESS" && routing.length > 0 && (
+                    <p className="form-error" role="alert" data-testid="routing-locked">
+                      Routing locked — order is in progress
+                    </p>
+                  )}
                   {editableRouting && !editingRouting && (
                     <button
                       type="button"

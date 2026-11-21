@@ -328,4 +328,77 @@ describe("OrdersPage — order-composition Wave 2", () => {
     });
     expect(screen.queryByTestId("edit-breakdown")).not.toBeInTheDocument();
   });
+
+});
+
+describe("OrdersPage — production-routing Wave 3", () => {
+  const routingSteps = [
+    {
+      position: 1,
+      label: "Cut the panels",
+      phaseId: "phase-cut",
+      phaseCode: "CUT",
+      machineId: "machine-1",
+      machineReference: "MC-01",
+      repetitions: 1,
+      minutes: 4,
+    },
+    {
+      position: 2,
+      label: "Join the panels",
+      phaseId: "phase-sew",
+      phaseCode: "SEW",
+      machineId: "machine-2",
+      machineReference: "MC-02",
+      repetitions: 2,
+      minutes: 6,
+    },
+  ];
+
+  it("Shows routing sheet read-only without edit controls", async () => {
+    const api = fakeApi({
+      routing: vi.fn().mockResolvedValue(routingSteps),
+    });
+    const user = userEvent.setup();
+
+    render(<OrdersPage api={api} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-001")).toBeInTheDocument();
+    });
+    await user.click(screen.getByLabelText("View order OF-2026-001"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Production routing")).toBeInTheDocument();
+    });
+    expect(screen.getByTestId("routing-step-1")).toHaveTextContent("Cut the panels");
+    expect(screen.getByTestId("routing-step-2")).toHaveTextContent("Join the panels");
+    expect(screen.queryByTestId("edit-routing")).not.toBeInTheDocument();
+  });
+
+  it("Shows locked message on IN_PROGRESS order with routing", async () => {
+    const inProgress = { ...mockOrders[1], status: "IN_PROGRESS" as const };
+    const api = fakeApi({
+      get: vi.fn().mockImplementation(async (id: string) =>
+        id === "o2" ? inProgress : mockOrders.find((o) => o.id === id)!,
+      ),
+      routing: vi.fn().mockResolvedValue(routingSteps),
+    });
+    const user = userEvent.setup();
+
+    render(<OrdersPage api={api} canManage />);
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-002")).toBeInTheDocument();
+    });
+    await user.click(screen.getByLabelText("View order OF-2026-002"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Production routing")).toBeInTheDocument();
+    });
+    expect(screen.getByTestId("routing-locked")).toHaveTextContent(
+      "Routing locked — order is in progress",
+    );
+    expect(screen.queryByTestId("edit-routing")).not.toBeInTheDocument();
+  });
 });
