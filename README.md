@@ -6,9 +6,10 @@ and — in later features — routing sheets, stock, equipment, and quality.
 
 ## Status
 
-**Active development.** Four features are shipped and validated; the fifth,
-*production routing*, is in progress (wave 1 planned, decision review complete).
-See [`specs/PRODUCT.md`](specs/PRODUCT.md) for the feature map and status.
+**Active development.** Five features are shipped and validated: order
+intake/tracking, authentication and app shell, order composition, article
+catalogue, and production routing. See [`specs/PRODUCT.md`](specs/PRODUCT.md)
+for the feature map and status.
 
 ## Repository layout
 
@@ -16,12 +17,11 @@ See [`specs/PRODUCT.md`](specs/PRODUCT.md) for the feature map and status.
 |------|----------|
 | `specs/PRODUCT.md` | Feature map and sequencing across all specs |
 | `specs/order-intake-and-tracking/SPEC.md` | Problem, users, scope, acceptance criteria, decisions |
-| `specs/PRODUCT.md` | Feature map and sequencing across all specs |
 | `specs/order-intake-and-tracking/` | Shipped: order intake, status, lifecycle, and composition |
 | `specs/auth-and-app-shell/` | Shipped: identity, roles, access control, and application shell |
 | `specs/order-composition/` | Shipped: colour/size quantity breakdown per order |
 | `specs/article-catalogue/` | Shipped: articles, colours, sizes, and size types |
-| `specs/production-routing/` | In progress: ordered instruction sheets for shop floor |
+| `specs/production-routing/` | Shipped: ordered instruction sheets for shop floor |
 
 ## Planned stack
 

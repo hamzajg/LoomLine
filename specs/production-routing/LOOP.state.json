@@ -1,30 +1,30 @@
 {
   "feature": "production-routing",
-  "status": "running",
+  "status": "done",
   "iterations": 0,
   "review": "required",
-  "updated": "2026-11-21T15:11:48Z",
+  "updated": "2026-11-22T09:05:03Z",
   "waves": {
     "1": {
       "status": "done",
       "branch": "feat/production-routing-w1",
-      "pr": "7b5c9e3",
-      "evidence": "106 tests pass, 0 failed; PUT/GET /api/orders/{id}/routing, GET /api/phases, GET /api/machines endpoints; V3 migration +",
-      "updated": "2026-11-21T14:59:00Z"
+      "pr": "#35",
+      "evidence": "PR #35 merged; 106 backend tests pass; routing replace-set API + V3 migration",
+      "updated": "2026-11-22T09:05:03Z"
     },
     "2": {
       "status": "done",
       "branch": "feat/production-routing-w2",
-      "pr": "36",
-      "evidence": "106 backend tests pass, 33 frontend tests pass; 8 OrderRoutingIT integration tests for edit flow; frontend routing UI in",
-      "updated": "2026-11-21T15:08:13Z"
+      "pr": "#36",
+      "evidence": "PR #36 merged; 106 backend + 33 frontend tests pass; edit routing UI",
+      "updated": "2026-11-22T09:05:03Z"
     },
     "3": {
       "status": "done",
       "branch": "feat/production-routing-w3",
-      "pr": "37",
-      "evidence": "106 backend tests pass, 35 frontend tests pass; locked message for IN_PROGRESS orders; read-only routing view; all 3 wav",
-      "updated": "2026-11-21T15:11:48Z"
+      "pr": "#37",
+      "evidence": "PR #37 merged; 106 backend + 35 frontend tests pass; read-only routing + locked message",
+      "updated": "2026-11-22T09:05:03Z"
     }
   },
   "gates": {
@@ -55,6 +55,10 @@
     "2026-11-21T14:59:09Z start wave 2 on feat/production-routing-w2",
     "2026-11-21T15:08:13Z complete wave 2 (36): 106 backend tests pass, 33 frontend tests pass; 8 OrderRoutingIT integration tests for edit flow; frontend routing UI in",
     "2026-11-21T15:08:36Z start wave 3 on feat/production-routing-w3",
-    "2026-11-21T15:11:48Z complete wave 3 (37): 106 backend tests pass, 35 frontend tests pass; locked message for IN_PROGRESS orders; read-only routing view; all 3 wav"
+    "2026-11-21T15:11:48Z complete wave 3 (37): 106 backend tests pass, 35 frontend tests pass; locked message for IN_PROGRESS orders; read-only routing view; all 3 wav",
+    "2026-11-21T15:17:10Z feature validated and shipped",
+    "2026-11-22T09:05:03Z complete wave 1 (#35): PR #35 merged; 106 backend tests pass; routing replace-set API + V3 migration",
+    "2026-11-22T09:05:03Z complete wave 2 (#36): PR #36 merged; 106 backend + 33 frontend tests pass; edit routing UI",
+    "2026-11-22T09:05:03Z complete wave 3 (#37): PR #37 merged; 106 backend + 35 frontend tests pass; read-only routing + locked message"
   ]
 }
