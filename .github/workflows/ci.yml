@@ -17,12 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # The build compiles for a Java 17 toolchain; Gradle itself also runs on it.
-      - name: Set up JDK 17
+      # The build compiles for a Java 25 toolchain; Gradle itself also runs on it.
+      - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "25"
           cache: gradle
 
       # Tests provision PostgreSQL through Quarkus Dev Services, using the
