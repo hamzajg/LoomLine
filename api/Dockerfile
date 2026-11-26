@@ -1,5 +1,5 @@
 # --- build -----------------------------------------------------------------
-FROM eclipse-temurin:25-jdk AS build
+FROM eclipse-temurin:17-jdk AS build
 WORKDIR /src
 
 COPY gradlew ./
@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/root/.gradle chmod +x gradlew \
       -Dquarkus.flyway.locations=${FLYWAY_LOCATIONS}
 
 # --- runtime ---------------------------------------------------------------
-FROM eclipse-temurin:25-jre
+FROM eclipse-temurin:17-jre
 WORKDIR /app
 
 COPY --from=build /src/api/build/quarkus-app /app
