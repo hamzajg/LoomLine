@@ -87,6 +87,11 @@ screen.
 - Accessibility: all forms are keyboard reachable with visible focus and
   labels; movement type and balance are text, not color-only; errors are
   announced next to the field they concern.
+- UI pattern: F-pattern — dense list screens (materials, movements, levels)
+  scan top-left across filters and down table rows; entry forms stay
+  single-column inside the page body.
+- Navigation/overlay: full-page — materials, movements and levels are routed
+  list pages with inline forms; the balance stays visible after posting.
 
 ## Scope (in)
 
