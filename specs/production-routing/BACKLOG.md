@@ -26,3 +26,9 @@ parse them. Write the story as: "As a <role>, I want <goal>, so that
 - Depends: US3
 - Size: S
 - Notes: read-only for production view; locked message from IN_PROGRESS
+
+## US5 — As a production planner, I want the routing sheet to show its planned total, reorder from the keyboard, and confirm a clear, so that I can sequence work safely
+
+- Scenarios: @w4
+- Size: S
+- Notes: builds on US3; move up/down buttons beside each step (disabled at the ends), planned minutes per unit visible while editing, and an empty save asks before it removes every step

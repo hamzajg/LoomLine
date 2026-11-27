@@ -72,3 +72,17 @@ Feature: production-routing
     When the planner opens the order
     Then the routing steps are visible
     And the sheet is marked as locked and no edit controls are offered
+
+  @w4 @routing @accessibility
+  Scenario: The routing sheet shows its total and reorders from the keyboard
+    Given a draft order with two routing steps of 4 and 6 minutes
+    When the planner edits the routing
+    Then the planned total is 10 minutes per unit
+    And the second step can be moved up with a button
+
+  @w4 @routing @safety
+  Scenario: An empty routing sheet asks before it clears
+    Given a routing sheet with steps
+    When the planner saves it with no steps
+    Then a confirmation names the consequence
+    And nothing is saved until the planner confirms

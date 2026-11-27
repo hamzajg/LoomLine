@@ -37,3 +37,13 @@ Scenarios proven by this wave:
 | Item | Title | Size | Deps | Notes |
 |------|-------|------|------|-------|
 | US4 | As a production supervisor, I want to read the routing sheet and see locked orders, so that I can work from the same sequence without changing it | S | US3 | read-only for production view; locked message from IN_PROGRESS |
+
+## Wave 4 — iteration 4
+
+Scenarios proven by this wave:
+- The routing sheet shows its total and reorders from the keyboard
+- An empty routing sheet asks before it clears
+
+| Item | Title | Size | Deps | Notes |
+|------|-------|------|------|-------|
+| US5 | As a production planner, I want the routing sheet to show its planned total, reorder from the keyboard, and confirm a clear, so that I can sequence work safely | S | — | builds on US3; move up/down buttons beside each step (disabled at the ends), planned minutes per unit visible while editing, and an empty save asks before it removes every step |
