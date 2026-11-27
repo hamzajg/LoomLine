@@ -5,14 +5,14 @@
 Status: done
 Iterations: 0
 Review: required
-Updated: 2026-11-27T21:57:38Z
+Updated: 2026-11-27T22:05:35Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
 | 1 | done | feat/production-routing-w1 | #35 | PR #35 merged; 106 backend tests pass; routing replace-set API + V3 migration | 2026-11-22T09:05:03Z |
 | 2 | done | feat/production-routing-w2 | #36 | PR #36 merged; 106 backend + 33 frontend tests pass; edit routing UI | 2026-11-22T09:05:03Z |
 | 3 | done | feat/production-routing-w3 | #37 | PR #37 merged; 106 backend + 35 frontend tests pass; read-only routing + locked message | 2026-11-22T09:05:03Z |
-| 4 | done | feat/production-routing-w4 | — | routing totals, reorder and clear confirmation: focused test fails without the implementation and passes with it; 53 web · evidence:20261127T215658Z-8e7a1ca | 2026-11-27T21:57:06Z |
+| 4 | done | feat/production-routing-w4 | — | routing totals, reorder and clear confirmation: assertion-level red (behaviour disabled, test fails, file restored), the · evidence:20261127T220526Z-f5511fb | 2026-11-27T22:05:35Z |
 
 ## Gates
 
@@ -43,3 +43,4 @@ Updated: 2026-11-27T21:57:38Z
 - 2026-11-27T21:55:43Z start wave 4 on feat/production-routing-w4
 - 2026-11-27T21:57:06Z complete wave 4 [bundle 20261127T215658Z-8e7a1ca]: routing totals, reorder and clear confirmation: focused test fails without the implementation and passes with it; 53 web
 - 2026-11-27T21:57:38Z feature validated and shipped
+- 2026-11-27T22:05:35Z complete wave 4 [bundle 20261127T220526Z-f5511fb]: routing totals, reorder and clear confirmation: assertion-level red (behaviour disabled, test fails, file restored), the

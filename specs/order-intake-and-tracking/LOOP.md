@@ -5,14 +5,14 @@
 Status: done
 Iterations: 5
 Review: required
-Updated: 2026-11-27T21:57:37Z
+Updated: 2026-11-27T22:06:22Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
 | 1 | done | feat/order-intake-and-tracking-w1 | #2 | 17 backend tests + 6 frontend tests pass, walking skeleton verified, UI screenshots captured | 2026-11-18T18:59:32Z |
 | 2 | done | feat/order-intake-and-tracking-w2 | #3 | wave 2 scenarios proven in the live UI (filter by status, search by reference, order detail); backend :api:test + fronte | 2026-11-18T18:59:32Z |
 | 3 | done | feat/order-intake-and-tracking-w3 | #17 | :api:test green (9-case 5x5 matrix + 7 REST ITs), web 24/24 + build, live OIDC lifecycle verified, evidence 20261119T135 | 2026-11-19T13:50:55Z |
-| 4 | done | feat/order-intake-and-tracking-w4 | — | filter persistence and first-invalid focus: focused test fails without the implementation and passes with it; 53 web tes · evidence:20261127T215641Z-8e7a1ca | 2026-11-27T21:56:50Z |
+| 4 | done | feat/order-intake-and-tracking-w4 | — | filter persistence and first-invalid focus: assertion-level red (behaviour disabled, tests fail, files restored), then g · evidence:20261127T220612Z-f5511fb | 2026-11-27T22:06:22Z |
 
 ## Gates
 
@@ -46,3 +46,5 @@ Updated: 2026-11-27T21:57:37Z
 - 2026-11-27T21:55:25Z start wave 4 on feat/order-intake-and-tracking-w4
 - 2026-11-27T21:56:50Z complete wave 4 [bundle 20261127T215641Z-8e7a1ca]: filter persistence and first-invalid focus: focused test fails without the implementation and passes with it; 53 web tes
 - 2026-11-27T21:57:37Z feature validated and shipped
+- 2026-11-27T22:05:17Z complete wave 4 [bundle 20261127T220508Z-f5511fb]: filter persistence and first-invalid focus: assertion-level red (behaviour disabled, test fails, file restored), then gr
+- 2026-11-27T22:06:22Z complete wave 4 [bundle 20261127T220612Z-f5511fb]: filter persistence and first-invalid focus: assertion-level red (behaviour disabled, tests fail, files restored), then g

@@ -3,7 +3,7 @@
   "status": "done",
   "iterations": 5,
   "review": "required",
-  "updated": "2026-11-27T21:57:37Z",
+  "updated": "2026-11-27T22:06:22Z",
   "waves": {
     "1": {
       "status": "done",
@@ -30,9 +30,9 @@
       "status": "done",
       "branch": "feat/order-intake-and-tracking-w4",
       "pr": "\u2014",
-      "evidence": "filter persistence and first-invalid focus: focused test fails without the implementation and passes with it; 53 web tes",
-      "bundle": "20261127T215641Z-8e7a1ca",
-      "updated": "2026-11-27T21:56:50Z"
+      "evidence": "filter persistence and first-invalid focus: assertion-level red (behaviour disabled, tests fail, files restored), then g",
+      "bundle": "20261127T220612Z-f5511fb",
+      "updated": "2026-11-27T22:06:22Z"
     }
   },
   "gates": {
@@ -82,6 +82,8 @@
     "2026-11-19T13:52:04Z feature validated and shipped",
     "2026-11-27T21:55:25Z start wave 4 on feat/order-intake-and-tracking-w4",
     "2026-11-27T21:56:50Z complete wave 4 [bundle 20261127T215641Z-8e7a1ca]: filter persistence and first-invalid focus: focused test fails without the implementation and passes with it; 53 web tes",
-    "2026-11-27T21:57:37Z feature validated and shipped"
+    "2026-11-27T21:57:37Z feature validated and shipped",
+    "2026-11-27T22:05:17Z complete wave 4 [bundle 20261127T220508Z-f5511fb]: filter persistence and first-invalid focus: assertion-level red (behaviour disabled, test fails, file restored), then gr",
+    "2026-11-27T22:06:22Z complete wave 4 [bundle 20261127T220612Z-f5511fb]: filter persistence and first-invalid focus: assertion-level red (behaviour disabled, tests fail, files restored), then g"
   ]
 }

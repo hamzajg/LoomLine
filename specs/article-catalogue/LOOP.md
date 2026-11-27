@@ -5,13 +5,13 @@
 Status: done
 Iterations: 1
 Review: required
-Updated: 2026-11-27T21:57:38Z
+Updated: 2026-11-27T22:05:44Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
 | 1 | done | feat/article-catalogue-w1 | #28 | :api:test green (domain + CatalogueIT), live OIDC verify-catalogue.sh all paths pass, evidence 20261119T171108Z-ebadfd1 | 2026-11-19T17:11:13Z |
 | 2 | done | feat/article-catalogue-w2 | #30 | web 33/33 + build, 5 CDP browser screenshots (planner CRUD + supervisor read-only), evidence 20261119T171553Z-d97cc4b | 2026-11-19T17:16:26Z |
-| 3 | done | feat/article-catalogue-w3 | — | clear-search: focused test fails without the implementation and passes with it; 53 web tests and the production build pa · evidence:20261127T215706Z-8e7a1ca | 2026-11-27T21:57:14Z |
+| 3 | done | feat/article-catalogue-w3 | — | clear-search: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web tests and the prod · evidence:20261127T220535Z-f5511fb | 2026-11-27T22:05:44Z |
 
 ## Gates
 
@@ -35,3 +35,4 @@ Updated: 2026-11-27T21:57:38Z
 - 2026-11-27T21:55:52Z start wave 3 on feat/article-catalogue-w3
 - 2026-11-27T21:57:14Z complete wave 3 [bundle 20261127T215706Z-8e7a1ca]: clear-search: focused test fails without the implementation and passes with it; 53 web tests and the production build pa
 - 2026-11-27T21:57:38Z feature validated and shipped
+- 2026-11-27T22:05:44Z complete wave 3 [bundle 20261127T220535Z-f5511fb]: clear-search: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web tests and the prod

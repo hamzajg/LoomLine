@@ -5,13 +5,13 @@
 Status: done
 Iterations: 0
 Review: required
-Updated: 2026-11-27T21:57:37Z
+Updated: 2026-11-27T22:05:26Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
 | 1 | done | feat/order-composition-w1 | #22 | :api:test green, live verified, evidence 20261119T152049Z-9d3d3da | 2026-11-19T15:20:58Z |
 | 2 | done | feat/order-composition-w2 | #24 | web 27/27 + build, api green, 5 browser screenshots, evidence 20261119T152524Z-94478b4 | 2026-11-19T15:25:35Z |
-| 3 | done | feat/order-composition-w3 | — | planned and remaining quantity: focused test fails without the implementation and passes with it; 53 web tests and the p · evidence:20261127T215650Z-8e7a1ca | 2026-11-27T21:56:58Z |
+| 3 | done | feat/order-composition-w3 | — | planned and remaining quantity: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web  · evidence:20261127T220517Z-f5511fb | 2026-11-27T22:05:26Z |
 
 ## Gates
 
@@ -36,3 +36,4 @@ Updated: 2026-11-27T21:57:37Z
 - 2026-11-27T21:55:35Z start wave 3 on feat/order-composition-w3
 - 2026-11-27T21:56:58Z complete wave 3 [bundle 20261127T215650Z-8e7a1ca]: planned and remaining quantity: focused test fails without the implementation and passes with it; 53 web tests and the p
 - 2026-11-27T21:57:37Z feature validated and shipped
+- 2026-11-27T22:05:26Z complete wave 3 [bundle 20261127T220517Z-f5511fb]: planned and remaining quantity: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web 

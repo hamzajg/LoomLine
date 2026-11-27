@@ -5,14 +5,14 @@
 Status: done
 Iterations: 3
 Review: required
-Updated: 2026-11-27T21:57:37Z
+Updated: 2026-11-27T22:05:08Z
 
 | Wave | Status | Branch | PR | Evidence | Updated |
 |------|--------|--------|----|----------|---------|
 | 1 | done | feat/auth-and-app-shell-w1 | #6 | 12/12 Vitest (AppShell 3, OrdersPage 3, NewOrderPage 6) + npm run build green; no CI configured in repo; evidence auth-a | 2026-11-18T19:53:34Z |
 | 2 | done | feat/auth-and-app-shell-w2 | #9 | 25/25 Gradle :api:test (ApiAuthenticationIT 4 new) + 17/17 Vitest incl. 5 new wave-2 tests + npm run build green; docker | 2026-11-19T03:18:53Z |
 | 3 | done | feat/auth-and-app-shell-w3 | #13 | 32/32 api tests + 21/21 vitest + vite build green; live compose matrix verified for planner/supervisor/admin and admin-c | 2026-11-19T12:33:20Z |
-| 4 | done | feat/auth-and-app-shell-w4 | — | drawer focus: focused test fails without the implementation and passes with it; 53 web tests and the production build pa · evidence:20261127T215633Z-8e7a1ca | 2026-11-27T21:56:41Z |
+| 4 | done | feat/auth-and-app-shell-w4 | — | drawer focus: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web tests and the prod · evidence:20261127T220459Z-f5511fb | 2026-11-27T22:05:08Z |
 
 ## Gates
 
@@ -44,3 +44,4 @@ Updated: 2026-11-27T21:57:37Z
 - 2026-11-27T21:55:25Z complete wave 4 [bundle 20261127T215516Z-8e7a1ca]: drawer focus: focused test fails without the implementation and passes with it; 53 web tests and the production build pa
 - 2026-11-27T21:56:41Z complete wave 4 [bundle 20261127T215633Z-8e7a1ca]: drawer focus: focused test fails without the implementation and passes with it; 53 web tests and the production build pa
 - 2026-11-27T21:57:37Z feature validated and shipped
+- 2026-11-27T22:05:08Z complete wave 4 [bundle 20261127T220459Z-f5511fb]: drawer focus: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web tests and the prod
