@@ -544,6 +544,58 @@ button:disabled {
   box-shadow: var(--ll-shadow-sm);
 }
 
+/* Catalogue: dense list stays in the main column while the editor sits in
+   the page aside, so the row being edited and the search stay visible. */
+.catalogue-panel--editing {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--ll-editor-aside-width);
+  grid-template-areas: "main aside";
+  gap: var(--ll-space-5);
+  align-items: start;
+}
+
+.catalogue-panel__main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ll-space-5);
+  min-width: 0;
+}
+
+.catalogue-panel__aside {
+  grid-area: aside;
+  position: sticky;
+  top: calc(var(--ll-header-height) + var(--ll-space-4));
+  width: 100%;
+}
+
+.catalogue-panel__aside .card {
+  padding: var(--ll-space-4);
+}
+
+.catalogue-panel__aside h3 {
+  margin-top: 0;
+}
+
+@media (max-width: 60rem) {
+  .catalogue-panel--editing {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "aside"
+      "main";
+  }
+
+  .catalogue-panel__aside {
+    position: static;
+  }
+}
+
+@media (direction: rtl) {
+  .catalogue-panel--editing {
+    grid-template-areas: "aside main";
+  }
+}
+
 .filter-group {
   display: flex;
   flex-direction: column;
@@ -636,6 +688,7 @@ button:disabled {
   justify-content: center;
   z-index: var(--ll-z-modal);
   padding: var(--ll-space-4);
+  overflow-y: auto;
 }
 
 .order-detail-card {
@@ -644,7 +697,10 @@ button:disabled {
   box-shadow: var(--ll-shadow-lg);
   width: 100%;
   max-width: 32rem;
+  max-height: calc(100vh - 2rem);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .order-detail-card__header {
@@ -653,6 +709,7 @@ button:disabled {
   align-items: center;
   padding: var(--ll-space-4) var(--ll-space-5);
   border-bottom: 1px solid var(--ll-color-border-subtle);
+  flex-shrink: 0;
 }
 
 .order-detail-card__header h3 {
@@ -662,6 +719,8 @@ button:disabled {
 
 .order-detail-card__body {
   padding: var(--ll-space-5);
+  overflow-y: auto;
+  flex: 1;
 }
 
 .detail-list {
@@ -682,7 +741,12 @@ button:disabled {
   color: var(--ll-color-text);
 }
 
-/* Placeholder for areas that are part of the migration but not built yet. */
+/* Table wrapper for horizontal scroll on narrow containers */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
 .area-placeholder {
   background: var(--ll-color-surface);
@@ -790,4 +854,161 @@ button:disabled {
 .app-header__signout:focus-visible {
   outline: 2px solid var(--ll-color-focus);
   outline-offset: 2px;
+}
+
+/* ------------------------------------------- inline editor (guide contract) */
+
+.breakdown-editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ll-space-2);
+  margin-top: var(--ll-space-3);
+}
+
+/* Rows keep every control on one line when there is room and never force
+   horizontal scrolling: fields shrink, then the row stacks. */
+.breakdown-editor__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)) auto;
+  gap: var(--ll-space-1);
+  align-items: center;
+  padding: var(--ll-space-2);
+  border: 1px solid var(--ll-color-border-subtle);
+  border-radius: var(--ll-radius-sm);
+  background: var(--ll-color-surface-muted);
+}
+
+.breakdown-editor__row > * {
+  min-width: 0;
+}
+
+.breakdown-editor__row input,
+.breakdown-editor__row select {
+  width: 100%;
+}
+
+/* Column labels above the editor rows: the inputs also carry aria-labels, but
+   the visible header keeps the grid readable at a glance. */
+.breakdown-editor__row--head {
+  border-color: transparent;
+  background: transparent;
+  padding-block: 0;
+  font-size: var(--ll-font-size-sm);
+  font-weight: 600;
+  color: var(--ll-color-text-muted);
+}
+
+.breakdown-editor__total {
+  margin: 0;
+  font-size: var(--ll-font-size-sm);
+  font-weight: 600;
+  color: var(--ll-color-text-muted);
+}
+
+.breakdown-editor__total--over {
+  color: var(--ll-color-danger);
+}
+
+.breakdown-editor__row-actions {
+  display: flex;
+  gap: var(--ll-space-1);
+  justify-self: end;
+}
+
+.breakdown-editor__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ll-space-2);
+  margin-top: var(--ll-space-2);
+}
+
+@media (max-width: 60rem) {
+  .breakdown-editor__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .breakdown-editor__row > button {
+    justify-self: end;
+  }
+}
+
+/* --------------------------------------- dialog (guide modal contract) --- */
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ll-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ll-space-4);
+  background: rgba(16, 50, 74, 0.55);
+}
+
+.dialog {
+  width: min(32rem, 100%);
+  max-height: calc(100vh - 2 * var(--ll-space-4));
+  overflow-y: auto;
+  padding: var(--ll-space-5);
+  border-radius: var(--ll-radius-lg);
+  background: var(--ll-color-surface);
+  box-shadow: var(--ll-shadow-lg);
+}
+
+.dialog__title {
+  margin: 0 0 var(--ll-space-2);
+  font-size: var(--ll-font-size-xl);
+  color: var(--ll-color-text);
+}
+
+.dialog__description {
+  margin: 0;
+  color: var(--ll-color-text-muted);
+}
+
+.dialog__body {
+  margin-top: var(--ll-space-4);
+}
+
+.dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--ll-space-2);
+  margin-top: var(--ll-space-5);
+}
+
+.btn--danger {
+  background: var(--ll-color-danger);
+  color: var(--ll-color-text-inverse);
+}
+
+.btn--danger:hover:not(:disabled) {
+  background: var(--ll-color-danger-fg);
+}
+
+/* ------------------------------------------------------------- utilities - */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The guide asks every surface to respect the user's motion preference. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

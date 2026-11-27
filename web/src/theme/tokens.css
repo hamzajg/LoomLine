@@ -104,6 +104,7 @@
   /* Layout */
   --ll-header-height: 3.5rem;
   --ll-sidebar-width: 17rem;
+  --ll-editor-aside-width: 20rem;
   --ll-content-max-width: 72rem;
   --ll-breakpoint-narrow: 60rem;
 

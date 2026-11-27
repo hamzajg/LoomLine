@@ -21,3 +21,9 @@ parse them. Write the story as: "As a <role>, I want <goal>, so that
 - Depends: US1
 - Size: S
 - Notes: read-only for view-only roles; UI in order detail
+
+## US4 — As a production planner, I want to see the planned and remaining quantities while editing, so that I catch an over-total before saving
+
+- Scenarios: @w3
+- Size: S
+- Notes: builds on US1; the editor shows planned total and remaining against the order, and warns as soon as the draft goes over; saving still replaces the whole set

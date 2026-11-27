@@ -42,3 +42,11 @@ Feature: order-composition
     When the supervisor opens an order with quantity lines
     Then the breakdown is visible
     And no edit controls are offered
+
+  @w3 @composition @feedback
+  Scenario: The editor shows planned and remaining quantities
+    Given an order for 120 units with 40 units in the breakdown
+    When the planner edits the breakdown
+    Then the editor shows 40 of 120 planned and 80 remaining
+    When the planner raises a line to 150
+    Then the editor warns that the draft is 30 over the order quantity
