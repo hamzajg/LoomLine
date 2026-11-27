@@ -11,6 +11,10 @@ export type NavItem = {
   id: string;
   labelKey: string;
   path: string;
+  /** Optional: dynamic route pattern (e.g., "/production/orders/:id") */
+  pattern?: string;
+  /** A routed destination that is not shown as a sidebar link. */
+  hidden?: boolean;
 };
 
 export type NavSection = {
@@ -21,6 +25,7 @@ export type NavSection = {
 };
 
 export const DEFAULT_PATH = "/production/orders";
+export const NEW_ORDER_PATH = "/production/orders/new";
 
 export const SECTIONS: NavSection[] = [
   {
@@ -29,6 +34,8 @@ export const SECTIONS: NavSection[] = [
     icon: "production",
     items: [
       { id: "orders", labelKey: "item.orders", path: "/production/orders" },
+      { id: "order-new", labelKey: "item.newOrder", path: NEW_ORDER_PATH, hidden: true },
+      { id: "order-detail", labelKey: "item.orderDetail", path: "/production/orders/:id", pattern: "/production/orders/:id" },
       { id: "articles", labelKey: "item.articles", path: "/production/articles" },
       { id: "models", labelKey: "item.models", path: "/production/models" },
       { id: "routings", labelKey: "item.routings", path: "/production/routings" },
@@ -113,11 +120,24 @@ function normalise(path: string): string {
 
 export function resolveRoute(path: string, sections: NavSection[] = SECTIONS): ResolvedRoute {
   const target = normalise(path);
+  
+  // First try exact match
   for (const section of sections) {
     for (const item of section.items) {
       if (item.path === target) return { path: target, section, item };
     }
   }
+  
+  // Then try pattern match for dynamic routes
+  for (const section of sections) {
+    for (const item of section.items) {
+      if (item.pattern) {
+        const regex = new RegExp("^" + item.pattern.replace(/:[^/]+/g, "([^/]+)") + "$");
+        if (regex.test(target)) return { path: target, section, item };
+      }
+    }
+  }
+  
   return { path: target, section: null, item: null };
 }
 
@@ -141,9 +161,11 @@ export type Breadcrumb = { labelKey: string; current?: boolean };
 
 export function breadcrumbsFor(route: ResolvedRoute): Breadcrumb[] {
   if (route.section && route.item) {
+    // For dynamic routes, use the item's labelKey but don't mark as current if it's a pattern
+    const isDynamic = !!route.item.pattern;
     return [
       { labelKey: route.section.labelKey },
-      { labelKey: route.item.labelKey, current: true },
+      { labelKey: route.item.labelKey, current: !isDynamic },
     ];
   }
   return [{ labelKey: "home", current: true }];

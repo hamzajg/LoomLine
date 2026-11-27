@@ -67,3 +67,16 @@ Feature: Order intake and tracking
     Given an order in status "COMPLETED"
     When the planner tries to cancel it
     Then the request is rejected because the order is in a terminal state
+
+  @w4 @orders @accessibility
+  Scenario: Order list keeps its filter after a detail visit
+    Given a planner filtered the order list by status
+    When the planner opens an order detail and returns to the list
+    Then the status filter is still applied
+
+  @w4 @orders @accessibility
+  Scenario: A failed save focuses the first invalid field
+    Given the New order form is empty
+    When the planner submits it
+    Then the first invalid field is focused
+    And every missing field is explained

@@ -8,6 +8,7 @@ import {
   type FieldErrors,
   type OrdersApi,
 } from "../api";
+import { navigate } from "../router";
 
 type Props = {
   api?: OrdersApi;
@@ -63,6 +64,20 @@ export function validateOrder(values: FormValues): FieldErrors {
   }
 
   return errors;
+}
+
+const FIELD_ORDER: (keyof FormValues)[] = [
+  "reference",
+  "clientId",
+  "articleId",
+  "quantity",
+  "dueDate",
+];
+
+/** The first invalid field is the one the guide's checklist sends focus to. */
+function focusFirstError(errors: FieldErrors) {
+  const field = FIELD_ORDER.find((name) => errors[name]);
+  if (field) document.getElementById(field)?.focus();
 }
 
 export function NewOrderPage({ api = httpOrdersApi }: Props) {
@@ -121,6 +136,7 @@ export function NewOrderPage({ api = httpOrdersApi }: Props) {
     const errors = validateOrder(values);
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
+      focusFirstError(errors);
       return;
     }
 
@@ -141,6 +157,8 @@ export function NewOrderPage({ api = httpOrdersApi }: Props) {
         setFieldErrors(error.fieldErrors);
         if (Object.keys(error.fieldErrors).length === 0) {
           setFormError(error.message);
+        } else {
+          focusFirstError(error.fieldErrors);
         }
       } else {
         setFormError("The order could not be created. Try again.");
@@ -152,23 +170,40 @@ export function NewOrderPage({ api = httpOrdersApi }: Props) {
 
   if (created) {
     return (
-      <section className="card card--success" aria-live="polite">
-        <h2>Order {created.reference} created</h2>
-        <p>
-          Status: <strong>{created.status}</strong>
-        </p>
-        <p>
-          {created.quantity} units due {created.dueDate}
-        </p>
-        <button type="button" onClick={() => setCreated(null)}>
-          Create another order
-        </button>
-      </section>
+      <div className="orders-page">
+        <BackToOrders />
+        <section className="card card--success" aria-live="polite">
+          <h2>Order {created.reference} created</h2>
+          <p>
+            Status: <strong>{created.status}</strong>
+          </p>
+          <p>
+            {created.quantity} units due {created.dueDate}
+          </p>
+          <div className="breakdown-editor__actions">
+            <button
+              type="button"
+              className="btn btn--primary"
+              onClick={() => navigate(`/production/orders/${created.id}`)}
+            >
+              View order
+            </button>
+            <button
+              type="button"
+              className="btn btn--secondary"
+              onClick={() => setCreated(null)}
+            >
+              Create another order
+            </button>
+          </div>
+        </section>
+      </div>
     );
   }
 
   return (
     <section className="card">
+      <BackToOrders />
       <h2>New production order</h2>
 
       {loadError ? (
@@ -312,5 +347,19 @@ export function NewOrderPage({ api = httpOrdersApi }: Props) {
         </button>
       </form>
     </section>
+  );
+}
+
+function BackToOrders() {
+  return (
+    <div className="orders-page__nav">
+      <button
+        type="button"
+        className="btn btn--secondary"
+        onClick={() => navigate("/production/orders")}
+      >
+        ← Back to orders
+      </button>
+    </div>
   );
 }

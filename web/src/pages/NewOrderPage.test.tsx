@@ -92,6 +92,7 @@ describe("NewOrderPage", () => {
     expect(screen.getByText("Quantity is required.")).toBeInTheDocument();
     expect(screen.getByText("Due date is required.")).toBeInTheDocument();
     expect(api.create).not.toHaveBeenCalled();
+    expect(screen.getByLabelText("Reference")).toHaveFocus();
   });
 
   it("rejects a non-positive quantity before calling the API", async () => {
@@ -169,5 +170,22 @@ describe("NewOrderPage", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Create order" })).toBeDisabled();
     expect(user).toBeTruthy();
+  });
+
+  it("navigates back to orders and to the created order", async () => {
+    const api = fakeApi();
+    const user = userEvent.setup();
+
+    render(<NewOrderPage api={api} />);
+    await user.click(screen.getByRole("button", { name: /back to orders/i }));
+    expect(window.location.pathname).toBe("/production/orders");
+
+    await fillValidForm(user);
+    await user.click(screen.getByRole("button", { name: "Create order" }));
+    await waitFor(() =>
+      expect(screen.getByText("Order OF-2026-001 created")).toBeInTheDocument(),
+    );
+    await user.click(screen.getByRole("button", { name: "View order" }));
+    expect(window.location.pathname).toBe("/production/orders/o1");
   });
 });
