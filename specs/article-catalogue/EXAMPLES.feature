@@ -86,3 +86,11 @@ Feature: article-catalogue
     Given a signed-in supervisor
     When they open the catalogue
     Then lists are visible and create/edit/delete controls are absent
+
+  @w3 @catalogue @search
+  Scenario: A search with no matches offers to clear it
+    Given the article list has entries
+    When the planner searches for a reference that does not exist
+    Then a no-entries message and a clear-search action are shown
+    When the planner clears the search
+    Then the full list returns and the search field is focused

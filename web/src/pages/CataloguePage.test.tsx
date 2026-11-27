@@ -54,6 +54,22 @@ describe("CataloguePage", () => {
     expect(screen.getByText("Maison Textile")).toBeInTheDocument();
   });
 
+  it("offers to clear the search when nothing matches", async () => {
+    const api = fakeApi({ searchArticles: vi.fn().mockResolvedValue([]) });
+    render(<LocaleProvider><CataloguePage api={api} canManage /></LocaleProvider>);
+
+    const search = screen.getByLabelText("Search");
+    fireEvent.change(search, { target: { value: "ZZZ" } });
+    fireEvent.submit(search.closest("form")!);
+
+    const clear = await screen.findByTestId("clear-search");
+    fireEvent.click(clear);
+
+    expect(search).toHaveValue("");
+    expect(search).toHaveFocus();
+    await waitFor(() => expect(api.searchArticles).toHaveBeenLastCalledWith(""));
+  });
+
   it("shows colours and sizes on their tabs", async () => {
     render(<LocaleProvider><CataloguePage api={fakeApi()} canManage /></LocaleProvider>);
     await screen.findByText("ART-100");
@@ -118,6 +134,53 @@ describe("CataloguePage", () => {
     expect(screen.queryByRole("button", { name: "Delete" })).not.toBeInTheDocument();
   });
 
+  it("confirms a delete in a labelled dialog before removing the row", async () => {
+    const api = fakeApi();
+    render(<LocaleProvider><CataloguePage api={api} canManage /></LocaleProvider>);
+    await screen.findByText("ART-100");
+
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toHaveAccessibleName("Delete this entry?");
+    // The safe choice holds focus, and Escape does not dismiss a destructive
+    // decision.
+    expect(screen.getByTestId("dialog-cancel")).toHaveFocus();
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId("dialog-cancel"));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(api.deleteArticle).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    fireEvent.click(screen.getByTestId("dialog-confirm"));
+
+    await waitFor(() => expect(api.deleteArticle).toHaveBeenCalledWith("a1"));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("guards unsaved changes when the editor is closed", async () => {
+    render(<LocaleProvider><CataloguePage api={fakeApi()} canManage /></LocaleProvider>);
+    await screen.findByText("ART-100");
+
+    fireEvent.click(screen.getByRole("button", { name: "New" }));
+    fireEvent.change(screen.getByLabelText("Label"), { target: { value: "Brouillon" } });
+    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toHaveAccessibleName("Discard unsaved changes?");
+    fireEvent.click(screen.getByRole("button", { name: "Keep editing" }));
+    expect(screen.getByTestId("entry-form")).toBeInTheDocument();
+    expect(screen.getByLabelText("Label")).toHaveValue("Brouillon");
+
+    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    fireEvent.click(screen.getByTestId("dialog-confirm"));
+    await waitFor(() =>
+      expect(screen.queryByTestId("entry-form")).not.toBeInTheDocument(),
+    );
+  });
+
   it("edits an existing entry", async () => {
     const api = fakeApi({
       updateColour: vi.fn().mockResolvedValue({ id: "k1", code: "NV", label: "Noir édité" }),
@@ -128,6 +191,10 @@ describe("CataloguePage", () => {
     fireEvent.click(screen.getByRole("button", { name: "Colours" }));
     await screen.findByText("NV");
     fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+
+    // The editor sits in the page aside and the list stays visible.
+    expect(screen.getByTestId("entry-form").closest("aside")).not.toBeNull();
+    expect(screen.getByTestId("entries-table")).toBeInTheDocument();
 
     const labelInput = screen.getByLabelText("Label");
     expect(labelInput).toHaveValue("Noir");

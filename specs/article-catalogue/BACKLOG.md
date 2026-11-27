@@ -31,3 +31,9 @@ Order stories by user value; dependencies express technical order only.
 - Depends: US1
 - Size: S
 - Notes: covered by the view/manage split in both waves; no dedicated UI work
+
+## US4 — As a production planner, I want a clear-search action when nothing matches, so that I can return to the full catalogue without retyping
+
+- Scenarios: @w3
+- Size: S
+- Notes: builds on US2; the no-matches row offers clear search, which empties the field, refocuses it and reloads the full list
