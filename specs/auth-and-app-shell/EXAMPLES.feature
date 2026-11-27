@@ -98,3 +98,12 @@ Feature: Identity, access control, and the application shell
     When the administrator creates a user and assigns a role
     Then the new user can sign in
     And the new user sees exactly the access the assigned role grants
+
+  @w4 @responsive @accessibility
+  Scenario: Navigation drawer moves focus in and returns it on close
+    Given a narrow viewport where the sidebar is a header-toggled drawer
+    When the user opens the drawer
+    Then focus moves to the drawer's first control
+    And Tab stays inside the drawer while the page behind is blocked
+    When the user dismisses the drawer with Escape
+    Then focus returns to the header toggle

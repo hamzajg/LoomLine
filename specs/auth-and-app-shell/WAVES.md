@@ -27,7 +27,7 @@ Scenarios proven by this wave:
 
 | Item | Title | Size | Deps | Notes |
 |------|-------|------|------|-------|
-| US3 | As a user, I want to sign in with my username and password and sign out again, so that only I can act as myself | M | — | Keycloak (OIDC) accounts; session established via the authorization-code flow at sign-in, terminated at sign-out; generic failure message (ADR-0002) |
+| US3 | As a user, I want to sign in with my username and password and sign out again, so that only I can act as myself | M | — | accounts owned by Keycloak (OIDC, Argon2id); session established at sign-in through the authorization-code flow, terminated at sign-out; generic failure message (ADR-0002) |
 | US4 | As a system owner, I want every API request to require a session, so that no one can read or change data without signing in | S | — | builds on US3 (same wave); 401 for missing/invalid session; sign-in, health and the API description are the only open endpoints |
 
 ## Wave 3 — iteration 3
@@ -42,4 +42,13 @@ Scenarios proven by this wave:
 |------|-------|------|------|-------|
 | US5 | As a user, I want the navigation to show only the areas my role grants, so that I am not offered work I cannot do | M | — | requires a session (wave 2); single role-to-access map drives both the navigation payload and route guarding; ungranted route shows an access-denied state |
 | US6 | As a system owner, I want the server to reject actions outside a user's role, so that access cannot be bypassed from the client | M | — | builds on US5 (same wave, same access map); 403 when authenticated but not permitted; the action must not execute; policy consulted once, not per endpoint |
-| US7 | As an administrator, I want to create users and assign roles, so that I can give people exactly the access they need | M | — | requires a session (wave 2); admin-only endpoints delegate to the Keycloak Admin API; bootstrap realm/admin seeded so setup needs no manual console edit (ADR-0002) |
+| US7 | As an administrator, I want to create users and assign roles, so that I can give people exactly the access they need | M | — | requires a session (wave 2); admin-only endpoints delegate account creation and role assignment to the Keycloak Admin API and return the projected result (ADR-0002); bootstrap realm/admin seeded so setup needs no manual console edit |
+
+## Wave 4 — iteration 4
+
+Scenarios proven by this wave:
+- Navigation drawer moves focus in and returns it on close
+
+| Item | Title | Size | Deps | Notes |
+|------|-------|------|------|-------|
+| US8 | As a user on a small screen, I want the navigation drawer to move focus into itself and back to the toggle, so that I never lose my place while navigating | S | — | builds on US2; opening moves focus to the drawer's first control, Tab stays inside while the overlay blocks the page, Escape/scrim/toggle dismissal returns focus to the header toggle; a link navigation closes the drawer without stealing focus from the new heading |
