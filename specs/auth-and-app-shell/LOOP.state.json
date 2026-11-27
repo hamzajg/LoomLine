@@ -2,7 +2,8 @@
   "feature": "auth-and-app-shell",
   "status": "done",
   "iterations": 3,
-  "updated": "2026-11-19T12:33:24Z",
+  "review": "required",
+  "updated": "2026-11-27T21:57:37Z",
   "waves": {
     "1": {
       "status": "done",
@@ -24,6 +25,14 @@
       "pr": "#13",
       "evidence": "32/32 api tests + 21/21 vitest + vite build green; live compose matrix verified for planner/supervisor/admin and admin-c",
       "updated": "2026-11-19T12:33:20Z"
+    },
+    "4": {
+      "status": "done",
+      "branch": "feat/auth-and-app-shell-w4",
+      "pr": "\u2014",
+      "evidence": "drawer focus: focused test fails without the implementation and passes with it; 53 web tests and the production build pa",
+      "bundle": "20261127T215633Z-8e7a1ca",
+      "updated": "2026-11-27T21:56:41Z"
     }
   },
   "gates": {
@@ -61,6 +70,11 @@
     "2026-11-19T10:23:28Z resumed",
     "2026-11-19T11:24:52Z start wave 3 on feat/auth-and-app-shell-w3",
     "2026-11-19T12:33:20Z complete wave 3 (#13): 32/32 api tests + 21/21 vitest + vite build green; live compose matrix verified for planner/supervisor/admin and admin-c",
-    "2026-11-19T12:33:24Z feature validated and shipped"
+    "2026-11-19T12:33:24Z feature validated and shipped",
+    "2026-11-27T21:53:07Z start wave 4 on feat/auth-and-app-shell-w4",
+    "2026-11-27T21:53:54Z complete wave 4 [bundle 20261127T215321Z-bc4f9de]: 47->53 tests green; drawer focus test fails without the focus management and passes with it; full suite + build pass at ",
+    "2026-11-27T21:55:25Z complete wave 4 [bundle 20261127T215516Z-8e7a1ca]: drawer focus: focused test fails without the implementation and passes with it; 53 web tests and the production build pa",
+    "2026-11-27T21:56:41Z complete wave 4 [bundle 20261127T215633Z-8e7a1ca]: drawer focus: focused test fails without the implementation and passes with it; 53 web tests and the production build pa",
+    "2026-11-27T21:57:37Z feature validated and shipped"
   ]
 }

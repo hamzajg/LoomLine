@@ -3,7 +3,7 @@
   "status": "done",
   "iterations": 0,
   "review": "required",
-  "updated": "2026-11-22T09:05:03Z",
+  "updated": "2026-11-27T21:57:38Z",
   "waves": {
     "1": {
       "status": "done",
@@ -25,6 +25,14 @@
       "pr": "#37",
       "evidence": "PR #37 merged; 106 backend + 35 frontend tests pass; read-only routing + locked message",
       "updated": "2026-11-22T09:05:03Z"
+    },
+    "4": {
+      "status": "done",
+      "branch": "feat/production-routing-w4",
+      "pr": "\u2014",
+      "evidence": "routing totals, reorder and clear confirmation: focused test fails without the implementation and passes with it; 53 web",
+      "bundle": "20261127T215658Z-8e7a1ca",
+      "updated": "2026-11-27T21:57:06Z"
     }
   },
   "gates": {
@@ -59,6 +67,9 @@
     "2026-11-21T15:17:10Z feature validated and shipped",
     "2026-11-22T09:05:03Z complete wave 1 (#35): PR #35 merged; 106 backend tests pass; routing replace-set API + V3 migration",
     "2026-11-22T09:05:03Z complete wave 2 (#36): PR #36 merged; 106 backend + 33 frontend tests pass; edit routing UI",
-    "2026-11-22T09:05:03Z complete wave 3 (#37): PR #37 merged; 106 backend + 35 frontend tests pass; read-only routing + locked message"
+    "2026-11-22T09:05:03Z complete wave 3 (#37): PR #37 merged; 106 backend + 35 frontend tests pass; read-only routing + locked message",
+    "2026-11-27T21:55:43Z start wave 4 on feat/production-routing-w4",
+    "2026-11-27T21:57:06Z complete wave 4 [bundle 20261127T215658Z-8e7a1ca]: routing totals, reorder and clear confirmation: focused test fails without the implementation and passes with it; 53 web",
+    "2026-11-27T21:57:38Z feature validated and shipped"
   ]
 }

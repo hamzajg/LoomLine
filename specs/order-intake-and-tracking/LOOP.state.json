@@ -2,7 +2,8 @@
   "feature": "order-intake-and-tracking",
   "status": "done",
   "iterations": 5,
-  "updated": "2026-11-19T13:52:04Z",
+  "review": "required",
+  "updated": "2026-11-27T21:57:37Z",
   "waves": {
     "1": {
       "status": "done",
@@ -24,6 +25,14 @@
       "pr": "#17",
       "evidence": ":api:test green (9-case 5x5 matrix + 7 REST ITs), web 24/24 + build, live OIDC lifecycle verified, evidence 20261119T135",
       "updated": "2026-11-19T13:50:55Z"
+    },
+    "4": {
+      "status": "done",
+      "branch": "feat/order-intake-and-tracking-w4",
+      "pr": "\u2014",
+      "evidence": "filter persistence and first-invalid focus: focused test fails without the implementation and passes with it; 53 web tes",
+      "bundle": "20261127T215641Z-8e7a1ca",
+      "updated": "2026-11-27T21:56:50Z"
     }
   },
   "gates": {
@@ -70,6 +79,9 @@
     "2026-11-19T13:09:57Z start wave 3 on feat/order-intake-and-tracking-w3",
     "2026-11-19T13:50:55Z complete wave 3 (#17): :api:test green (9-case 5x5 matrix + 7 REST ITs), web 24/24 + build, live OIDC lifecycle verified, evidence 20261119T135",
     "2026-11-19T13:51:43Z feature validated and shipped",
-    "2026-11-19T13:52:04Z feature validated and shipped"
+    "2026-11-19T13:52:04Z feature validated and shipped",
+    "2026-11-27T21:55:25Z start wave 4 on feat/order-intake-and-tracking-w4",
+    "2026-11-27T21:56:50Z complete wave 4 [bundle 20261127T215641Z-8e7a1ca]: filter persistence and first-invalid focus: focused test fails without the implementation and passes with it; 53 web tes",
+    "2026-11-27T21:57:37Z feature validated and shipped"
   ]
 }
