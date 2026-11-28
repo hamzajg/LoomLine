@@ -94,3 +94,12 @@ Feature: article-catalogue
     Then a no-entries message and a clear-search action are shown
     When the planner clears the search
     Then the full list returns and the search field is focused
+
+  @w4 @catalogue @accessibility
+  Scenario: A rejected field is marked and described
+    Given the planner is editing an article
+    When the server rejects the save with a field error
+    Then the rejected field is marked invalid for assistive technology
+    And the field references its error message
+    And the message is announced as an alert
+    And every value the planner entered is kept

@@ -58,6 +58,10 @@ can grow with the business.
 - Navigation/overlay: inline — the list and its create/edit form share one
   page, so the search and the row being edited stay visible; in-use deletes
   use a confirmation modal.
+- Design system (ADR 0014): the editor uses the shared field contract — a
+  rejected field is `aria-invalid`, its message is referenced by
+  `aria-describedby`, and the message is announced (`role="alert"`); colour
+  comes only from the design tokens.
 
 ## Scope (in)
 

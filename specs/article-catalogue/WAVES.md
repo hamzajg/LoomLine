@@ -43,3 +43,12 @@ Scenarios proven by this wave:
 | Item | Title | Size | Deps | Notes |
 |------|-------|------|------|-------|
 | US4 | As a production planner, I want a clear-search action when nothing matches, so that I can return to the full catalogue without retyping | S | — | builds on US2; the no-matches row offers clear search, which empties the field, refocuses it and reloads the full list |
+
+## Wave 4 — iteration 4
+
+Scenarios proven by this wave:
+- A rejected field is marked and described
+
+| Item | Title | Size | Deps | Notes |
+|------|-------|------|------|-------|
+| US5 | As a keyboard or screen-reader user, I want a rejected field to be marked and described, so that I can correct it without hunting for the message | S | — | apply ADR 0014 to the editor — `aria-invalid` on the rejected control, `aria-describedby` pointing at its message, message announced with `role="alert"`; server field errors keep every entered value |

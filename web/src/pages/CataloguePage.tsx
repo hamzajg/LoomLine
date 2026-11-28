@@ -235,6 +235,10 @@ function EntityPanel<T extends { id: string }>({
                 {field.kind === "select" ? (
                   <select
                     id={`f-${field.name}`}
+                    aria-invalid={fieldErrors[field.name] ? true : undefined}
+                    aria-describedby={
+                      fieldErrors[field.name] ? `f-${field.name}-error` : undefined
+                    }
                     value={editing.values[field.name] ?? ""}
                     onChange={(e) =>
                       setEditing({
@@ -254,6 +258,10 @@ function EntityPanel<T extends { id: string }>({
                 ) : (
                   <input
                     id={`f-${field.name}`}
+                    aria-invalid={fieldErrors[field.name] ? true : undefined}
+                    aria-describedby={
+                      fieldErrors[field.name] ? `f-${field.name}-error` : undefined
+                    }
                     type="text"
                     value={editing.values[field.name] ?? ""}
                     onChange={(e) =>
@@ -266,7 +274,13 @@ function EntityPanel<T extends { id: string }>({
                   />
                 )}
                 {fieldErrors[field.name] ? (
-                  <p className="field-error">{fieldErrors[field.name]}</p>
+                  <p
+                    className="field-error"
+                    id={`f-${field.name}-error`}
+                    role="alert"
+                  >
+                    {fieldErrors[field.name]}
+                  </p>
                 ) : null}
               </div>
             ))}

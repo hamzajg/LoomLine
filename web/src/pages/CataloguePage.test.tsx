@@ -123,6 +123,14 @@ describe("CataloguePage", () => {
       "The article could not be saved.",
     );
     expect(screen.getByText("Reference is required.")).toBeInTheDocument();
+
+    const reference = screen.getByLabelText("Reference");
+    expect(reference).toHaveAttribute("aria-invalid", "true");
+    const describedBy = reference.getAttribute("aria-describedby");
+    expect(describedBy).toBeTruthy();
+    expect(document.getElementById(describedBy!)).toHaveTextContent(
+      "Reference is required.",
+    );
   });
 
   it("Read-only catalogue for a supervisor", async () => {
