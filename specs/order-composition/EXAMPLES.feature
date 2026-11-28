@@ -50,3 +50,11 @@ Feature: order-composition
     Then the editor shows 40 of 120 planned and 80 remaining
     When the planner raises a line to 150
     Then the editor warns that the draft is 30 over the order quantity
+
+  @w4 @composition @accessibility
+  Scenario: A rejected breakdown marks its quantity lines
+    Given the planner is editing the breakdown of a draft order
+    When the server rejects the save with a message
+    Then the quantity lines are marked invalid for assistive technology
+    And the lines reference the error message
+    And every value the planner entered is kept

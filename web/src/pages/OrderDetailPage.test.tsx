@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { CreatedOrder, OrdersApi } from "../api";
+import { ApiFailure, type CreatedOrder, type OrdersApi } from "../api";
 import { LocaleProvider } from "../i18n/LocaleProvider";
 import { OrderDetailPage } from "./OrderDetailPage";
 
@@ -173,6 +173,39 @@ describe("OrderDetailPage", () => {
     );
     expect(screen.getByTestId("breakdown-remaining")).toHaveClass(
       "breakdown-editor__total--over",
+    );
+  });
+
+  it("ties a rejected breakdown to its quantity lines", async () => {
+    const draftOrder: CreatedOrder = { ...order, status: "DRAFT" };
+    const api = fakeApi({
+      get: vi.fn().mockResolvedValue(draftOrder),
+      setQuantities: vi.fn().mockRejectedValue(
+        new ApiFailure("VALIDATION_FAILED", "The breakdown could not be saved.", {
+          quantity: "Total exceeds the order quantity.",
+        }),
+      ),
+    });
+    render(
+      <LocaleProvider>
+        <OrderDetailPage api={api} canManage />
+      </LocaleProvider>,
+    );
+
+    await screen.findByText("OF-2026-002");
+    await screen.findByTestId("quantity-line-0");
+    fireEvent.click(screen.getByTestId("edit-breakdown"));
+    fireEvent.click(screen.getByTestId("save-breakdown"));
+
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveTextContent("Total exceeds the order quantity.");
+
+    const quantity = screen.getByLabelText("Quantity 1");
+    expect(quantity).toHaveAttribute("aria-invalid", "true");
+    const describedBy = quantity.getAttribute("aria-describedby");
+    expect(describedBy).toBeTruthy();
+    expect(document.getElementById(describedBy!)).toHaveTextContent(
+      "Total exceeds the order quantity.",
     );
   });
 

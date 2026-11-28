@@ -1,9 +1,9 @@
 {
   "feature": "order-composition",
-  "status": "done",
+  "status": "running",
   "iterations": 0,
   "review": "required",
-  "updated": "2026-11-27T22:05:26Z",
+  "updated": "2026-11-28T11:46:02Z",
   "waves": {
     "1": {
       "status": "done",
@@ -26,6 +26,14 @@
       "evidence": "planned and remaining quantity: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web ",
       "bundle": "20261127T220517Z-f5511fb",
       "updated": "2026-11-27T22:05:26Z"
+    },
+    "4": {
+      "status": "in-progress",
+      "branch": "feat/order-composition-w4",
+      "pr": "\u2014",
+      "evidence": "\u2014",
+      "bundle": "",
+      "updated": "2026-11-28T11:46:02Z"
     }
   },
   "gates": {
@@ -58,6 +66,8 @@
     "2026-11-27T21:55:35Z start wave 3 on feat/order-composition-w3",
     "2026-11-27T21:56:58Z complete wave 3 [bundle 20261127T215650Z-8e7a1ca]: planned and remaining quantity: focused test fails without the implementation and passes with it; 53 web tests and the p",
     "2026-11-27T21:57:37Z feature validated and shipped",
-    "2026-11-27T22:05:26Z complete wave 3 [bundle 20261127T220517Z-f5511fb]: planned and remaining quantity: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web "
+    "2026-11-27T22:05:26Z complete wave 3 [bundle 20261127T220517Z-f5511fb]: planned and remaining quantity: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web ",
+    "2026-11-27T22:12:58Z feature validated and shipped",
+    "2026-11-28T11:46:02Z start wave 4 on feat/order-composition-w4"
   ]
 }

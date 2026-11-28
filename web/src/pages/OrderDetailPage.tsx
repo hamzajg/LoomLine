@@ -432,7 +432,11 @@ export function OrderDetailPage({ api = httpOrdersApi, canManage = false }: Prop
                 }
               }}
             >
-              {breakdownError && <p className="form-error" role="alert">{breakdownError}</p>}
+              {breakdownError && (
+                <p className="form-error" id="breakdown-error" role="alert">
+                  {breakdownError}
+                </p>
+              )}
               <div className="breakdown-editor__row breakdown-editor__row--head" aria-hidden="true">
                 <span>Colour</span>
                 <span>Size</span>
@@ -443,6 +447,8 @@ export function OrderDetailPage({ api = httpOrdersApi, canManage = false }: Prop
                 <div className="breakdown-editor__row" key={i}>
                   <select
                     aria-label={`Colour ${i + 1}`}
+                    aria-invalid={breakdownError ? true : undefined}
+                    aria-describedby={breakdownError ? "breakdown-error" : undefined}
                     value={line.colourId}
                     onChange={(e) =>
                       setDraftLines((prev) =>
@@ -459,6 +465,8 @@ export function OrderDetailPage({ api = httpOrdersApi, canManage = false }: Prop
                   </select>
                   <select
                     aria-label={`Size ${i + 1}`}
+                    aria-invalid={breakdownError ? true : undefined}
+                    aria-describedby={breakdownError ? "breakdown-error" : undefined}
                     value={line.sizeId}
                     onChange={(e) =>
                       setDraftLines((prev) =>
@@ -477,6 +485,8 @@ export function OrderDetailPage({ api = httpOrdersApi, canManage = false }: Prop
                   </select>
                   <input
                     aria-label={`Quantity ${i + 1}`}
+                    aria-invalid={breakdownError ? true : undefined}
+                    aria-describedby={breakdownError ? "breakdown-error" : undefined}
                     type="number"
                     min={1}
                     value={line.quantity}

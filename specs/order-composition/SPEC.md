@@ -62,6 +62,9 @@ with the same server-enforced rigour the lifecycle already has.
 - Navigation/overlay: inline — the breakdown editor is a section on the
   full-page order detail, so totals and lines stay visible; `IN_PROGRESS`
   locks it in place.
+- Design system (ADR 0014): a rejected breakdown marks its quantity lines
+  `aria-invalid`, references the shared message with `aria-describedby`, and
+  keeps every entered value; the message is announced with `role="alert"`.
 
 ## Scope (in)
 
