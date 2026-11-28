@@ -1,7 +1,6 @@
 @import "./theme/tokens.css";
 
 :root {
-  color-scheme: light;
   font-family: var(--ll-font-sans);
   font-size: var(--ll-font-size-root);
   line-height: var(--ll-line-height-base);
@@ -15,6 +14,19 @@
 
 body {
   margin: 0;
+}
+
+/* Native controls otherwise keep the UA's light colours in dark mode. */
+input,
+select,
+textarea {
+  color: var(--ll-color-text);
+  background-color: var(--ll-color-surface);
+}
+
+option {
+  color: var(--ll-color-text);
+  background: var(--ll-color-surface);
 }
 
 h1,
@@ -34,8 +46,8 @@ a {
 }
 
 ::selection {
-  background: var(--ll-color-accent-soft);
-  color: var(--ll-color-text);
+  background: var(--ll-color-selection-bg);
+  color: var(--ll-color-selection-ink);
 }
 
 .font-mono {
@@ -324,11 +336,11 @@ a {
   z-index: var(--ll-z-overlay);
   border: 0;
   padding: 0;
-  background: rgba(10, 34, 51, 0.5);
+  background: var(--ll-color-overlay);
 }
 
 .app-overlay:hover:not(:disabled) {
-  background: rgba(10, 34, 51, 0.5);
+  background: var(--ll-color-overlay);
 }
 
 /* Main region */
@@ -499,7 +511,9 @@ button:hover:not(:disabled) {
 }
 
 button:disabled {
-  background: var(--ll-color-text-subtle);
+  background: var(--ll-color-disabled-bg);
+  color: var(--ll-color-disabled-ink);
+  border-color: var(--ll-color-border);
   cursor: not-allowed;
 }
 
@@ -646,6 +660,8 @@ button:disabled {
   border: 1px solid var(--ll-color-border-strong);
   border-radius: var(--ll-radius-sm);
   font: inherit;
+  background: var(--ll-color-surface);
+  color: var(--ll-color-text);
 }
 
 .orders-table {
@@ -713,7 +729,7 @@ button:disabled {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(10, 34, 51, 0.4);
+  background: var(--ll-color-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -973,7 +989,7 @@ button:disabled {
   align-items: center;
   justify-content: center;
   padding: var(--ll-space-4);
-  background: rgba(16, 50, 74, 0.55);
+  background: var(--ll-color-overlay);
 }
 
 .dialog {
@@ -1011,11 +1027,21 @@ button:disabled {
 
 .btn--danger {
   background: var(--ll-color-danger);
-  color: var(--ll-color-text-inverse);
+  color: var(--ll-color-danger-contrast);
 }
 
 .btn--danger:hover:not(:disabled) {
   background: var(--ll-color-danger-fg);
+}
+
+/* Variant backgrounds would otherwise win over the generic disabled rule. */
+.btn--primary:disabled,
+.btn--secondary:disabled,
+.btn--danger:disabled,
+.btn--icon:disabled {
+  background: var(--ll-color-disabled-bg);
+  color: var(--ll-color-disabled-ink);
+  border-color: var(--ll-color-border);
 }
 
 /* ------------------------------------------------------------- utilities - */
