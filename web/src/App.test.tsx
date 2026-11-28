@@ -95,6 +95,39 @@ describe("auth-and-app-shell — Wave 2", () => {
   });
 });
 
+describe("order intake — routed surfaces", () => {
+  it("serves the new-order form as an addressable page", async () => {
+    window.history.replaceState(null, "", "/production/orders/new");
+    mockApi(planner);
+
+    render(<App />);
+
+    await waitFor(() =>
+      expect(screen.getByText("New production order")).toBeInTheDocument(),
+    );
+    expect(window.location.pathname).toBe("/production/orders/new");
+    // The route is reachable but not advertised as a sidebar link.
+    expect(
+      screen.queryByRole("link", { name: /^new order$/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("refuses the new-order page without manage rights", async () => {
+    const viewerGrants = plannerGrants.map((grant) =>
+      grant.id === "production" ? { ...grant, manage: false } : grant,
+    );
+    window.history.replaceState(null, "", "/production/orders/new");
+    mockApi(planner, viewerGrants);
+
+    render(<App />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId("access-denied")).toBeInTheDocument(),
+    );
+    expect(screen.queryByText("New production order")).not.toBeInTheDocument();
+  });
+});
+
 describe("auth-and-app-shell — Wave 3", () => {
   it("Navigation is limited to the role's sections", async () => {
     window.history.replaceState(null, "", "/production/orders");
@@ -121,6 +154,8 @@ describe("auth-and-app-shell — Wave 3", () => {
 
     render(<App />);
     await waitFor(() => expect(screen.getByTestId("access-denied")).toBeInTheDocument());
-    expect(screen.queryByText(/controls/i)).not.toBeInTheDocument();
+    // F6 fix: breadcrumb now shows the denied section (Quality / Controls) instead of Home
+    expect(screen.getByText(/controls/i)).toBeInTheDocument();
+    expect(screen.getByText(/quality/i)).toBeInTheDocument();
   });
 });

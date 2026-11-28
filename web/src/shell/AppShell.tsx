@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useRef,
   useState,
   useSyncExternalStore,
   type ReactNode,
@@ -47,14 +48,45 @@ export function AppShell({ user, sections, children }: Props) {
   const { path } = useRoute();
   const narrow = useIsNarrow();
   const [navOpen, setNavOpen] = useState(!narrow);
+  const navToggleRef = useRef<HTMLButtonElement | null>(null);
+  const drawerRef = useRef<HTMLElement | null>(null);
+  // Set only for an explicit dismissal (Escape, scrim, toggle), never for the
+  // automatic close when the viewport widens or after following a link.
+  const restoreFocusOnClose = useRef(false);
 
   // Wide viewports start open; narrow ones start closed. Re-apply on resize.
   useEffect(() => {
     setNavOpen(!narrow);
   }, [narrow]);
 
-  const closeNav = useCallback(() => setNavOpen(false), []);
+  /** Close after navigating: the new screen's heading takes focus. */
+  const closeNav = useCallback(() => {
+    restoreFocusOnClose.current = false;
+    setNavOpen(false);
+  }, []);
+
+  /** Close the blocking drawer and hand focus back to its toggle. */
+  const dismissNav = useCallback(() => {
+    restoreFocusOnClose.current = true;
+    setNavOpen(false);
+  }, []);
+
   const toggleNav = useCallback(() => setNavOpen((open) => !open), []);
+
+  // Opening the blocking drawer moves focus into it; dismissing it returns
+  // focus to the control that opened it (frontend page guide, drawer rules).
+  useEffect(() => {
+    if (narrow && navOpen) {
+      drawerRef.current
+        ?.querySelector<HTMLElement>("a[href], button:not([disabled])")
+        ?.focus();
+      return;
+    }
+    if (!navOpen && restoreFocusOnClose.current) {
+      restoreFocusOnClose.current = false;
+      navToggleRef.current?.focus();
+    }
+  }, [navOpen, narrow]);
 
   const route = resolveRoute(path, sections);
 
@@ -63,19 +95,45 @@ export function AppShell({ user, sections, children }: Props) {
     document.title = `${screen} · ${t("brand")}`;
   }, [route.item, t]);
 
+  // Each routed screen is a new surface: move focus to its heading so a
+  // keyboard or screen-reader user starts at the top of the page.
+  const mainRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const heading = mainRef.current?.querySelector<HTMLElement>("h1, h2");
+    if (!heading) return;
+    heading.setAttribute("tabindex", "-1");
+    heading.focus();
+  }, [path]);
+
   // Escape closes the drawer.
   useEffect(() => {
     if (!narrow || !navOpen) return;
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setNavOpen(false);
+      if (event.key === "Escape") dismissNav();
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [narrow, navOpen]);
+  }, [narrow, navOpen, dismissNav]);
 
   return (
     <div className="app-shell" data-testid="app-shell">
-      <AppHeader user={user} navOpen={navOpen} onToggleNav={toggleNav} />
+      <a
+        className="skip-link"
+        href="#main-content"
+        onClick={(event) => {
+          event.preventDefault();
+          mainRef.current?.focus();
+        }}
+      >
+        {t("skipToContent")}
+      </a>
+
+      <AppHeader
+        user={user}
+        navOpen={navOpen}
+        onToggleNav={toggleNav}
+        toggleRef={navToggleRef}
+      />
 
       <div className="app-shell__body">
         <AppSidebar
@@ -83,11 +141,19 @@ export function AppShell({ user, sections, children }: Props) {
           currentPath={path}
           navOpen={navOpen}
           onNavigate={narrow ? closeNav : undefined}
+          sidebarRef={drawerRef}
+          trapFocus={narrow && navOpen}
         />
 
         <div className="app-main">
           <Breadcrumbs items={breadcrumbsFor(route)} />
-          <main className="app-content" id="main-content">
+          <main
+            className="app-content"
+            id="main-content"
+            ref={mainRef}
+            tabIndex={-1}
+            aria-label={t("mainContent")}
+          >
             {children}
           </main>
         </div>
@@ -98,7 +164,7 @@ export function AppShell({ user, sections, children }: Props) {
           type="button"
           className="app-overlay"
           aria-label={t("closeNav")}
-          onClick={closeNav}
+          onClick={dismissNav}
         />
       ) : null}
     </div>

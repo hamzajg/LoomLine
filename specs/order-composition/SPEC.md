@@ -34,6 +34,38 @@ with the same server-enforced rigour the lifecycle already has.
   baseline 0% (feature does not exist yet).
 - Follow-up owner/date: product owner, at the next planning review.
 
+## Experience
+
+- Primary journey: planner opens a DRAFT or RELEASED order, goes to its
+  composition section, adds colour × size quantity lines, watches the
+  remaining quantity against the order total, and saves the whole breakdown in
+  one action.
+- Edge states: an order with no lines shows an empty breakdown with an "add
+  line" action; a breakdown over the order quantity is refused with the
+  offending total highlighted and nothing saved; the editor shows the planned
+  total and the remaining quantity against the order before saving and warns
+  as soon as the draft goes over; unknown or incompatible
+  colour/size choices are disabled or explained inline; from IN_PROGRESS the
+  section is read-only and says why; viewers see the same rows without edit
+  controls; on narrow viewports each quantity row stacks its fields instead of
+  scrolling horizontally.
+- UX bar: the remaining quantity is always visible while editing, the editor
+  is one replace-set form rather than a per-row save dance, and a failed save
+  leaves every entered line intact.
+- Accessibility: colour and size pickers are labelled and keyboard operable;
+  quantity inputs have visible labels and error text tied to the field; the
+  breakdown table exposes row and column headers; the lock state is conveyed
+  as text, not by disabled styling alone.
+- UI pattern: F-pattern — the order header, total and breakdown table read
+  top-left downward; the add-line row sits directly under the table it
+  extends.
+- Navigation/overlay: inline — the breakdown editor is a section on the
+  full-page order detail, so totals and lines stay visible; `IN_PROGRESS`
+  locks it in place.
+- Design system (ADR 0014): a rejected breakdown marks its quantity lines
+  `aria-invalid`, references the shared message with `aria-describedby`, and
+  keeps every entered value; the message is announced with `role="alert"`.
+
 ## Scope (in)
 
 - Colour and size reference data (code + label; sizes belong to a size type).

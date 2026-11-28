@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type ReactNode } from "react";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -88,11 +88,43 @@ describe("auth-and-app-shell — Wave 1", () => {
     expect(screen.getByRole("main")).toHaveTextContent("Screen content");
   });
 
+  it("moves focus into the drawer and back to the toggle when dismissed", async () => {
+    setViewport(true);
+    const user = userEvent.setup();
+    renderShell(<p>Screen content</p>);
+
+    const toggle = screen.getByRole("button", { name: /toggle navigation/i });
+    await user.click(toggle);
+
+    expect(screen.getByRole("button", { name: "Production" })).toHaveFocus();
+
+    await user.keyboard("{Escape}");
+
+    await waitFor(() => expect(toggle).toHaveFocus());
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("offers a skip link that moves focus to the main content", async () => {
+    const user = userEvent.setup();
+    renderShell(<p>Screen content</p>);
+
+    const skip = screen.getByRole("link", { name: /skip to (the )?main content/i });
+    expect(skip).toHaveAttribute("href", "#main-content");
+
+    await user.click(skip);
+
+    expect(screen.getByRole("main")).toHaveFocus();
+  });
+
   it("Shell controls are keyboard operable", async () => {
     const user = userEvent.setup();
     renderShell(<p>Screen content</p>);
 
     const toggle = screen.getByRole("button", { name: /toggle navigation/i });
+    await user.tab();
+    expect(
+      screen.getByRole("link", { name: /skip to (the )?main content/i }),
+    ).toHaveFocus();
     await user.tab();
     expect(toggle).toHaveFocus();
     expect(toggle).toHaveAttribute("aria-expanded", "true");

@@ -34,6 +34,35 @@ can grow with the business.
   delivery; baseline 0 (no write path exists).
 - Follow-up owner/date: product owner, at the next planning review.
 
+## Experience
+
+- Primary journey: planner opens the Catalogue section, picks Articles,
+  Colours or Sizes, searches the list, then creates or edits an entry in the
+  form and saves; a supervisor browses the same lists read-only.
+- Edge states: no matches show a "no entries" message with a clear-search
+  action; an empty entity list offers the create form to managers and a
+  read-only note to viewers; duplicate or unknown-client errors appear inline
+  on the field; deleting an in-use row opens a confirmation that names the
+  blocking order and keeps the row when refused; on narrow viewports the form
+  stacks above the list and the table scrolls inside its own container rather
+  than the page.
+- UX bar: list, search and form on one screen with no mode switching; a failed
+  save preserves the typed values; every refused write explains why in product
+  language, not as a raw constraint error.
+- Accessibility: tables expose header semantics and a caption; search and forms
+  are keyboard reachable in reading order; validation errors are tied to their
+  field and announced.
+- UI pattern: F-pattern — reference lists and search results are dense tables
+  scanned top-left across the filter bar and down the rows; create/edit forms
+  are single-column in the page aside.
+- Navigation/overlay: inline — the list and its create/edit form share one
+  page, so the search and the row being edited stay visible; in-use deletes
+  use a confirmation modal.
+- Design system (ADR 0014): the editor uses the shared field contract — a
+  rejected field is `aria-invalid`, its message is referenced by
+  `aria-describedby`, and the message is announced (`role="alert"`); colour
+  comes only from the design tokens.
+
 ## Scope (in)
 
 - Catalogue entities: **article** (reference, label, client, size type,

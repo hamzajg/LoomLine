@@ -21,3 +21,15 @@ parse them. Write the story as: "As a <role>, I want <goal>, so that
 - Depends: US1
 - Size: S
 - Notes: read-only for view-only roles; UI in order detail
+
+## US4 — As a production planner, I want to see the planned and remaining quantities while editing, so that I catch an over-total before saving
+
+- Scenarios: @w3
+- Size: S
+- Notes: builds on US1; the editor shows planned total and remaining against the order, and warns as soon as the draft goes over; saving still replaces the whole set
+
+## US5 — As a keyboard or screen-reader user, I want a rejected breakdown to mark the quantity lines and name the message, so that I know which lines to correct
+
+- Scenarios: @w4
+- Size: S
+- Notes: apply ADR 0014 to the breakdown editor — rejected lines are `aria-invalid`, reference the single alert with `aria-describedby`, and every entered value is kept

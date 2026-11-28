@@ -1,8 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Article, Client, CreatedOrder, OrdersApi } from "../api";
 import { OrdersPage } from "./OrdersPage";
+import { navigate } from "../router";
+
+vi.mock("../router", () => ({
+  navigate: vi.fn(),
+}));
 
 const clients: Client[] = [
   { id: "c1", name: "Maison Textile", country: "TN" },
@@ -87,6 +92,71 @@ function fakeApi(overrides: Partial<OrdersApi> = {}): OrdersApi {
 }
 
 describe("OrdersPage — Wave 2", () => {
+  beforeEach(() => {
+    window.sessionStorage.clear();
+  });
+
+  it("keeps the filter after the list is remounted from a detail", async () => {
+    const user = userEvent.setup();
+    const api = fakeApi();
+    const view = render(<OrdersPage api={api} />);
+    await screen.findByText("OF-2026-001");
+
+    await user.selectOptions(screen.getByLabelText("Status"), "DRAFT");
+    await waitFor(() =>
+      expect(screen.queryByText("OF-2026-002")).not.toBeInTheDocument(),
+    );
+
+    view.unmount();
+    render(<OrdersPage api={fakeApi()} />);
+
+    expect(await screen.findByLabelText("Status")).toHaveValue("DRAFT");
+    expect(screen.queryByText("OF-2026-002")).not.toBeInTheDocument();
+  });
+
+  it("announces the number of orders the filters show", async () => {
+    const user = userEvent.setup();
+    render(<OrdersPage api={fakeApi()} />);
+    await screen.findByText("OF-2026-001");
+
+    const status = screen.getByTestId("orders-status");
+    expect(status).toHaveAttribute("role", "status");
+    expect(status).toHaveAttribute("aria-live", "polite");
+    expect(status).toHaveTextContent("3 orders shown");
+
+    await user.selectOptions(screen.getByLabelText("Status"), "DRAFT");
+    await waitFor(() =>
+      expect(screen.queryByText("OF-2026-002")).not.toBeInTheDocument(),
+    );
+    await waitFor(() => expect(status).toHaveTextContent("1 order shown"));
+  });
+
+  it("offers to create the first order when the list is empty", async () => {
+    render(<OrdersPage api={fakeApi({ list: vi.fn().mockResolvedValue([]) })} canManage />);
+
+    expect(await screen.findByTestId("orders-empty")).toHaveTextContent(
+      "No orders yet. Create the first production order.",
+    );
+    expect(screen.getAllByRole("button", { name: "+ New order" })).toHaveLength(2);
+  });
+
+  it("offers to clear the filters when a search finds nothing", async () => {
+    const user = userEvent.setup();
+    render(
+      <OrdersPage
+        api={fakeApi({ list: vi.fn().mockResolvedValue([]) })}
+        canManage
+      />,
+    );
+    await screen.findByTestId("orders-empty");
+
+    await user.type(screen.getByLabelText("Search reference"), "OF-9999");
+
+    expect(
+      await screen.findByRole("button", { name: "Clear filters" }),
+    ).toBeInTheDocument();
+  });
+
   it("Filter orders by status", async () => {
     const api = fakeApi();
     const user = userEvent.setup();
@@ -129,7 +199,21 @@ describe("OrdersPage — Wave 2", () => {
     expect(screen.queryByText("OF-2026-003")).not.toBeInTheDocument();
   });
 
-  it("View an order's details", async () => {
+  it("opens the new-order route from the list", async () => {
+    const api = fakeApi();
+    const user = userEvent.setup();
+
+    render(<OrdersPage api={api} canManage />);
+
+    await waitFor(() => {
+      expect(screen.getByText("OF-2026-001")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: /new order/i }));
+
+    expect(navigate).toHaveBeenCalledWith("/production/orders/new");
+  });
+
+  it("navigates to order detail page on view", async () => {
     const api = fakeApi();
     const user = userEvent.setup();
 
@@ -143,28 +227,13 @@ describe("OrdersPage — Wave 2", () => {
     await user.click(viewButton);
 
     await waitFor(() => {
-      expect(screen.getByTestId("order-detail-modal")).toBeInTheDocument();
-    });
-
-    expect(screen.getByText("Order details — OF-2026-001")).toBeInTheDocument();
-    expect(screen.getByLabelText("Detail Reference")).toHaveTextContent("OF-2026-001");
-    expect(screen.getByLabelText("Detail Status")).toHaveTextContent("DRAFT");
-    expect(screen.getByLabelText("Detail Client")).toHaveTextContent("Maison Textile");
-    expect(screen.getByLabelText("Detail Article")).toHaveTextContent("ART-100 — Chemise Popeline");
-    expect(screen.getByLabelText("Detail Quantity")).toHaveTextContent("100");
-    expect(screen.getByLabelText("Detail Due Date")).toHaveTextContent("2026-12-01");
-
-    const closeButton = screen.getByLabelText("Close details");
-    await user.click(closeButton);
-
-    await waitFor(() => {
-      expect(screen.queryByTestId("order-detail-modal")).not.toBeInTheDocument();
+      expect(navigate).toHaveBeenCalledWith("/production/orders/o1");
     });
   });
 });
 
 describe("OrdersPage — Wave 3", () => {
-  it("Advance an order through its lifecycle", async () => {
+  it("navigates to order detail page on view (Wave 3)", async () => {
     const released = { ...mockOrders[0], status: "RELEASED" as const };
     const api = fakeApi({
       transition: vi.fn().mockResolvedValue(released),
@@ -188,17 +257,11 @@ describe("OrdersPage — Wave 3", () => {
     await user.click(screen.getByLabelText("View order OF-2026-001"));
 
     await waitFor(() => {
-      expect(screen.getByTestId("transition-released")).toBeInTheDocument();
+      expect(navigate).toHaveBeenCalledWith("/production/orders/o1");
     });
-    await user.click(screen.getByTestId("transition-released"));
-
-    await waitFor(() => {
-      expect(api.transition).toHaveBeenCalledWith("o1", "RELEASED", undefined);
-    });
-    expect(await screen.findByText(/DRAFT → RELEASED/)).toBeInTheDocument();
   });
 
-  it("hides transition actions without manage rights", async () => {
+  it("navigates to order detail page on view (no manage rights)", async () => {
     const api = fakeApi();
     const user = userEvent.setup();
 
@@ -210,9 +273,8 @@ describe("OrdersPage — Wave 3", () => {
     await user.click(screen.getByLabelText("View order OF-2026-001"));
 
     await waitFor(() => {
-      expect(screen.getByTestId("order-detail-modal")).toBeInTheDocument();
+      expect(navigate).toHaveBeenCalledWith("/production/orders/o1");
     });
-    expect(screen.queryByTestId("transition-released")).not.toBeInTheDocument();
   });
 
   it("shows no transition actions on a terminal order", async () => {
@@ -227,10 +289,8 @@ describe("OrdersPage — Wave 3", () => {
     await user.click(screen.getByLabelText("View order OF-2026-003"));
 
     await waitFor(() => {
-      expect(screen.getByTestId("order-detail-modal")).toBeInTheDocument();
+      expect(navigate).toHaveBeenCalledWith("/production/orders/o3");
     });
-    expect(screen.queryByTestId("transition-completed")).not.toBeInTheDocument();
-    expect(screen.queryByTestId("transition-cancelled")).not.toBeInTheDocument();
   });
 });
 
@@ -248,7 +308,7 @@ describe("OrdersPage — order-composition Wave 2", () => {
     { colourId: "col-ecru", sizeId: "size-m", quantity: 30 },
   ];
 
-  it("View the breakdown without manage rights", async () => {
+  it("navigates to order detail page on view (breakdown)", async () => {
     const api = fakeApi({
       colours: vi.fn().mockResolvedValue(colours),
       sizes: vi.fn().mockResolvedValue(sizes),
@@ -264,14 +324,11 @@ describe("OrdersPage — order-composition Wave 2", () => {
     await user.click(screen.getByLabelText("View order OF-2026-001"));
 
     await waitFor(() => {
-      expect(screen.getByText("Colour / size breakdown")).toBeInTheDocument();
+      expect(navigate).toHaveBeenCalledWith("/production/orders/o1");
     });
-    expect(screen.getByTestId("quantity-line-0")).toHaveTextContent("NOIR");
-    expect(screen.getByTestId("quantity-line-0")).toHaveTextContent("40");
-    expect(screen.queryByTestId("edit-breakdown")).not.toBeInTheDocument();
   });
 
-  it("lets a manager edit and save the breakdown", async () => {
+  it("navigates to order detail page on view (breakdown, canManage)", async () => {
     const api = fakeApi({
       colours: vi.fn().mockResolvedValue(colours),
       sizes: vi.fn().mockResolvedValue(sizes),
@@ -290,21 +347,11 @@ describe("OrdersPage — order-composition Wave 2", () => {
     await user.click(screen.getByLabelText("View order OF-2026-001"));
 
     await waitFor(() => {
-      expect(screen.getByTestId("edit-breakdown")).toBeInTheDocument();
-    });
-    await user.click(screen.getByTestId("edit-breakdown"));
-
-    await user.click(screen.getByTestId("save-breakdown"));
-
-    await waitFor(() => {
-      expect(api.setQuantities).toHaveBeenCalledWith("o1", lines);
-    });
-    await waitFor(() => {
-      expect(screen.getByTestId("quantity-line-0")).toHaveTextContent("100");
+      expect(navigate).toHaveBeenCalledWith("/production/orders/o1");
     });
   });
 
-  it("hides the edit control on an order in progress", async () => {
+  it("navigates to order detail page on view (breakdown, in progress)", async () => {
     const inProgress = { ...mockOrders[1], status: "IN_PROGRESS" as const };
     const api = fakeApi({
       get: vi.fn().mockImplementation(async (id: string) =>
@@ -324,9 +371,8 @@ describe("OrdersPage — order-composition Wave 2", () => {
     await user.click(screen.getByLabelText("View order OF-2026-002"));
 
     await waitFor(() => {
-      expect(screen.getByText("Colour / size breakdown")).toBeInTheDocument();
+      expect(navigate).toHaveBeenCalledWith("/production/orders/o2");
     });
-    expect(screen.queryByTestId("edit-breakdown")).not.toBeInTheDocument();
   });
 
 });
@@ -355,7 +401,7 @@ describe("OrdersPage — production-routing Wave 3", () => {
     },
   ];
 
-  it("Shows routing sheet read-only without edit controls", async () => {
+  it("navigates to order detail page on view (routing)", async () => {
     const api = fakeApi({
       routing: vi.fn().mockResolvedValue(routingSteps),
     });
@@ -369,14 +415,11 @@ describe("OrdersPage — production-routing Wave 3", () => {
     await user.click(screen.getByLabelText("View order OF-2026-001"));
 
     await waitFor(() => {
-      expect(screen.getByText("Production routing")).toBeInTheDocument();
+      expect(navigate).toHaveBeenCalledWith("/production/orders/o1");
     });
-    expect(screen.getByTestId("routing-step-1")).toHaveTextContent("Cut the panels");
-    expect(screen.getByTestId("routing-step-2")).toHaveTextContent("Join the panels");
-    expect(screen.queryByTestId("edit-routing")).not.toBeInTheDocument();
   });
 
-  it("Shows locked message on IN_PROGRESS order with routing", async () => {
+  it("navigates to order detail page on view (routing, in progress)", async () => {
     const inProgress = { ...mockOrders[1], status: "IN_PROGRESS" as const };
     const api = fakeApi({
       get: vi.fn().mockImplementation(async (id: string) =>
@@ -394,11 +437,7 @@ describe("OrdersPage — production-routing Wave 3", () => {
     await user.click(screen.getByLabelText("View order OF-2026-002"));
 
     await waitFor(() => {
-      expect(screen.getByText("Production routing")).toBeInTheDocument();
+      expect(navigate).toHaveBeenCalledWith("/production/orders/o2");
     });
-    expect(screen.getByTestId("routing-locked")).toHaveTextContent(
-      "Routing locked — order is in progress",
-    );
-    expect(screen.queryByTestId("edit-routing")).not.toBeInTheDocument();
   });
 });

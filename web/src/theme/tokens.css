@@ -27,8 +27,8 @@
   --ll-color-chrome-hover: rgba(255, 255, 255, 0.08);
   --ll-color-chrome-active: rgba(255, 255, 255, 0.16);
 
-  /* Colour — accent (legacy greensea) */
-  --ll-color-accent: #16a085;
+  /* Colour — accent (legacy greensea, darkened to meet AA with white) */
+  --ll-color-accent: #0f7f6b;
   --ll-color-accent-strong: #0e7a66;
   --ll-color-accent-soft: #d6efe9;
   --ll-color-accent-fg: #ffffff;
@@ -36,7 +36,7 @@
   /* Colour — text */
   --ll-color-text: #1f2933;
   --ll-color-text-muted: #52616b;
-  --ll-color-text-subtle: #7b8794;
+  --ll-color-text-subtle: #5f6b76;
   --ll-color-text-inverse: #ffffff;
 
   /* Colour — borders */
@@ -104,6 +104,7 @@
   /* Layout */
   --ll-header-height: 3.5rem;
   --ll-sidebar-width: 17rem;
+  --ll-editor-aside-width: 20rem;
   --ll-content-max-width: 72rem;
   --ll-breakpoint-narrow: 60rem;
 

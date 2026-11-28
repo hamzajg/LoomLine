@@ -2,7 +2,8 @@
   "feature": "order-composition",
   "status": "done",
   "iterations": 0,
-  "updated": "2026-11-19T15:26:08Z",
+  "review": "required",
+  "updated": "2026-11-28T11:47:12Z",
   "waves": {
     "1": {
       "status": "done",
@@ -17,6 +18,22 @@
       "pr": "#24",
       "evidence": "web 27/27 + build, api green, 5 browser screenshots, evidence 20261119T152524Z-94478b4",
       "updated": "2026-11-19T15:25:35Z"
+    },
+    "3": {
+      "status": "done",
+      "branch": "feat/order-composition-w3",
+      "pr": "\u2014",
+      "evidence": "planned and remaining quantity: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web ",
+      "bundle": "20261127T220517Z-f5511fb",
+      "updated": "2026-11-27T22:05:26Z"
+    },
+    "4": {
+      "status": "done",
+      "branch": "feat/order-composition-w4",
+      "pr": "\u2014",
+      "evidence": "Rejected breakdown marks colour/size/quantity and references the alert; 8/8 order-detail tests, 58/58 suite, build clean",
+      "bundle": "20261128T114651Z-649cfc9",
+      "updated": "2026-11-28T11:47:12Z"
     }
   },
   "gates": {
@@ -45,6 +62,14 @@
     "2026-11-19T15:20:58Z complete wave 1 (#22): :api:test green, live verified, evidence 20261119T152049Z-9d3d3da",
     "2026-11-19T15:21:21Z start wave 2 on feat/order-composition-w2",
     "2026-11-19T15:25:35Z complete wave 2 (#24): web 27/27 + build, api green, 5 browser screenshots, evidence 20261119T152524Z-94478b4",
-    "2026-11-19T15:26:08Z feature validated and shipped"
+    "2026-11-19T15:26:08Z feature validated and shipped",
+    "2026-11-27T21:55:35Z start wave 3 on feat/order-composition-w3",
+    "2026-11-27T21:56:58Z complete wave 3 [bundle 20261127T215650Z-8e7a1ca]: planned and remaining quantity: focused test fails without the implementation and passes with it; 53 web tests and the p",
+    "2026-11-27T21:57:37Z feature validated and shipped",
+    "2026-11-27T22:05:26Z complete wave 3 [bundle 20261127T220517Z-f5511fb]: planned and remaining quantity: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web ",
+    "2026-11-27T22:12:58Z feature validated and shipped",
+    "2026-11-28T11:46:02Z start wave 4 on feat/order-composition-w4",
+    "2026-11-28T11:47:12Z complete wave 4 [bundle 20261128T114651Z-649cfc9]: Rejected breakdown marks colour/size/quantity and references the alert; 8/8 order-detail tests, 58/58 suite, build clean",
+    "2026-11-28T11:47:12Z feature validated and shipped"
   ]
 }

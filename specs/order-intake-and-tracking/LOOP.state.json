@@ -2,7 +2,8 @@
   "feature": "order-intake-and-tracking",
   "status": "done",
   "iterations": 5,
-  "updated": "2026-11-19T13:52:04Z",
+  "review": "required",
+  "updated": "2026-11-28T11:54:53Z",
   "waves": {
     "1": {
       "status": "done",
@@ -24,6 +25,22 @@
       "pr": "#17",
       "evidence": ":api:test green (9-case 5x5 matrix + 7 REST ITs), web 24/24 + build, live OIDC lifecycle verified, evidence 20261119T135",
       "updated": "2026-11-19T13:50:55Z"
+    },
+    "4": {
+      "status": "done",
+      "branch": "feat/order-intake-and-tracking-w4",
+      "pr": "\u2014",
+      "evidence": "filter persistence and first-invalid focus: assertion-level red (behaviour disabled, tests fail, files restored), then g",
+      "bundle": "20261127T220612Z-f5511fb",
+      "updated": "2026-11-27T22:06:22Z"
+    },
+    "5": {
+      "status": "done",
+      "branch": "feat/order-intake-and-tracking-w5",
+      "pr": "\u2014",
+      "evidence": "List loading and result counts announced; 16/16 orders tests, 60/60 suite, build clean.",
+      "bundle": "20261128T115435Z-bf047be",
+      "updated": "2026-11-28T11:54:53Z"
     }
   },
   "gates": {
@@ -70,6 +87,15 @@
     "2026-11-19T13:09:57Z start wave 3 on feat/order-intake-and-tracking-w3",
     "2026-11-19T13:50:55Z complete wave 3 (#17): :api:test green (9-case 5x5 matrix + 7 REST ITs), web 24/24 + build, live OIDC lifecycle verified, evidence 20261119T135",
     "2026-11-19T13:51:43Z feature validated and shipped",
-    "2026-11-19T13:52:04Z feature validated and shipped"
+    "2026-11-19T13:52:04Z feature validated and shipped",
+    "2026-11-27T21:55:25Z start wave 4 on feat/order-intake-and-tracking-w4",
+    "2026-11-27T21:56:50Z complete wave 4 [bundle 20261127T215641Z-8e7a1ca]: filter persistence and first-invalid focus: focused test fails without the implementation and passes with it; 53 web tes",
+    "2026-11-27T21:57:37Z feature validated and shipped",
+    "2026-11-27T22:05:17Z complete wave 4 [bundle 20261127T220508Z-f5511fb]: filter persistence and first-invalid focus: assertion-level red (behaviour disabled, test fails, file restored), then gr",
+    "2026-11-27T22:06:22Z complete wave 4 [bundle 20261127T220612Z-f5511fb]: filter persistence and first-invalid focus: assertion-level red (behaviour disabled, tests fail, files restored), then g",
+    "2026-11-27T22:12:58Z feature validated and shipped",
+    "2026-11-28T11:53:28Z start wave 5 on feat/order-intake-and-tracking-w5",
+    "2026-11-28T11:54:53Z complete wave 5 [bundle 20261128T115435Z-bf047be]: List loading and result counts announced; 16/16 orders tests, 60/60 suite, build clean.",
+    "2026-11-28T11:54:53Z feature validated and shipped"
   ]
 }

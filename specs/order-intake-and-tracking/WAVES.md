@@ -38,3 +38,22 @@ Scenarios proven by this wave:
 | Item | Title | Size | Deps | Notes |
 |------|-------|------|------|-------|
 | US4 | As a production planner, I want to advance an order through valid statuses only and see when each change happened, so that the production state reflects reality | M | US1 | server-enforced transition table; append-only status history; terminal states are final |
+
+## Wave 4 — iteration 4
+
+Scenarios proven by this wave:
+- Order list keeps its filter after a detail visit
+- A failed save focuses the first invalid field
+
+| Item | Title | Size | Deps | Notes |
+|------|-------|------|------|-------|
+| US5 | As a planner, I want the order list to remember my filter and the form to point at the first problem, so that I do not repeat work after opening an order | S | — | builds on US2 and US1; the status/reference filter survives a detail round trip and a reload in the same session; a failed save focuses the first invalid field while every missing field is explained |
+
+## Wave 5 — iteration 5
+
+Scenarios proven by this wave:
+- The order list announces its result count
+
+| Item | Title | Size | Deps | Notes |
+|------|-------|------|------|-------|
+| US6 | As a screen-reader user, I want the order list to announce loading and its result count, so that filtering is not a silent change | S | — | apply ADR 0014 to the list — a polite live region reports loading and "N orders shown" after each filter change |

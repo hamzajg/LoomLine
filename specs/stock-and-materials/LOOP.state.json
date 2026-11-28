@@ -1,9 +1,9 @@
 {
   "feature": "stock-and-materials",
-  "status": "running",
+  "status": "blocked",
   "iterations": 1,
   "review": "required",
-  "updated": "2026-11-22T09:11:10Z",
+  "updated": "2026-11-28T13:07:30Z",
   "waves": {},
   "gates": {
     "G0": {
@@ -37,6 +37,7 @@
     "2026-11-22T09:11:01Z gate G1 met: specs/stock-and-materials/DECISION-REVIEW.md",
     "2026-11-22T09:11:02Z gate G2 met: specs/stock-and-materials/DOMAIN.md",
     "2026-11-22T09:11:02Z gate G3 met: specs/stock-and-materials/SPEC.md#Experience",
-    "2026-11-22T09:11:02Z gate G6 met: specs/stock-and-materials/SEED-DATA.md"
+    "2026-11-22T09:11:02Z gate G6 met: specs/stock-and-materials/SEED-DATA.md",
+    "2026-11-28T13:07:30Z blocked: G4/G5: product-owner must confirm stock movement rules and whether production-planner gets stock.manage before wave 1"
   ]
 }

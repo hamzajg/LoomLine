@@ -39,6 +39,39 @@ can do only what their job requires.
   asserted.
 - Follow-up owner/date: product owner, four weeks after first release.
 
+## Experience
+
+- Primary journey: a person opens the app, signs in on the sign-in screen and
+  lands in the shell; the sidebar shows only their role's sections, they work
+  in Production (or, as an administrator, in Access), and sign out from the
+  header. An administrator's Access journey is: open Access, create a user,
+  assign a role, and confirm the new account can sign in.
+- Edge states: no session redirects to sign-in and returns to the requested
+  route afterwards; bad credentials show one generic message with no field
+  hint; a route outside the role shows an access-denied page inside the shell;
+  not-yet-built sections show a labelled unavailable state; narrow viewports
+  turn the sidebar into a header-toggled drawer.
+- UX bar: one sign-in, the current user and role always visible in the header,
+  navigation that never offers a route the role cannot open, and focus moved
+  to the main heading after each navigation; sign-out always ends at sign-in.
+- Accessibility: WCAG 2.1 AA for the controls the shell introduces — keyboard
+  operation, visible focus, accessible names, sufficient contrast; opening
+  the narrow-viewport drawer moves focus to its first control, Tab stays
+  inside it while the page behind is blocked, and dismissing it (Escape,
+  scrim, or the toggle) returns focus to the header toggle; copy is
+  externalised for French and English and the layout tolerates right-to-left.
+- UI pattern: F-pattern — the shell fixes a persistent header and sidebar, and
+  dense account/role tables scan top-left across filters and down rows;
+  sign-in and account forms stay single-column in the content area.
+- Navigation/overlay: full-page — sign-in and the role-gated sections are
+  routed destinations, and the shell preserves the requested route across
+  sign-in.
+- Design system (ADR 0014): shell colour comes only from `src/theme/tokens.css`;
+  every text token meets WCAG 2.1 AA (4.5:1) on the surfaces it is used on;
+  a skip link targets the `<main>` landmark; selection uses a token; the
+  shared Dialog/field primitives carry focus, labelling and error wiring so
+  screens do not re-implement them.
+
 ## Scope (in)
 
 - **Application shell.** Persistent header (product brand, current user,

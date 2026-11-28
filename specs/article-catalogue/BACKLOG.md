@@ -31,3 +31,15 @@ Order stories by user value; dependencies express technical order only.
 - Depends: US1
 - Size: S
 - Notes: covered by the view/manage split in both waves; no dedicated UI work
+
+## US4 — As a production planner, I want a clear-search action when nothing matches, so that I can return to the full catalogue without retyping
+
+- Scenarios: @w3
+- Size: S
+- Notes: builds on US2; the no-matches row offers clear search, which empties the field, refocuses it and reloads the full list
+
+## US5 — As a keyboard or screen-reader user, I want a rejected field to be marked and described, so that I can correct it without hunting for the message
+
+- Scenarios: @w4
+- Size: S
+- Notes: apply ADR 0014 to the editor — `aria-invalid` on the rejected control, `aria-describedby` pointing at its message, message announced with `role="alert"`; server field errors keep every entered value

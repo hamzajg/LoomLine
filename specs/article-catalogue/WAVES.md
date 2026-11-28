@@ -34,3 +34,21 @@ Scenarios proven by this wave:
 |------|-------|------|------|-------|
 | US2 | As a production planner, I want a catalogue screen in the app, so that I can maintain reference data without calling the API directly | M | US1 | list/search/create/edit per entity, manage-gated controls, read-only for viewers |
 | US3 | As a production supervisor, I want to browse the catalogue read-only, so that I can check references while planning the floor | S | US1 | covered by the view/manage split in both waves; no dedicated UI work |
+
+## Wave 3 — iteration 3
+
+Scenarios proven by this wave:
+- A search with no matches offers to clear it
+
+| Item | Title | Size | Deps | Notes |
+|------|-------|------|------|-------|
+| US4 | As a production planner, I want a clear-search action when nothing matches, so that I can return to the full catalogue without retyping | S | — | builds on US2; the no-matches row offers clear search, which empties the field, refocuses it and reloads the full list |
+
+## Wave 4 — iteration 4
+
+Scenarios proven by this wave:
+- A rejected field is marked and described
+
+| Item | Title | Size | Deps | Notes |
+|------|-------|------|------|-------|
+| US5 | As a keyboard or screen-reader user, I want a rejected field to be marked and described, so that I can correct it without hunting for the message | S | — | apply ADR 0014 to the editor — `aria-invalid` on the rejected control, `aria-describedby` pointing at its message, message announced with `role="alert"`; server field errors keep every entered value |

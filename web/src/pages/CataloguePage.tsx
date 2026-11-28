@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import {
   ApiFailure,
   httpCatalogueApi,
@@ -9,6 +15,7 @@ import {
   type Size,
 } from "../api";
 import { useLocale } from "../i18n/LocaleProvider";
+import { Dialog } from "../shell/Dialog";
 
 type Props = {
   api?: CatalogueApi;
@@ -62,11 +69,21 @@ function EntityPanel<T extends { id: string }>({
   const [items, setItems] = useState<T[] | null>(null);
   const [failed, setFailed] = useState(false);
   const [query, setQuery] = useState("");
+  const searchRef = useRef<HTMLInputElement | null>(null);
   const [editing, setEditing] = useState<Editing | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [notice, setNotice] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState<T | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [confirmDiscard, setConfirmDiscard] = useState(false);
+  // Snapshot of the values the editor opened with, so closing can tell
+  // whether the user would lose work.
+  const [baseline, setBaseline] = useState("");
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
 
   const reload = useCallback(
     (q: string) => {
@@ -91,19 +108,46 @@ function EntityPanel<T extends { id: string }>({
     reload(query.trim());
   }
 
-  function startCreate() {
+  function openEditor(next: Editing, opener: HTMLElement | null) {
     setError(null);
     setFieldErrors({});
     setNotice(null);
-    setEditing({ id: null, values: { ...emptyValues } });
+    openerRef.current = opener;
+    setBaseline(JSON.stringify(next.values));
+    setEditing(next);
   }
 
-  function startEdit(item: T) {
+  function startCreate(event: React.MouseEvent<HTMLButtonElement>) {
+    openEditor({ id: null, values: { ...emptyValues } }, event.currentTarget);
+  }
+
+  function startEdit(item: T, event: React.MouseEvent<HTMLButtonElement>) {
+    openEditor({ id: item.id, values: toForm(item) }, event.currentTarget);
+  }
+
+  const dirty = editing !== null && JSON.stringify(editing.values) !== baseline;
+
+  /** Closes the editor and returns focus to the control that opened it. */
+  function closeEditor() {
+    setEditing(null);
     setError(null);
     setFieldErrors({});
-    setNotice(null);
-    setEditing({ id: item.id, values: toForm(item) });
+    setConfirmDiscard(false);
+    openerRef.current?.focus();
   }
+
+  function requestClose() {
+    if (dirty) setConfirmDiscard(true);
+    else closeEditor();
+  }
+
+  // Opening the inline editor moves focus to its first field, and the aside
+  // names itself with the heading the user is working under.
+  const editingKey = editing === null ? "" : editing.id ?? "new";
+  useEffect(() => {
+    if (!editingKey) return;
+    formRef.current?.querySelector<HTMLElement>("input, select")?.focus();
+  }, [editingKey]);
 
   async function onSave(event: React.FormEvent) {
     event.preventDefault();
@@ -118,7 +162,7 @@ function EntityPanel<T extends { id: string }>({
       } else {
         await crud.update(editing.id, payload);
       }
-      setEditing(null);
+      closeEditor();
       setNotice(t("saved"));
       reload(query.trim());
     } catch (err) {
@@ -133,11 +177,13 @@ function EntityPanel<T extends { id: string }>({
     }
   }
 
-  async function onDelete(item: T) {
-    if (!window.confirm(t("confirmDelete"))) return;
+  async function confirmDelete(item: T) {
+    setDeleting(true);
     setError(null);
+    let removed = false;
     try {
       await crud.remove(item.id);
+      removed = true;
       setNotice(t("deleted"));
       reload(query.trim());
     } catch (err) {
@@ -146,145 +192,243 @@ function EntityPanel<T extends { id: string }>({
       } else {
         setError(t("deleteFailed"));
       }
+    } finally {
+      setDeleting(false);
+      setPendingDelete(null);
+      if (removed) {
+        // The row that opened the dialog is gone; land the user on the panel
+        // heading instead of dropping focus to the document.
+        window.setTimeout(() => {
+          headingRef.current?.setAttribute("tabindex", "-1");
+          headingRef.current?.focus();
+        }, 0);
+      }
     }
   }
 
   return (
-    <section className="catalogue-panel" data-testid={`panel-${title.toLowerCase()}`}>
-      <div className="orders-page__header">
-        <h2>{title}</h2>
-        {canManage ? (
-          <button type="button" className="btn btn--primary" onClick={startCreate}>
-            {t("newEntry")}
+    <section
+      className={`catalogue-panel${editing ? " catalogue-panel--editing" : ""}`}
+      data-testid={`panel-${title.toLowerCase()}`}
+    >
+      {editing ? (
+        <aside
+          className="catalogue-panel__aside"
+          aria-label={editing.id === null ? t("newEntry") : t("editEntry")}
+        >
+          <form
+            ref={formRef}
+            className="card"
+            onSubmit={onSave}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                event.stopPropagation();
+                requestClose();
+              }
+            }}
+            data-testid="entry-form"
+          >
+            <h3>{editing.id === null ? t("newEntry") : t("editEntry")}</h3>
+            {fields.map((field) => (
+              <div className="field" key={field.name}>
+                <label htmlFor={`f-${field.name}`}>{field.label}</label>
+                {field.kind === "select" ? (
+                  <select
+                    id={`f-${field.name}`}
+                    aria-invalid={fieldErrors[field.name] ? true : undefined}
+                    aria-describedby={
+                      fieldErrors[field.name] ? `f-${field.name}-error` : undefined
+                    }
+                    value={editing.values[field.name] ?? ""}
+                    onChange={(e) =>
+                      setEditing({
+                        ...editing,
+                        values: { ...editing.values, [field.name]: e.target.value },
+                      })
+                    }
+                    required={field.required}
+                  >
+                    <option value="">—</option>
+                    {(field.options ?? []).map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    id={`f-${field.name}`}
+                    aria-invalid={fieldErrors[field.name] ? true : undefined}
+                    aria-describedby={
+                      fieldErrors[field.name] ? `f-${field.name}-error` : undefined
+                    }
+                    type="text"
+                    value={editing.values[field.name] ?? ""}
+                    onChange={(e) =>
+                      setEditing({
+                        ...editing,
+                        values: { ...editing.values, [field.name]: e.target.value },
+                      })
+                    }
+                    required={field.required}
+                  />
+                )}
+                {fieldErrors[field.name] ? (
+                  <p
+                    className="field-error"
+                    id={`f-${field.name}-error`}
+                    role="alert"
+                  >
+                    {fieldErrors[field.name]}
+                  </p>
+                ) : null}
+              </div>
+            ))}
+            {error ? (
+              <p className="form-error" data-testid="form-error">
+                {error}
+              </p>
+            ) : null}
+            <div className="breakdown-editor__actions">
+              <button type="submit" className="btn btn--primary" disabled={saving}>
+                {saving ? t("saving") : t("save")}
+              </button>
+              <button type="button" className="btn btn--secondary" onClick={requestClose}>
+                {t("cancel")}
+              </button>
+            </div>
+          </form>
+        </aside>
+      ) : null}
+
+      <div className="catalogue-panel__main">
+        <div className="orders-page__header">
+          <h2 ref={headingRef}>{title}</h2>
+          {canManage ? (
+            <button type="button" className="btn btn--primary" onClick={startCreate}>
+              {t("newEntry")}
+            </button>
+          ) : null}
+        </div>
+
+        <form className="orders-page__filters" onSubmit={onSearch}>
+          <div className="filter-group">
+            <label htmlFor={`search-${title}`}>{t("search")}</label>
+            <input
+              id={`search-${title}`}
+              ref={searchRef}
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t("searchPlaceholder")}
+            />
+          </div>
+          <button type="submit" className="btn btn--secondary">
+            {t("search")}
           </button>
+        </form>
+
+        {notice ? (
+          <p className="notice" role="status" data-testid="panel-notice">
+            {notice}
+          </p>
+        ) : null}
+        {error && !editing ? (
+          <p className="form-error" role="alert" data-testid="panel-error">
+            {error}
+          </p>
+        ) : null}
+        {failed ? <p className="empty-state">{t("loadFailed")}</p> : null}
+        {items === null && !failed ? <p className="loading">{t("loading")}</p> : null}
+        {items !== null ? (
+          <table className="orders-table" data-testid="entries-table">
+            <caption className="visually-hidden">{title}</caption>
+            <thead>
+              <tr>
+                {columns.map((col) => (
+                  <th key={col.header}>{col.header}</th>
+                ))}
+                {canManage ? <th>{t("actions")}</th> : null}
+              </tr>
+            </thead>
+            <tbody>
+              {items.length === 0 ? (
+                <tr>
+                  <td colSpan={columns.length + (canManage ? 1 : 0)}>
+                    <p className="empty-state">{t("emptyCatalogue")}</p>
+                    {query.trim() ? (
+                      <button
+                        type="button"
+                        className="btn btn--secondary"
+                        data-testid="clear-search"
+                        onClick={() => {
+                          setQuery("");
+                          reload("");
+                          searchRef.current?.focus();
+                        }}
+                      >
+                        {t("clearSearch")}
+                      </button>
+                    ) : null}
+                  </td>
+                </tr>
+              ) : (
+                items.map((item) => (
+                  <tr key={item.id}>
+                    {columns.map((col) => (
+                      <td key={col.header}>{col.cell(item)}</td>
+                    ))}
+                    {canManage ? (
+                      <td>
+                        <button
+                          type="button"
+                          className="btn btn--sm"
+                          onClick={(event) => startEdit(item, event)}
+                        >
+                          {t("edit")}
+                        </button>{" "}
+                        <button
+                          type="button"
+                          className="btn btn--sm btn--icon"
+                          onClick={(event) => {
+                            openerRef.current = event.currentTarget;
+                            setPendingDelete(item);
+                          }}
+                        >
+                          {t("delete")}
+                        </button>
+                      </td>
+                    ) : null}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         ) : null}
       </div>
 
-      <form className="orders-page__filters" onSubmit={onSearch}>
-        <div className="filter-group">
-          <label htmlFor={`search-${title}`}>{t("search")}</label>
-          <input
-            id={`search-${title}`}
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t("searchPlaceholder")}
-          />
-        </div>
-        <button type="submit" className="btn btn--secondary">
-          {t("search")}
-        </button>
-      </form>
-
-      {editing ? (
-        <form className="card" onSubmit={onSave} data-testid="entry-form">
-          <h3>{editing.id === null ? t("newEntry") : t("editEntry")}</h3>
-          {fields.map((field) => (
-            <div className="field" key={field.name}>
-              <label htmlFor={`f-${field.name}`}>{field.label}</label>
-              {field.kind === "select" ? (
-                <select
-                  id={`f-${field.name}`}
-                  value={editing.values[field.name] ?? ""}
-                  onChange={(e) =>
-                    setEditing({
-                      ...editing,
-                      values: { ...editing.values, [field.name]: e.target.value },
-                    })
-                  }
-                  required={field.required}
-                >
-                  <option value="">—</option>
-                  {(field.options ?? []).map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  id={`f-${field.name}`}
-                  type="text"
-                  value={editing.values[field.name] ?? ""}
-                  onChange={(e) =>
-                    setEditing({
-                      ...editing,
-                      values: { ...editing.values, [field.name]: e.target.value },
-                    })
-                  }
-                  required={field.required}
-                />
-              )}
-              {fieldErrors[field.name] ? (
-                <p className="field-error">{fieldErrors[field.name]}</p>
-              ) : null}
-            </div>
-          ))}
-          {error ? <p className="form-error" data-testid="form-error">{error}</p> : null}
-          <div className="breakdown-editor__actions">
-            <button type="submit" className="btn btn--primary" disabled={saving}>
-              {saving ? t("saving") : t("save")}
-            </button>
-            <button
-              type="button"
-              className="btn btn--secondary"
-              onClick={() => setEditing(null)}
-            >
-              {t("cancel")}
-            </button>
-          </div>
-        </form>
+      {pendingDelete ? (
+        <Dialog
+          title={t("deleteEntryTitle")}
+          description={t("deleteEntryBody")}
+          confirmLabel={deleting ? t("deleting") : t("delete")}
+          onCancel={() => setPendingDelete(null)}
+          onConfirm={() => confirmDelete(pendingDelete)}
+          destructive
+          busy={deleting}
+        />
       ) : null}
 
-      {notice ? <p className="notice" data-testid="panel-notice">{notice}</p> : null}
-      {failed ? <p className="empty-state">{t("loadFailed")}</p> : null}
-      {items === null && !failed ? <p className="loading">{t("loading")}</p> : null}
-      {items !== null ? (
-        <table className="orders-table" data-testid="entries-table">
-          <thead>
-            <tr>
-              {columns.map((col) => (
-                <th key={col.header}>{col.header}</th>
-              ))}
-              {canManage ? <th>{t("actions")}</th> : null}
-            </tr>
-          </thead>
-          <tbody>
-            {items.length === 0 ? (
-              <tr>
-                <td colSpan={columns.length + (canManage ? 1 : 0)}>
-                  <p className="empty-state">{t("emptyCatalogue")}</p>
-                </td>
-              </tr>
-            ) : (
-              items.map((item) => (
-                <tr key={item.id}>
-                  {columns.map((col) => (
-                    <td key={col.header}>{col.cell(item)}</td>
-                  ))}
-                  {canManage ? (
-                    <td>
-                      <button
-                        type="button"
-                        className="btn btn--sm"
-                        onClick={() => startEdit(item)}
-                      >
-                        {t("edit")}
-                      </button>{" "}
-                      <button
-                        type="button"
-                        className="btn btn--sm btn--icon"
-                        onClick={() => onDelete(item)}
-                      >
-                        {t("delete")}
-                      </button>
-                    </td>
-                  ) : null}
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+      {confirmDiscard ? (
+        <Dialog
+          title={t("discardTitle")}
+          description={t("discardBody")}
+          confirmLabel={t("discard")}
+          cancelLabel={t("keepEditing")}
+          onCancel={() => setConfirmDiscard(false)}
+          onConfirm={closeEditor}
+          destructive
+        />
       ) : null}
     </section>
   );

@@ -5,6 +5,8 @@ import { resolveRoute, routeAllowed, visibleSections } from "./navigation";
 import { AccessDeniedPage } from "./pages/AccessDeniedPage";
 import { CataloguePage } from "./pages/CataloguePage";
 import { AreaPlaceholder } from "./pages/AreaPlaceholder";
+import { NewOrderPage } from "./pages/NewOrderPage";
+import { OrderDetailPage } from "./pages/OrderDetailPage";
 import { OrdersPage } from "./pages/OrdersPage";
 import { RolesPage } from "./pages/RolesPage";
 import { SignInPage } from "./pages/SignInPage";
@@ -21,11 +23,19 @@ function CurrentScreen({ grants }: { grants: SectionGrant[] }) {
 
   // US6: a directly requested route outside the grants shows access-denied,
   // never the section's content.
-  if (!routeAllowed(route, grants)) return <AccessDeniedPage />;
+  if (!routeAllowed(route, grants)) return <AccessDeniedPage deniedRoute={route} />;
 
   if (route.item?.id === "orders") {
     const canManage = grants.some((g) => g.id === "production" && g.manage);
     return <OrdersPage canManage={canManage} />;
+  }
+  if (route.item?.id === "order-new") {
+    const canManage = grants.some((g) => g.id === "production" && g.manage);
+    return canManage ? <NewOrderPage /> : <AccessDeniedPage deniedRoute={route} />;
+  }
+  if (route.item?.id === "order-detail") {
+    const canManage = grants.some((g) => g.id === "production" && g.manage);
+    return <OrderDetailPage canManage={canManage} />;
   }
   if (route.item?.id === "articles") {
     const canManage = grants.some((g) => g.id === "production" && g.manage);

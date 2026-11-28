@@ -17,6 +17,8 @@ export const LANGUAGE_NAMES: Record<Locale, string> = {
 const en: Record<string, string> = {
   brand: "LoomLine",
   brandTagline: "Production operations",
+  skipToContent: "Skip to main content",
+  mainContent: "Main content",
   navHeading: "Sections",
   breadcrumb: "Breadcrumb",
   toggleNav: "Toggle navigation",
@@ -47,6 +49,8 @@ const en: Record<string, string> = {
   "section.access": "Access",
 
   "item.orders": "Orders",
+  "item.newOrder": "New order",
+  "item.orderDetail": "Order detail",
   "item.articles": "Articles",
   "item.models": "Models",
   "item.routings": "Routings",
@@ -105,16 +109,37 @@ const en: Record<string, string> = {
   deleted: "Deleted.",
   deleteFailed: "The entry could not be deleted.",
   confirmDelete: "Delete this entry?",
+  deleteEntryTitle: "Delete this entry?",
+  deleteEntryBody:
+    "The entry is removed from the catalogue. Entries still used by orders are refused.",
+  deleting: "Deleting…",
+  discardTitle: "Discard unsaved changes?",
+  discardBody: "Your edits have not been saved. Closing now loses them.",
+  discard: "Discard",
+  keepEditing: "Keep editing",
+  cancelOrderTitle: "Cancel this order?",
+  cancelOrderBody:
+    "The order is cancelled permanently and leaves the production flow.",
+  cancelReason: "Reason for cancelling",
+  cancelReasonRequired: "Give a reason before cancelling the order.",
+  confirmCancelOrder: "Cancel order",
+  clearRoutingTitle: "Clear the routing sheet?",
+  clearRoutingBody:
+    "Saving an empty sheet removes every routing step from this order. The order itself stays.",
+  clearRouting: "Clear routing",
   actions: "Actions",
   edit: "Edit",
   delete: "Delete",
   cancel: "Cancel",
   emptyCatalogue: "No entries found.",
+  clearSearch: "Clear search",
 };
 
 const fr: Record<string, string> = {
   brand: "LoomLine",
   brandTagline: "Opérations de production",
+  skipToContent: "Aller au contenu principal",
+  mainContent: "Contenu principal",
   navHeading: "Sections",
   breadcrumb: "Fil d'Ariane",
   toggleNav: "Afficher ou masquer la navigation",
@@ -145,6 +170,8 @@ const fr: Record<string, string> = {
   "section.access": "Accès",
 
   "item.orders": "Ordres de fabrication",
+  "item.newOrder": "Nouvel ordre",
+  "item.orderDetail": "Détail d'ordre",
   "item.articles": "Articles",
   "item.models": "Modèles",
   "item.routings": "Gammes",
@@ -152,6 +179,9 @@ const fr: Record<string, string> = {
   "item.movements": "Entrées / sorties",
   "item.stockLevels": "État du stock",
   "item.clients": "Clients",
+  "createNewOrder": "Create new order",
+  "createNewOrderFr": "Nouvel ordre",
+
   "item.subcontractors": "Sous-traitants",
   "item.controls": "Contrôles",
   "item.defects": "Défauts",
@@ -203,11 +233,30 @@ const fr: Record<string, string> = {
   deleted: "Supprimé.",
   deleteFailed: "L'entrée n'a pas pu être supprimée.",
   confirmDelete: "Supprimer cette entrée ?",
+  deleteEntryTitle: "Supprimer cette entrée ?",
+  deleteEntryBody:
+    "L'entrée est retirée du catalogue. Les entrées encore utilisées par des ordres sont refusées.",
+  deleting: "Suppression…",
+  discardTitle: "Abandonner les modifications ?",
+  discardBody: "Vos modifications ne sont pas enregistrées. Les fermer les perd.",
+  discard: "Abandonner",
+  keepEditing: "Continuer la modification",
+  cancelOrderTitle: "Annuler cet ordre ?",
+  cancelOrderBody:
+    "L'ordre est annulé définitivement et quitte le flux de production.",
+  cancelReason: "Motif de l'annulation",
+  cancelReasonRequired: "Indiquez un motif avant d'annuler l'ordre.",
+  confirmCancelOrder: "Annuler l'ordre",
+  clearRoutingTitle: "Vider la gamme ?",
+  clearRoutingBody:
+    "Enregistrer une gamme vide retire toutes les étapes de cet ordre. L'ordre lui-même est conservé.",
+  clearRouting: "Vider la gamme",
   actions: "Actions",
   edit: "Modifier",
   delete: "Supprimer",
   cancel: "Annuler",
   emptyCatalogue: "Aucune entrée.",
+  clearSearch: "Effacer la recherche",
 };
 
 export const messages: Record<Locale, Record<string, string>> = { en, fr };

@@ -39,6 +39,35 @@ order into work that can be executed and measured.
   step; baseline 0% (feature does not exist yet).
 - Follow-up owner/date: product owner, at the next planning review.
 
+## Experience
+
+- Primary journey: planner opens a DRAFT or RELEASED order, opens its routing
+  sheet, adds ordered steps (label, phase, machine, repetitions, planned
+  minutes), reorders them, and saves the sheet in one action; a supervisor
+  opens the same sheet read-only to sequence the work.
+- Edge states: an order with no routing shows an empty sheet with an "add
+  step" action; an empty submitted sheet clears the routing after confirmation;
+  an unknown phase or inactive machine, blank label, or non-positive duration
+  is refused inline and nothing is saved; from IN_PROGRESS the sheet is
+  read-only with a "locked" explanation; a viewer never sees edit controls; on
+  narrow viewports each step row stacks its fields instead of scrolling
+  horizontally.
+- UX bar: step order is obvious and editable without page reloads (move
+  up/down buttons beside every row, disabled at the ends), the planned total
+  in minutes per unit is visible while editing, and the sheet is one atomic
+  save rather than a per-row save dance.
+- Accessibility: reordering has a keyboard path (move up/down buttons beside
+  each row) as well as pointer dragging; fields and row actions are labelled;
+  table headers identify each column; validation errors name the row and field.
+- UI pattern: F-pattern — the routing sheet is a dense ordered table read
+  top-left across the step columns and down the sequence; the order header
+  stays above it.
+- Navigation/overlay: inline — the ordered routing sheet is edited in place
+  on the full-page order detail; no separate route or drawer.
+- Design system (ADR 0014): a rejected routing sheet marks each step field
+  `aria-invalid`, references the shared message with `aria-describedby`, and
+  keeps every entered value; the message is announced with `role="alert"`.
+
 ## Scope (in)
 
 - Phase reference data (code + label), seeded for the demo and exposed

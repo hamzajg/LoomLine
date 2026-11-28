@@ -98,3 +98,28 @@ Feature: Identity, access control, and the application shell
     When the administrator creates a user and assigns a role
     Then the new user can sign in
     And the new user sees exactly the access the assigned role grants
+
+  @w4 @responsive @accessibility
+  Scenario: Navigation drawer moves focus in and returns it on close
+    Given a narrow viewport where the sidebar is a header-toggled drawer
+    When the user opens the drawer
+    Then focus moves to the drawer's first control
+    And Tab stays inside the drawer while the page behind is blocked
+    When the user dismisses the drawer with Escape
+    Then focus returns to the header toggle
+
+  # --- Wave 5: design-system pass (ADR 0014) ----------------------------
+
+  @w5 @accessibility
+  Scenario: Skip link reaches the main content
+    Given an authenticated user is in the application
+    When the user activates the skip link
+    Then focus moves to the main content landmark
+    And the skip link is the first focusable control in the shell
+
+  @w5 @accessibility @design-tokens
+  Scenario: Shell text tokens meet AA contrast
+    Given the shell uses the shared design tokens
+    Then the subtle text token meets 4.5:1 on every surface token
+    And the accent foreground token meets 4.5:1 on the accent fill
+    And text selection uses a token rather than a browser default

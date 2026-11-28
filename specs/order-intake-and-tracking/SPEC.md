@@ -33,6 +33,37 @@ product.
   non-stale status. Baseline is unknown; no numeric target is asserted.
 - Follow-up owner/date: product owner, four weeks after first release.
 
+## Experience
+
+- Primary journey: planner opens Orders, filters or searches by status or
+  reference, creates an order from the New order form (reference, article,
+  client, quantity, due date), saves it as DRAFT, then opens the detail and
+  advances it through RELEASED, IN_PROGRESS and COMPLETED (or CANCELLED).
+- Edge states: an empty order list explains that no orders exist and offers
+  New order; an empty search result offers to clear the filter; a duplicate
+  reference, non-positive quantity or missing field is refused inline with the
+  field identified and the form preserved; the list restores its status and
+  reference filter after a detail round trip and after a reload in the same
+  session; an invalid or terminal transition is
+  refused with the allowed next states shown; a detail for a missing order
+  shows a not-found state with a link back to the list.
+- UX bar: one form captures an order without a wizard, the list keeps its
+  filter while a detail is opened and closed, and the detail only offers the
+  transitions the lifecycle allows.
+- Accessibility: every field has a visible label; the first invalid field
+  receives focus on a failed save; status is conveyed as text and announced
+  when it changes; tables and status controls are keyboard operable.
+- UI pattern: F-pattern — the order list scans top-left across the filter bar
+  and down the rows, and the detail reads reference and totals before history;
+  the create form is single-column in the content area.
+- Navigation/overlay: full-page — the order list, single-column create form
+  and detail are routed pages; status transitions happen in the detail rather
+  than a modal.
+- Design system (ADR 0014): the order list announces loading and the number
+  of results through a polite live region, so filtering is not a silent DOM
+  swap; field errors keep the shared `aria-invalid`/`aria-describedby`
+  contract and colour comes only from the tokens.
+
 ## Scope (in)
 
 - Create a production order: reference, article, client, quantity, due date.

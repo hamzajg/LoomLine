@@ -41,3 +41,15 @@ Order stories by user value; dependencies express technical order only.
 - Depends: US1
 - Size: M
 - Notes: server-enforced transition table; append-only status history; terminal states are final
+
+## US5 — As a planner, I want the order list to remember my filter and the form to point at the first problem, so that I do not repeat work after opening an order
+
+- Scenarios: @w4
+- Size: S
+- Notes: builds on US2 and US1; the status/reference filter survives a detail round trip and a reload in the same session; a failed save focuses the first invalid field while every missing field is explained
+
+## US6 — As a screen-reader user, I want the order list to announce loading and its result count, so that filtering is not a silent change
+
+- Scenarios: @w5
+- Size: S
+- Notes: apply ADR 0014 to the list — a polite live region reports loading and "N orders shown" after each filter change

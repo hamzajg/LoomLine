@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type Ref } from "react";
 import { useLocale } from "../i18n/LocaleProvider";
 import { type NavSection, resolveRoute } from "../navigation";
 import { Link } from "../router";
@@ -9,11 +9,27 @@ type Props = {
   currentPath: string;
   navOpen: boolean;
   onNavigate?: () => void;
+  /** Ref to the aside, so the shell can move focus into the drawer. */
+  sidebarRef?: Ref<HTMLElement>;
+  /**
+   * True when the drawer blocks the page (narrow viewport): Tab stays inside
+   * until the drawer is dismissed. A static sidebar does not trap focus.
+   */
+  trapFocus?: boolean;
 };
 
-export function AppSidebar({ sections, currentPath, navOpen, onNavigate }: Props) {
+export function AppSidebar({
+  sections,
+  currentPath,
+  navOpen,
+  onNavigate,
+  sidebarRef,
+  trapFocus = false,
+}: Props) {
   const { t } = useLocale();
   const active = resolveRoute(currentPath, sections);
+  // Routes without a sidebar entry keep their closest list section current.
+  const activeId = active.item?.id === "order-new" ? "orders" : active.item?.id;
   const [expanded, setExpanded] = useState<string[]>(() =>
     active.section ? [active.section.id] : [],
   );
@@ -37,10 +53,30 @@ export function AppSidebar({ sections, currentPath, navOpen, onNavigate }: Props
 
   return (
     <aside
+      ref={sidebarRef}
       id="app-sidebar"
       className="app-sidebar"
       data-testid="app-sidebar"
       hidden={!navOpen}
+      onKeyDown={(event) => {
+        if (!trapFocus || event.key !== "Tab") return;
+        const items = Array.from(
+          event.currentTarget.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled])',
+          ),
+        );
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (!first || !last) return;
+        const active = document.activeElement;
+        if (event.shiftKey && (active === first || !event.currentTarget.contains(active))) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && active === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }}
     >
       <nav className="app-nav" aria-label={t("navHeading")}>
         <h2 className="app-nav__heading">{t("navHeading")}</h2>
@@ -79,8 +115,8 @@ export function AppSidebar({ sections, currentPath, navOpen, onNavigate }: Props
                 </button>
 
                 <ul className="app-nav__items" id={itemsId} hidden={!isOpen}>
-                  {section.items.map((item) => {
-                    const isActive = active.item?.id === item.id;
+                  {section.items.filter((item) => !item.hidden).map((item) => {
+                    const isActive = activeId === item.id;
                     return (
                       <li key={item.id}>
                         <Link
