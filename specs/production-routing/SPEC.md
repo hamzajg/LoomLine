@@ -64,6 +64,9 @@ order into work that can be executed and measured.
   stays above it.
 - Navigation/overlay: inline — the ordered routing sheet is edited in place
   on the full-page order detail; no separate route or drawer.
+- Design system (ADR 0014): a rejected routing sheet marks each step field
+  `aria-invalid`, references the shared message with `aria-describedby`, and
+  keeps every entered value; the message is announced with `role="alert"`.
 
 ## Scope (in)
 

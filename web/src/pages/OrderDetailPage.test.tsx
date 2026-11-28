@@ -209,6 +209,39 @@ describe("OrderDetailPage", () => {
     );
   });
 
+  it("ties a rejected routing sheet to its step fields", async () => {
+    const draftOrder: CreatedOrder = { ...order, status: "DRAFT" };
+    const api = fakeApi({
+      get: vi.fn().mockResolvedValue(draftOrder),
+      setRouting: vi.fn().mockRejectedValue(
+        new ApiFailure("VALIDATION_FAILED", "The routing could not be saved.", {
+          label: "Label is required.",
+        }),
+      ),
+    });
+    render(
+      <LocaleProvider>
+        <OrderDetailPage api={api} canManage />
+      </LocaleProvider>,
+    );
+
+    await screen.findByText("OF-2026-002");
+    await screen.findByText("Join the panels");
+    fireEvent.click(screen.getByTestId("edit-routing"));
+    fireEvent.click(screen.getByTestId("save-routing"));
+
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveTextContent("Label is required.");
+
+    const label = screen.getByLabelText("Label 1");
+    expect(label).toHaveAttribute("aria-invalid", "true");
+    const describedBy = label.getAttribute("aria-describedby");
+    expect(describedBy).toBeTruthy();
+    expect(document.getElementById(describedBy!)).toHaveTextContent(
+      "Label is required.",
+    );
+  });
+
   it("shows the planned total and reorders routing steps", async () => {
     const draftOrder: CreatedOrder = { ...order, status: "DRAFT" };
     const api = fakeApi({ get: vi.fn().mockResolvedValue(draftOrder) });

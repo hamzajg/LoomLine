@@ -86,3 +86,11 @@ Feature: production-routing
     When the planner saves it with no steps
     Then a confirmation names the consequence
     And nothing is saved until the planner confirms
+
+  @w5 @routing @accessibility
+  Scenario: A rejected routing sheet marks its step fields
+    Given the planner is editing the routing sheet of a draft order
+    When the server rejects the save with a message
+    Then each step field is marked invalid for assistive technology
+    And the fields reference the error message
+    And every value the planner entered is kept

@@ -620,11 +620,17 @@ export function OrderDetailPage({ api = httpOrdersApi, canManage = false }: Prop
                 }
               }}
             >
-              {routingError && <p className="form-error" role="alert">{routingError}</p>}
+              {routingError && (
+                <p className="form-error" id="routing-error" role="alert">
+                  {routingError}
+                </p>
+              )}
               {draftSteps.map((step, i) => (
                 <div className="breakdown-editor__row" key={i}>
                   <input
                     aria-label={`Label ${i + 1}`}
+                    aria-invalid={routingError ? true : undefined}
+                    aria-describedby={routingError ? "routing-error" : undefined}
                     type="text"
                     value={step.label}
                     onChange={(e) =>
@@ -635,6 +641,8 @@ export function OrderDetailPage({ api = httpOrdersApi, canManage = false }: Prop
                   />
                   <select
                     aria-label={`Phase ${i + 1}`}
+                    aria-invalid={routingError ? true : undefined}
+                    aria-describedby={routingError ? "routing-error" : undefined}
                     value={step.phaseId}
                     onChange={(e) =>
                       setDraftSteps((prev) =>
@@ -651,6 +659,8 @@ export function OrderDetailPage({ api = httpOrdersApi, canManage = false }: Prop
                   </select>
                   <select
                     aria-label={`Machine ${i + 1}`}
+                    aria-invalid={routingError ? true : undefined}
+                    aria-describedby={routingError ? "routing-error" : undefined}
                     value={step.machineId ?? ""}
                     onChange={(e) =>
                       setDraftSteps((prev) =>
@@ -667,6 +677,8 @@ export function OrderDetailPage({ api = httpOrdersApi, canManage = false }: Prop
                   </select>
                   <input
                     aria-label={`Reps ${i + 1}`}
+                    aria-invalid={routingError ? true : undefined}
+                    aria-describedby={routingError ? "routing-error" : undefined}
                     type="number"
                     min={1}
                     value={step.repetitions}
@@ -678,6 +690,8 @@ export function OrderDetailPage({ api = httpOrdersApi, canManage = false }: Prop
                   />
                   <input
                     aria-label={`Minutes ${i + 1}`}
+                    aria-invalid={routingError ? true : undefined}
+                    aria-describedby={routingError ? "routing-error" : undefined}
                     type="number"
                     min={1}
                     value={step.minutes}

@@ -32,3 +32,9 @@ parse them. Write the story as: "As a <role>, I want <goal>, so that
 - Scenarios: @w4
 - Size: S
 - Notes: builds on US3; move up/down buttons beside each step (disabled at the ends), planned minutes per unit visible while editing, and an empty save asks before it removes every step
+
+## US6 — As a keyboard or screen-reader user, I want a rejected routing sheet to mark the step fields and name the message, so that I can correct the offending step
+
+- Scenarios: @w5
+- Size: S
+- Notes: apply ADR 0014 to the routing editor — rejected step fields are `aria-invalid`, reference the single alert with `aria-describedby`, and every entered value is kept

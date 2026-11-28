@@ -47,3 +47,12 @@ Scenarios proven by this wave:
 | Item | Title | Size | Deps | Notes |
 |------|-------|------|------|-------|
 | US5 | As a production planner, I want the routing sheet to show its planned total, reorder from the keyboard, and confirm a clear, so that I can sequence work safely | S | — | builds on US3; move up/down buttons beside each step (disabled at the ends), planned minutes per unit visible while editing, and an empty save asks before it removes every step |
+
+## Wave 5 — iteration 5
+
+Scenarios proven by this wave:
+- A rejected routing sheet marks its step fields
+
+| Item | Title | Size | Deps | Notes |
+|------|-------|------|------|-------|
+| US6 | As a keyboard or screen-reader user, I want a rejected routing sheet to mark the step fields and name the message, so that I can correct the offending step | S | — | apply ADR 0014 to the routing editor — rejected step fields are `aria-invalid`, reference the single alert with `aria-describedby`, and every entered value is kept |
