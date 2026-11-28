@@ -80,3 +80,10 @@ Feature: Order intake and tracking
     When the planner submits it
     Then the first invalid field is focused
     And every missing field is explained
+
+  @w5 @orders @accessibility
+  Scenario: The order list announces its result count
+    Given the order list has loaded
+    Then a polite live region states how many orders are shown
+    When the planner filters the list
+    Then the live region states the filtered count

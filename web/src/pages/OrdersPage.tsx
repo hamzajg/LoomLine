@@ -150,6 +150,17 @@ export function OrdersPage({ api = httpOrdersApi, canManage = false }: Props) {
         </div>
       </div>
 
+      <p
+        className="visually-hidden"
+        role="status"
+        aria-live="polite"
+        data-testid="orders-status"
+      >
+        {loading
+          ? "Loading orders"
+          : `${orders.length} order${orders.length === 1 ? "" : "s"} shown`}
+      </p>
+
       {loading ? (
         <p className="loading">Loading orders...</p>
       ) : orders.length === 0 ? (

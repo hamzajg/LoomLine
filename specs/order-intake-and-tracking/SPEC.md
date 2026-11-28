@@ -59,6 +59,10 @@ product.
 - Navigation/overlay: full-page — the order list, single-column create form
   and detail are routed pages; status transitions happen in the detail rather
   than a modal.
+- Design system (ADR 0014): the order list announces loading and the number
+  of results through a polite live region, so filtering is not a silent DOM
+  swap; field errors keep the shared `aria-invalid`/`aria-describedby`
+  contract and colour comes only from the tokens.
 
 ## Scope (in)
 

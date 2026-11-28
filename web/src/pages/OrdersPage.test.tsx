@@ -114,6 +114,23 @@ describe("OrdersPage — Wave 2", () => {
     expect(screen.queryByText("OF-2026-002")).not.toBeInTheDocument();
   });
 
+  it("announces the number of orders the filters show", async () => {
+    const user = userEvent.setup();
+    render(<OrdersPage api={fakeApi()} />);
+    await screen.findByText("OF-2026-001");
+
+    const status = screen.getByTestId("orders-status");
+    expect(status).toHaveAttribute("role", "status");
+    expect(status).toHaveAttribute("aria-live", "polite");
+    expect(status).toHaveTextContent("3 orders shown");
+
+    await user.selectOptions(screen.getByLabelText("Status"), "DRAFT");
+    await waitFor(() =>
+      expect(screen.queryByText("OF-2026-002")).not.toBeInTheDocument(),
+    );
+    await waitFor(() => expect(status).toHaveTextContent("1 order shown"));
+  });
+
   it("offers to create the first order when the list is empty", async () => {
     render(<OrdersPage api={fakeApi({ list: vi.fn().mockResolvedValue([]) })} canManage />);
 
