@@ -17,6 +17,8 @@ export const LANGUAGE_NAMES: Record<Locale, string> = {
 const en: Record<string, string> = {
   brand: "LoomLine",
   brandTagline: "Production operations",
+  skipToContent: "Skip to main content",
+  mainContent: "Main content",
   navHeading: "Sections",
   breadcrumb: "Breadcrumb",
   toggleNav: "Toggle navigation",
@@ -136,6 +138,8 @@ const en: Record<string, string> = {
 const fr: Record<string, string> = {
   brand: "LoomLine",
   brandTagline: "Opérations de production",
+  skipToContent: "Aller au contenu principal",
+  mainContent: "Contenu principal",
   navHeading: "Sections",
   breadcrumb: "Fil d'Ariane",
   toggleNav: "Afficher ou masquer la navigation",

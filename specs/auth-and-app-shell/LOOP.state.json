@@ -1,9 +1,9 @@
 {
   "feature": "auth-and-app-shell",
-  "status": "done",
+  "status": "running",
   "iterations": 3,
   "review": "required",
-  "updated": "2026-11-27T22:05:08Z",
+  "updated": "2026-11-28T11:25:10Z",
   "waves": {
     "1": {
       "status": "done",
@@ -33,28 +33,36 @@
       "evidence": "drawer focus: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web tests and the prod",
       "bundle": "20261127T220459Z-f5511fb",
       "updated": "2026-11-27T22:05:08Z"
+    },
+    "5": {
+      "status": "in-progress",
+      "branch": "feat/auth-and-app-shell-w5",
+      "pr": "\u2014",
+      "evidence": "\u2014",
+      "bundle": "",
+      "updated": "2026-11-28T11:25:10Z"
     }
   },
   "gates": {
     "G1": {
       "status": "met",
-      "evidence": "specs/auth-and-app-shell/DECISION-REVIEW.md (verdict ACCEPT)",
-      "updated": "2026-11-18T19:27:28Z"
+      "evidence": "specs/auth-and-app-shell/DECISION-REVIEW.md",
+      "updated": "2026-11-28T11:25:10Z"
     },
     "G2": {
       "status": "met",
-      "evidence": "ADR-0002-identity.md accepted by architect 2026-11-18 (Keycloak OIDC identity store, Argon2id credential hashing, LoomLi",
-      "updated": "2026-11-18T20:03:57Z"
+      "evidence": "specs/auth-and-app-shell/ADR-0002-identity.md",
+      "updated": "2026-11-28T11:25:10Z"
     },
     "G4": {
       "status": "met",
-      "evidence": "specs/auth-and-app-shell/SEED-DATA.md \u2014 Keycloak realm 'loomline' import: confidential client loomline-app, realm roles ",
-      "updated": "2026-11-18T20:04:30Z"
+      "evidence": "specs/auth-and-app-shell/SEED-DATA.md",
+      "updated": "2026-11-28T11:25:10Z"
     },
     "G3": {
       "status": "met",
-      "evidence": "ACCESS-MATRIX.md agreed by product-owner 2026-11-19: administrator all sections+access admin; production-planner product",
-      "updated": "2026-11-19T10:23:26Z"
+      "evidence": "specs/auth-and-app-shell/ACCESS-MATRIX.md",
+      "updated": "2026-11-28T11:25:10Z"
     }
   },
   "events": [
@@ -76,6 +84,12 @@
     "2026-11-27T21:55:25Z complete wave 4 [bundle 20261127T215516Z-8e7a1ca]: drawer focus: focused test fails without the implementation and passes with it; 53 web tests and the production build pa",
     "2026-11-27T21:56:41Z complete wave 4 [bundle 20261127T215633Z-8e7a1ca]: drawer focus: focused test fails without the implementation and passes with it; 53 web tests and the production build pa",
     "2026-11-27T21:57:37Z feature validated and shipped",
-    "2026-11-27T22:05:08Z complete wave 4 [bundle 20261127T220459Z-f5511fb]: drawer focus: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web tests and the prod"
+    "2026-11-27T22:05:08Z complete wave 4 [bundle 20261127T220459Z-f5511fb]: drawer focus: assertion-level red (behaviour disabled, test fails, file restored), then green; 53 web tests and the prod",
+    "2026-11-27T22:12:58Z feature validated and shipped",
+    "2026-11-28T11:25:10Z gate G1 met: specs/auth-and-app-shell/DECISION-REVIEW.md",
+    "2026-11-28T11:25:10Z gate G2 met: specs/auth-and-app-shell/ADR-0002-identity.md",
+    "2026-11-28T11:25:10Z gate G3 met: specs/auth-and-app-shell/ACCESS-MATRIX.md",
+    "2026-11-28T11:25:10Z gate G4 met: specs/auth-and-app-shell/SEED-DATA.md",
+    "2026-11-28T11:25:10Z start wave 5 on feat/auth-and-app-shell-w5"
   ]
 }

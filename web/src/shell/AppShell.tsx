@@ -117,6 +117,17 @@ export function AppShell({ user, sections, children }: Props) {
 
   return (
     <div className="app-shell" data-testid="app-shell">
+      <a
+        className="skip-link"
+        href="#main-content"
+        onClick={(event) => {
+          event.preventDefault();
+          mainRef.current?.focus();
+        }}
+      >
+        {t("skipToContent")}
+      </a>
+
       <AppHeader
         user={user}
         navOpen={navOpen}
@@ -136,7 +147,13 @@ export function AppShell({ user, sections, children }: Props) {
 
         <div className="app-main">
           <Breadcrumbs items={breadcrumbsFor(route)} />
-          <main className="app-content" id="main-content" ref={mainRef}>
+          <main
+            className="app-content"
+            id="main-content"
+            ref={mainRef}
+            tabIndex={-1}
+            aria-label={t("mainContent")}
+          >
             {children}
           </main>
         </div>

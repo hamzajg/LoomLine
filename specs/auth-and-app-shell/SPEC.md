@@ -66,6 +66,11 @@ can do only what their job requires.
 - Navigation/overlay: full-page — sign-in and the role-gated sections are
   routed destinations, and the shell preserves the requested route across
   sign-in.
+- Design system (ADR 0014): shell colour comes only from `src/theme/tokens.css`;
+  every text token meets WCAG 2.1 AA (4.5:1) on the surfaces it is used on;
+  a skip link targets the `<main>` landmark; selection uses a token; the
+  shared Dialog/field primitives carry focus, labelling and error wiring so
+  screens do not re-implement them.
 
 ## Scope (in)
 

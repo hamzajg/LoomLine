@@ -52,3 +52,13 @@ Scenarios proven by this wave:
 | Item | Title | Size | Deps | Notes |
 |------|-------|------|------|-------|
 | US8 | As a user on a small screen, I want the navigation drawer to move focus into itself and back to the toggle, so that I never lose my place while navigating | S | — | builds on US2; opening moves focus to the drawer's first control, Tab stays inside while the overlay blocks the page, Escape/scrim/toggle dismissal returns focus to the header toggle; a link navigation closes the drawer without stealing focus from the new heading |
+
+## Wave 5 — iteration 5
+
+Scenarios proven by this wave:
+- Skip link reaches the main content
+- Shell text tokens meet AA contrast
+
+| Item | Title | Size | Deps | Notes |
+|------|-------|------|------|-------|
+| US9 | As a keyboard or low-vision user, I want to skip the repeated navigation and read AA-contrast text, so that I can reach and read each screen without fighting the shell | S | — | apply ADR 0014 to the shell — skip link to the main landmark, AA text tokens (accent fill 4.92:1 with white, subtle text 4.81:1 on sunken), tokenised selection colour; no change to navigation structure |

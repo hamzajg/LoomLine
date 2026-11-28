@@ -62,3 +62,9 @@ Order stories by user value; dependencies express technical order only.
 - Scenarios: @w4
 - Size: S
 - Notes: builds on US2; opening moves focus to the drawer's first control, Tab stays inside while the overlay blocks the page, Escape/scrim/toggle dismissal returns focus to the header toggle; a link navigation closes the drawer without stealing focus from the new heading
+
+## US9 — As a keyboard or low-vision user, I want to skip the repeated navigation and read AA-contrast text, so that I can reach and read each screen without fighting the shell
+
+- Scenarios: @w5
+- Size: S
+- Notes: apply ADR 0014 to the shell — skip link to the main landmark, AA text tokens (accent fill 4.92:1 with white, subtle text 4.81:1 on sunken), tokenised selection colour; no change to navigation structure

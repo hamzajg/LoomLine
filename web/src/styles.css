@@ -33,6 +33,11 @@ a {
   outline-offset: 2px;
 }
 
+::selection {
+  background: var(--ll-color-accent-soft);
+  color: var(--ll-color-text);
+}
+
 .font-mono {
   font-family: var(--ll-font-mono);
 }
@@ -60,6 +65,27 @@ a {
   display: flex;
   flex-direction: column;
   background: var(--ll-color-canvas);
+}
+
+/* First focusable control: reachable by keyboard, shown only on focus. */
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--ll-space-3);
+  inset-block-start: var(--ll-space-3);
+  z-index: var(--ll-z-modal);
+  transform: translateY(-200%);
+  padding: var(--ll-space-2) var(--ll-space-3);
+  border: 1px solid var(--ll-color-border-strong);
+  border-radius: var(--ll-radius-md);
+  background: var(--ll-color-surface);
+  color: var(--ll-color-text);
+  font-weight: var(--ll-font-weight-medium);
+  text-decoration: none;
+  box-shadow: var(--ll-shadow-md);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 .app-shell__body {
@@ -348,6 +374,11 @@ a {
   max-width: var(--ll-content-max-width);
   padding: var(--ll-space-5);
   margin: 0 auto;
+}
+
+/* The skip link focuses <main> programmatically; no ring around the page. */
+.app-content:focus {
+  outline: none;
 }
 
 /* Narrow viewports: the sidebar becomes a drawer over the content. */
