@@ -4,21 +4,30 @@ Token prefix: `--ll-` · Dark mode: included · Stack: react, vite, typescript
 
 Chosen because: manufacturing language in the docs — dense operational screens, long shifts, shop-floor light.
 
+> **Adopted in `web/src/theme/tokens.css`.** The palette below is now the
+> production light/dark contract under LoomLine's existing `--ll-*` names
+> (chrome, text, surface-*), not the generator's role names. This directory is
+> the generator baseline, not an imported stylesheet. LoomLine keeps its chrome
+> and sidebar roles, its existing type/space/radius scales, and explicit light,
+> OS-dark and `data-theme` blocks; the two metadata hex values are the
+> `theme-color` metas. Those are why the audit still flags one token block and
+> two component hex values.
+
 ## Audit of the existing theme
 
-Existing custom properties: 83 (e.g. danger, icon, ll-breakpoint-narrow, ll-color-accent, ll-color-accent-fg, ll-color-accent-soft)
+Existing custom properties: 89 (e.g. danger, icon, ll-breakpoint-narrow, ll-color-accent, ll-color-accent-fg, ll-color-accent-soft)
 [gap] single token block
 [ok] accent role
 [ok] surface + ink roles
 [ok] status roles (danger/success/warning)
 [ok] focus ring token
 [ok] selection token
-[gap] disabled tokens
+[ok] disabled tokens
 [ok] overlay token
 [ok] reduced-motion
 [ok] explicit color-scheme
-[gap] dark theme mechanism
-[gap] hardcoded hex in component code: 1 — move literal colours into the token layer
+[ok] dark theme mechanism
+[gap] hardcoded hex in component code: 2 — move literal colours into the token layer
 [ok] inline colour styles: 0
 
 ## Colour

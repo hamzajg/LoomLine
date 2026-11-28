@@ -18,6 +18,24 @@ function parseTokens(css: string): Tokens {
   return tokens;
 }
 
+function block(css: string, selector: string): Tokens {
+  const start = css.indexOf(selector);
+  if (start === -1) throw new Error(`missing selector ${selector}`);
+  const open = css.indexOf("{", start);
+  const close = css.indexOf("}", open);
+  if (open === -1 || close === -1) throw new Error(`missing body for ${selector}`);
+  return parseTokens(css.slice(open + 1, close));
+}
+
+function mediaDark(css: string): Tokens {
+  const media = css.indexOf("@media (prefers-color-scheme: dark)");
+  if (media === -1) throw new Error("missing prefers-color-scheme: dark block");
+  const root = css.indexOf(":root", media);
+  const open = css.indexOf("{", root);
+  const close = css.indexOf("}", open);
+  return parseTokens(css.slice(open + 1, close));
+}
+
 function tok(tokens: Tokens, name: string): string {
   const value = tokens[name];
   if (!value) throw new Error(`missing design token ${name}`);
@@ -56,26 +74,50 @@ function contrast(fg: string, bg: string): number {
   return (hi + 0.05) / (lo + 0.05);
 }
 
-const tokens = parseTokens(read("./tokens.css"));
+const css = read("./tokens.css");
 const styles = read("../styles.css");
+const light = block(css, ":root {");
+const dark = block(css, ':root[data-theme="dark"]');
+const darkOs = mediaDark(css);
+
+const PAIRS: Array<[string, string]> = [
+  ["--ll-color-text", "--ll-color-surface"],
+  ["--ll-color-text-muted", "--ll-color-canvas"],
+  ["--ll-color-text-muted", "--ll-color-surface"],
+  ["--ll-color-text-subtle", "--ll-color-canvas"],
+  ["--ll-color-text-subtle", "--ll-color-surface"],
+  ["--ll-color-text-subtle", "--ll-color-surface-muted"],
+  ["--ll-color-text-subtle", "--ll-color-surface-sunken"],
+  ["--ll-color-accent-fg", "--ll-color-accent"],
+  ["--ll-color-danger-contrast", "--ll-color-danger"],
+  ["--ll-color-info-fg", "--ll-color-info-bg"],
+  ["--ll-color-success-fg", "--ll-color-success-bg"],
+  ["--ll-color-warning-fg", "--ll-color-warning-bg"],
+  ["--ll-color-danger-fg", "--ll-color-danger-bg"],
+  ["--ll-color-selection-ink", "--ll-color-selection-bg"],
+  ["--ll-color-chrome-fg", "--ll-color-chrome"],
+  ["--ll-color-chrome-fg-muted", "--ll-color-chrome"],
+  ["--ll-color-disabled-ink", "--ll-color-disabled-bg"],
+];
 
 describe("design tokens — AA contrast (ADR 0014)", () => {
-  it("subtle text meets 4.5:1 on every surface", () => {
-    const subtle = tok(tokens, "--ll-color-text-subtle");
-    for (const surface of [
-      "--ll-color-canvas",
-      "--ll-color-surface",
-      "--ll-color-surface-muted",
-      "--ll-color-surface-sunken",
-    ]) {
-      expect(contrast(subtle, tok(tokens, surface))).toBeGreaterThanOrEqual(4.5);
+  it.each(["light", "dark"] as const)("%s mode meets 4.5:1 for every text pair", (mode) => {
+    const tokens = mode === "light" ? light : dark;
+    for (const [fg, bg] of PAIRS) {
+      const ratio = contrast(tok(tokens, fg), tok(tokens, bg));
+      expect(ratio, `${mode}: ${fg} on ${bg} = ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
     }
   });
 
-  it("accent foreground meets 4.5:1 on the accent fill", () => {
-    expect(
-      contrast(tok(tokens, "--ll-color-accent-fg"), tok(tokens, "--ll-color-accent")),
-    ).toBeGreaterThanOrEqual(4.5);
+  it("the OS dark block matches the forced dark theme", () => {
+    for (const [name, value] of Object.entries(dark)) {
+      expect(darkOs[name], name).toBe(value);
+    }
+  });
+
+  it("declares an explicit colour scheme for both modes", () => {
+    expect(css).toMatch(/:root\s*\{[^}]*color-scheme:\s*light/);
+    expect(css).toMatch(/:root\[data-theme="dark"\]\s*\{[^}]*color-scheme:\s*dark/);
   });
 
   it("selection uses a design token", () => {
