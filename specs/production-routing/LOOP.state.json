@@ -1,9 +1,9 @@
 {
   "feature": "production-routing",
-  "status": "running",
+  "status": "done",
   "iterations": 0,
   "review": "required",
-  "updated": "2026-11-28T11:48:44Z",
+  "updated": "2026-11-28T11:50:16Z",
   "waves": {
     "1": {
       "status": "done",
@@ -35,12 +35,12 @@
       "updated": "2026-11-27T22:05:35Z"
     },
     "5": {
-      "status": "in-progress",
+      "status": "done",
       "branch": "feat/production-routing-w5",
       "pr": "\u2014",
-      "evidence": "\u2014",
-      "bundle": "",
-      "updated": "2026-11-28T11:48:44Z"
+      "evidence": "Rejected routing marks every step field and references the alert; 9/9 order-detail tests, 59/59 suite, build clean.",
+      "bundle": "20261128T115000Z-c06f33c",
+      "updated": "2026-11-28T11:50:16Z"
     }
   },
   "gates": {
@@ -81,6 +81,8 @@
     "2026-11-27T21:57:38Z feature validated and shipped",
     "2026-11-27T22:05:35Z complete wave 4 [bundle 20261127T220526Z-f5511fb]: routing totals, reorder and clear confirmation: assertion-level red (behaviour disabled, test fails, file restored), the",
     "2026-11-27T22:12:58Z feature validated and shipped",
-    "2026-11-28T11:48:44Z start wave 5 on feat/production-routing-w5"
+    "2026-11-28T11:48:44Z start wave 5 on feat/production-routing-w5",
+    "2026-11-28T11:50:16Z complete wave 5 [bundle 20261128T115000Z-c06f33c]: Rejected routing marks every step field and references the alert; 9/9 order-detail tests, 59/59 suite, build clean.",
+    "2026-11-28T11:50:16Z feature validated and shipped"
   ]
 }
